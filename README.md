@@ -13,6 +13,11 @@ Some common manifestation phrases included:
 # Techstack
 
 - Typescript/React
+- Chakra UI
 - Vite
+
+- NextJS (maybe)
+- Supabase 
+
 
 
