@@ -15,9 +15,16 @@ Some common manifestation phrases included:
 - Typescript/React
 - Chakra UI
 - Vite
-
 - NextJS (maybe)
 - Supabase 
+- Go
+
+
+
+https://github.com/supabase-community/supabase-go
+
+
+
 
 
 
