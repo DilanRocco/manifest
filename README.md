@@ -19,6 +19,8 @@ Some common manifestation phrases included:
 - Supabase 
 - Go
 
+(Resend)[https://resend.com/] for SMTP server
+Cloudflare domain
 
 
 https://github.com/supabase-community/supabase-go
