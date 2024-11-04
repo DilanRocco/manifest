@@ -11,21 +11,21 @@ export class AuthService {
     constructor(
         
     ){
-        this.supabaseClient = createClient('https://dpqpapwghkhmczofddna.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwcXBhcHdnaGtobWN6b2ZkZG5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA1ODA0MDcsImV4cCI6MjA0NjE1NjQwN30.H1bhZvJq1aT-1Q7bY570tPV7GH3J1orse1mHzjXJVQQ')
+        this.supabaseClient = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_KEY!)
     }
 
-    // async signInUser(dto: CreateUserDto){
-    //     const { user, session, error } = await this.supabaseClient.auth.sing({
-    //         email: dto.email,
-    //         password: dto.password,
-    //       })
+    async signInUser(dto: CreateUserDto){
+        const { data, error } = await this.supabaseClient.auth.signInWithPassword({
+            email: dto.email,
+            password: dto.password,
+          })
 
-    //       return {
-    //         user: user,
-    //         session: session,
-    //         error: error
-    //     }
-    // }
+          return {
+            user: data.user,
+            session: data.session,
+            error: error
+        }
+    }
 
     async signupUser(dto: CreateUserDto){
         const { data , error  } = await this.supabaseClient.auth.signUp(
