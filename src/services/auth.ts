@@ -39,8 +39,6 @@ export const authApi = {
       if (error instanceof ApiError) {
         throw error;
       }
-      throw error
-      
       throw new ApiError('Network error occurred', 500, 'NETWORK_ERROR');
     }
   },
@@ -65,12 +63,18 @@ export const authApi = {
         );
       }
 
+      console.log(data)
+      if (data.error != null) {
+        throw new ApiError("Please try again", 403, data.error.code)
+      }
+
+
+
       return data as AuthResponse;
     } catch (error) {
       if (error instanceof ApiError) {
         throw error;
       }
-      throw error
       throw new ApiError('Network error occurred', 500, 'NETWORK_ERROR');
     }
   },

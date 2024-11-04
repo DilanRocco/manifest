@@ -1,10 +1,12 @@
-import { useState, ChangeEvent, FormEvent, MouseEventHandler } from 'react';
-import { Alert } from '@/components/ui/alert';
-import { authApi, ApiError } from '@/api/auth';
-import { VStack } from '@chakra-ui/react';
+import { useState, ChangeEvent } from 'react';
+import { authApi, ApiError } from '@/services/auth';
+import { Link, Spacer, VStack } from '@chakra-ui/react';
 import { Input, Text } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
+import './App.css'
+import { PasswordInput } from '@/components/ui/password-input';
+import { styleText } from 'util';
 
 export interface FormData {
   email: string;
@@ -12,7 +14,7 @@ export interface FormData {
   confirmPassword: string;
 }
 
-const SignupForm = () => {
+const SigninForm = () => {
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
@@ -21,6 +23,7 @@ const SignupForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
+  const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
 
   const handleSubmit = async () => {
     //e.preventDefault();
@@ -39,14 +42,14 @@ const SignupForm = () => {
       
       // Optional: Store the token in localStorage or a state management solution
       // localStorage.setItem('authToken', response.token);
-      
-      setSuccess(true);
-      setFormData({ email: '', password: '', confirmPassword: '' });
+      console.log(response)
+      if (response.user != null){
+        setSuccess(true);
+      }
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);
       } else {
-        console.log(err)
         setError('An unexpected error occurred');
       }
     } finally {
@@ -63,14 +66,17 @@ const SignupForm = () => {
   };
 
   return (
-    <VStack>
-      <Field label="Email"><Input name={"email"} value={formData.email} onChange={handleChange}/></Field>
-      <Field label="Password"><Input name={"password"} value={formData.password} onChange={handleChange}/></Field>
-      <Button onClick={handleSubmit} > </Button>
+    <VStack minW="20rem" >
+      <Text> Manifest</Text>
+      <Spacer />
+      <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
+      <Field label="Password"><PasswordInput name={"password"} value={formData.password} onChange={handleChange} placeholder="*********"/></Field>
+      {isSigningUp ? <Button onClick={handleSubmit}> Sign Up </Button> : <Button onClick={handleSubmit}> Sign In</Button>}
       {success && (<Text>Successful login!</Text>) }
       {error && (<Text color="red.300">{error}</Text>) }
+      {!isSigningUp && <Text cursor="pointer" as="u" onClick={() => setIsSigningUp(true) }>Not logged in? Sign up here.</Text>}
     </VStack>
   );
 };
 
-export default SignupForm;
+export default SigninForm;

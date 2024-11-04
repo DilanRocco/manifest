@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { Provider } from "../src/components/ui/provider"
 import './index.css'
 import Main from './UI/Manifest.tsx'
-import SignUpForm from './UI/Signup.tsx'
+import SignUpForm from '@/UI/authentication.tsx'
 
 createRoot(document.getElementById('root')!).render(
  
