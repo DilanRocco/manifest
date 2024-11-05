@@ -74,7 +74,7 @@ const SigninForm = () => {
       {isSigningUp ? <Button onClick={handleSubmit}> Sign Up </Button> : <Button onClick={handleSubmit}> Sign In</Button>}
       {success && (<Text>Successful login!</Text>) }
       {error && (<Text color="red.300">{error}</Text>) }
-      {!isSigningUp && <Text cursor="pointer" as="u" onClick={() => setIsSigningUp(true) }>Not logged in? Sign up here.</Text>}
+      {!isSigningUp && <Text cursor="pointer" as="u" onClick={() => setIsSigningUp(true) }>Never logged in? Sign up here.</Text>}
     </VStack>
   );
 };
