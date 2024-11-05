@@ -7,12 +7,41 @@
     
     animation: orbit 2.5s linear infinite;
 }
-
+.title {
+    font-size:x-large;
+    opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 1s;
+    
+}
+.button {
+    font-size:large;
+    background-color:darkblue;
+    padding: 20px;
+    border-radius: 20%;
+    color: white;
+    animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 1s;
+}
 @keyframes orbit {
     from {
-      transform: rotate(0deg) translateX(150px);
+      transform: rotate(0deg) translateX(200px);
     }
     to {
-      transform: rotate(360deg) translateX(150px);
+      transform: rotate(360deg) translateX(200px);
     }
   }
+
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}

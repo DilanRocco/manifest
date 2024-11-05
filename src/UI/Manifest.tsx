@@ -20,7 +20,7 @@ function Main() {
         </HStack>
 
         <Button variant="subtle" size='lg'>
-          <FaUser /> <h2>Signup</h2>
+          <FaUser /> <h2>Logout</h2>
         </Button>
       </VStack>
     </>

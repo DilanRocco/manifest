@@ -1,15 +1,19 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Spacer, Text, VStack } from "@chakra-ui/react";
 import { Outlet, Link } from "react-router-dom";
 import './landingpage.css'
 
+
 const LandingPage = () => {
     return (<>
-       
-        <Link to="/login" replace={true} >Welcome to Manifest</Link>
+        <VStack>
+        <Text className="title">Welcome to Manifest</Text>
+        <Spacer />
+        <Link className="button" to="/login" replace={true} >Start Manifesting </Link>
+        
+        </VStack>
         <Box className='circle' >
 
         </Box>
-
         <Outlet />
     </>)
 
