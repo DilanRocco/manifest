@@ -3,15 +3,13 @@ import { HStack, VStack, Icon, Button } from "@chakra-ui/react"
 import { FaUser } from "react-icons/fa";
 import './App.css'
 
-function Main() {
-  const [count, setCount] = useState(0)
-
+function Home() {
   return (
     <>
       <VStack>
         <h1><b>Manifest</b></h1>
         <HStack>
-          <Button size='lg' colorPalette='red' onClick={() => setCount((count) => count + 1)}>
+          <Button size='lg' colorPalette='red'>
             Upload a Manfiestation
           </Button>
           <Button variant="subtle" size='lg'>
@@ -27,4 +25,4 @@ function Main() {
   )
 }
 
-export default Main
+export default Home

@@ -20,13 +20,23 @@ Some common manifestation phrases included:
 - Go
 
 (Resend)[https://resend.com/] for SMTP server
-Cloudflare domain
+Cloudflare domain: manifesting.work
 
 
 https://github.com/supabase-community/supabase-go
 
 
-
-
+# Things to do
+Trend View
+Setup Database
+Signout functionality
+Upload a manifest
+Listen to a manifest
+cookies on login
+Streak
+Possible AI playblack
+benefits of manifestoins
+tutorial on what to do
+build for production
 
 

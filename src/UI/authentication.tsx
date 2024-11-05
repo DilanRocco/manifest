@@ -13,8 +13,11 @@ export interface FormData {
   password: string;
   confirmPassword: string;
 }
+type signInProps = {
+  signingUp: boolean;
+}
 
-const SigninForm = () => {
+const SigninForm = (props: signInProps) => {
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
@@ -23,7 +26,7 @@ const SigninForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
-  const [isSigningUp, setIsSigningUp] = useState<boolean>(false);
+  const [isSigningUp, setIsSigningUp] = useState<boolean>(props.signingUp);
 
   const handleSubmit = async () => {
     //e.preventDefault();
