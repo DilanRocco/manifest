@@ -1,10 +1,11 @@
 import { useState, ChangeEvent } from 'react';
 import { authApi, ApiError } from '@/services/auth';
-import { Link, Spacer, VStack } from '@chakra-ui/react';
+import { Spacer, VStack } from '@chakra-ui/react';
 import { Input, Text } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
 import './App.css'
+import { Outlet, Link } from "react-router-dom";
 import { PasswordInput } from '@/components/ui/password-input';
 import { styleText } from 'util';
 
@@ -77,7 +78,8 @@ const SigninForm = (props: signInProps) => {
       {isSigningUp ? <Button onClick={handleSubmit}> Sign Up </Button> : <Button onClick={handleSubmit}> Sign In</Button>}
       {success && (<Text>Successful login!</Text>) }
       {error && (<Text color="red.300">{error}</Text>) }
-      {!isSigningUp && <Text cursor="pointer" as="u" onClick={() => setIsSigningUp(true) }>Never logged in? Sign up here.</Text>}
+      {!isSigningUp && <Link to="/signup" replace={true} onClick={() => setIsSigningUp(true)}> Never logged in? Sign up here.</Link>}
+      <Outlet />
     </VStack>
   );
 };
