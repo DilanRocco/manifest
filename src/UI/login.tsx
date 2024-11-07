@@ -14,11 +14,8 @@ export interface FormData {
   password: string;
   confirmPassword: string;
 }
-type signInProps = {
-  signingUp: boolean;
-}
 
-const SigninForm = (props: signInProps) => {
+const SignInForm = () => {
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
@@ -27,7 +24,7 @@ const SigninForm = (props: signInProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
-  const [isSigningUp, setIsSigningUp] = useState<boolean>(props.signingUp);
+
 
   const handleSubmit = async () => {
     //e.preventDefault();
@@ -75,13 +72,12 @@ const SigninForm = (props: signInProps) => {
       <Spacer />
       <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
       <Field label="Password"><PasswordInput name={"password"} value={formData.password} onChange={handleChange} placeholder="*********"/></Field>
-      {isSigningUp ? <Button onClick={handleSubmit}> Sign Up </Button> : <Button onClick={handleSubmit}> Sign In</Button>}
+      <Button onClick={handleSubmit}> Sign In</Button>
       {success && (<Text>Successful login!</Text>) }
       {error && (<Text color="red.300">{error}</Text>) }
-      {!isSigningUp && <Link to="/signup" replace={true} onClick={() => setIsSigningUp(true)}> Never logged in? Sign up here.</Link>}
+      <Link reloadDocument to="/signup"> Never logged in? Sign up here.</Link>
       <Outlet />
     </VStack>
   );
 };
-
-export default SigninForm;
+export default SignInForm;
