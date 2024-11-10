@@ -16,8 +16,4 @@ export interface User {
 export interface Token {
   access_token: string
 }
-export interface AuthResponse {
-  session: Token
-  user: User;
-}
 

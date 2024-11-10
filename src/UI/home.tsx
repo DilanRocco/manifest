@@ -30,9 +30,7 @@ function Home() {
   };
 
   function handleChange(text:string) {
-    console.log(text)
     setManText(text)
-    console.log(manText, "mantext")
   }
 
       return (

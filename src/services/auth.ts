@@ -1,13 +1,20 @@
-import { supabase } from '@/lib/supabase';
-import { SignupData, LoginData, AuthResponse } from '@/types/auth';
-//import { env } from 'process';
+
+import { SignupData, LoginData } from '@/types/auth';
+import { AuthResponse, createClient, SupabaseClient, UserResponse } from '@supabase/supabase-js';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 
 const API_BASE_URL = 'http://localhost:3001';
+const supabase = createClient(
+  'https://dpqpapwghkhmczofddna.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwcXBhcHdnaGtobWN6b2ZkZG5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA1ODA0MDcsImV4cCI6MjA0NjE1NjQwN30.H1bhZvJq1aT-1Q7bY570tPV7GH3J1orse1mHzjXJVQQ'
+)
 
 export class ApiError extends Error {
   constructor(
     message: string,
-    public status: number,
+    public status?: number,
     public code?: string
   ) {
     super(message);
@@ -16,63 +23,51 @@ export class ApiError extends Error {
 }
 
 export const authApi = {
-  async signup(userData: SignupData): Promise<AuthResponse> {
+  
+  async signup(userData: SignupData): Promise<boolean> {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
+      const { data, error } = await supabase.auth.signUp(
+        {
+          email: userData.email,
+          password: userData.password,
+        }
+      ) 
 
-      const data = await response.json();
-
-      if (!response.ok) {
+      if (error) {
         throw new ApiError(
-          data.message || 'Signup failed',
-          response.status,
-          data.code
+          error.message || 'Login failed',
+          error.status || 0,
+          error.code
         );
       }
-
-      return data as AuthResponse;
+      const authToken = data.session?.access_token;
+        if (authToken) {
+          localStorage.setItem('authToken', authToken);
+        }
+      return true  
     } catch (error) {
-      if (error instanceof ApiError) {
-        throw error;
-      }
-      throw new ApiError('Network error occurred', 500, 'NETWORK_ERROR');
+      throw new ApiError("Error occured", 404);
     }
   },
 
-  async login(credentials: LoginData): Promise<AuthResponse> {
+  async login(credentials: LoginData) {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/signin`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-      });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: credentials.email,
+        password: credentials.password,
+      })
 
-      const data = await response.json();
-
-      if (!response.ok) {
+      if (error) {
         throw new ApiError(
-          data.message || 'Login failed',
-          response.status,
-          data.code
+          error.message || 'Login failed',
+          error.status,
+          error.code
         );
       }
-
-      console.log(data)
-      if (data.error != null) {
-        throw new ApiError("Please try again", 403, data.error.code)
+      const authToken = data.session?.access_token;
+      if (authToken) {
+        localStorage.setItem('authToken', authToken);
       }
-
-
-
-      return data as AuthResponse;
     } catch (error) {
       if (error instanceof ApiError) {
         throw error;
@@ -82,18 +77,27 @@ export const authApi = {
   },
 
   async credentialsValid(): Promise<boolean> {
-    const token = localStorage.getItem("authToken")
-    console.log(token)
+    const token = localStorage.getItem("authToken") 
+    if (!token) {
+      return false
+    }
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/credentialsvalid`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-      });
+      const { data, error } = await supabase.auth.getUser(
+        token
+    )
+    if (error) {
+      throw new ApiError(
+        error.message || 'Login failed',
+        error.status,
+        error.code
+      );
+    }
 
-      return await response.json();
+    if (data.user) {
+      return true
+    } else {
+      return false
+    }
 
     } catch (error) {
       if (error instanceof ApiError) {

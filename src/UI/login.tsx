@@ -41,15 +41,7 @@ const SignInForm = () => {
     try {
       const { email, password } = formData;
       const response = await authApi.login({ email, password });
-      
-      // Optional: Store the token in localStorage or a state management solution
-      
-      console.log(response)
-      if (response.user != null){
-        const token = response.session.access_token
-        localStorage.setItem('authToken', token);
-        setSuccess(true);
-      }
+      setSuccess(true)
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);
