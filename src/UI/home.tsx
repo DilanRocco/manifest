@@ -1,20 +1,22 @@
-import { HStack, VStack, Input } from "@chakra-ui/react"
+import { HStack, VStack, Input, Text, Textarea} from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
 import { FaUser } from "react-icons/fa";
 import './App.css'
 import { textToSpeechApi } from '@/services/tos';
+import { authApi } from '@/services/auth';
 import { useState, useCallback } from 'react';
+import { Outlet, useNavigate} from "react-router-dom";
 
 function Home() {
   const [manText, setManText] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
-  const [outputPath, setOutputPath] = useState("")
-
-
+  const [charactersLeft, setCharacterLeft] = useState(1000)
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioUrl, setAudioUrl] = useState('');
+
+  const navigate = useNavigate()
 
   const playNoise = async () => {
     try {
@@ -25,43 +27,45 @@ function Home() {
       setAudioUrl(url);
     } catch (err) {
       console.error('Audio error:', err);
+      setError('Error trying to convert Text to Speech')
       setIsPlaying(false);
     }
   };
-
+  function signOut() {
+    try {
+      authApi.signout()
+      navigate('/login')
+    } catch (err) {
+      setError('Error signing out')
+    }
+  }
+  function updateText(text: string) {
+    setCharacterLeft(1000 - text.length)
+    setManText(text)
+  }
   function handleChange(text:string) {
     setManText(text)
   }
-
       return (
         <>
-          <button
-            onClick={playNoise}
-            disabled={isPlaying}
-            className="px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
-          >
-            {isPlaying ? 'Playing...' : 'Play Noise'}
-          </button>
-          <VStack>
+          <VStack gap="4" width={400}>
             <h1><b>Manifest</b></h1>
             <HStack>
-              <Button size='lg' colorPalette='red'>
-                Upload a Manfiestation
-              </Button>
-              <Button variant="subtle" size='lg'>
-                Listen to your Manifestation
-              </Button>
             </HStack>
-            <Field>
-              <Input placeholder='Write your manifestation here' onChange={e => handleChange(e.target.value)} />
-            </Field>
-            {audioUrl && <audio src={audioUrl} controls />}
-            <Button loading={loading} onClick={playNoise}>Generate Manifest and Listen</Button>
+            <Textarea placeholder='Write your manifestation here...' onChange={(e) => updateText(e.target.value)} />
 
-            <Button variant="subtle" size='lg'>
+            {audioUrl && <audio src={audioUrl} controls />}
+            <HStack>
+            <Button loading={loading} onClick={playNoise}>Listen</Button>
+            <Button loading={loading} onClick={playNoise}>Read</Button>
+            {(charactersLeft < 21) && <Text color='red'>{charactersLeft}/1000 characters Left</Text>}
+            </HStack>
+            {error && <Text color='red'>{error}</Text>}
+            <Button colorPalette='red' variant="subtle" size='lg' onSubmit={signOut}>
               <FaUser /> <h2>Logout</h2>
             </Button>
           </VStack>
+          <Outlet/>
         </>
       )
     }
