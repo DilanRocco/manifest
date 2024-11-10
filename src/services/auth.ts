@@ -1,4 +1,6 @@
+import { supabase } from '@/lib/supabase';
 import { SignupData, LoginData, AuthResponse } from '@/types/auth';
+//import { env } from 'process';
 
 const API_BASE_URL = 'http://localhost:3001';
 
@@ -78,4 +80,28 @@ export const authApi = {
       throw new ApiError('Network error occurred', 500, 'NETWORK_ERROR');
     }
   },
+
+  async credentialsValid(): Promise<boolean> {
+    const token = localStorage.getItem("authToken")
+    console.log(token)
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/credentialsvalid`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      return await response.json();
+
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      }
+      throw new ApiError('Network error occurred', 500, 'NETWORK_ERROR');
+    }
+  },
+ 
+
 };

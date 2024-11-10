@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, Header} from "@nestjs/common";
+import { Body, Controller, Get, Post, UseGuards, Header, Req, UnauthorizedException} from "@nestjs/common";
 import { Headers } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
@@ -35,5 +35,20 @@ export class AuthController {
     })
     async signUp(@Body() dto: CreateUserDto ){
         return this.authService.signupUser(dto)
+    }
+
+    @Post('credentialsValid')
+    @ApiBearerAuth('access-token')
+    @ApiOperation({
+        summary: 'is the given credientals valid?',
+        description: 'This endpoint checks if the given JWT user credientials are valid'
+    })
+    async isCredientialsValid(@Headers() headers: Record<string, string>){
+        const token = headers.authorization.split(" ")[1] 
+
+        if (!token) {
+          throw new UnauthorizedException();
+        }
+        return this.authService.validCredientals(token)
     }
 }

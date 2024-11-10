@@ -8,6 +8,7 @@ import './App.css'
 import { Outlet, Link } from "react-router-dom";
 import { PasswordInput } from '@/components/ui/password-input';
 import { styleText } from 'util';
+import { supabase } from '@/lib/supabase';
 
 export interface FormData {
   email: string;
@@ -42,9 +43,11 @@ const SignInForm = () => {
       const response = await authApi.login({ email, password });
       
       // Optional: Store the token in localStorage or a state management solution
-      // localStorage.setItem('authToken', response.token);
+      
       console.log(response)
       if (response.user != null){
+        const token = response.session.access_token
+        localStorage.setItem('authToken', token);
         setSuccess(true);
       }
     } catch (err) {

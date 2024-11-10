@@ -13,9 +13,11 @@ export interface User {
   email: string;
   createdAt: string;
 }
-
+export interface Token {
+  access_token: string
+}
 export interface AuthResponse {
-  token: string;
+  session: Token
   user: User;
 }
 

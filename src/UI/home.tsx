@@ -44,8 +44,6 @@ function Home() {
           >
             {isPlaying ? 'Playing...' : 'Play Noise'}
           </button>
-          {audioUrl && <audio src={audioUrl} controls />}
-          <p>testing</p>
           <VStack>
             <h1><b>Manifest</b></h1>
             <HStack>
@@ -59,6 +57,7 @@ function Home() {
             <Field>
               <Input placeholder='Write your manifestation here' onChange={e => handleChange(e.target.value)} />
             </Field>
+            {audioUrl && <audio src={audioUrl} controls />}
             <Button loading={loading} onClick={playNoise}>Generate Manifest and Listen</Button>
 
             <Button variant="subtle" size='lg'>

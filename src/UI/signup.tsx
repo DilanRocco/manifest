@@ -42,9 +42,13 @@ const SignupForm = () => {
       const response = await authApi.login({ email, password });
       
       // Optional: Store the token in localStorage or a state management solution
-      // localStorage.setItem('authToken', response.token);
-      console.log(response)
+
       if (response.user != null){
+        const token = response.session.access_token
+        console.log(response)
+        console.log(response.session)
+        console.log(token)
+        localStorage.setItem('authToken', token);
         setSuccess(true);
       }
     } catch (err) {

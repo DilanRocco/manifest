@@ -44,4 +44,10 @@ export class AuthService {
               error: error
           }
     }
+    async validCredientals(token: string){
+        const { data } = await this.supabaseClient.auth.getUser(
+            token
+        )
+        return data.user != null;
+    }
 }

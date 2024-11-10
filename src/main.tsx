@@ -6,6 +6,7 @@ import Home from '@/UI/home.tsx'
 import SignInForm from '@/UI/login'
 import SignUpForm from '@/UI/signup'
 import LandingPage from '@/UI/landingPage.tsx'
+import ProtectedProvider from '@/UI/protectedPage.tsx'
 import {
   createBrowserRouter,
   createRoutesFromElements,
@@ -13,24 +14,31 @@ import {
   RouterProvider,
 } from "react-router-dom";
 
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       {/* <Route path="/" element={<LandingPage />} /> */}
       <Route path="/signup" element={<SignUpForm />} />
       <Route path="/login" element={<SignInForm />} />
-      <Route path="" element={<Home/>}/>
-      {/* ... etc. */}
+      <Route
+        path=""
+        element={
+          <ProtectedProvider>
+            <Home />
+          </ProtectedProvider>
+        }
+      />
     </>
   )
 );
 
 createRoot(document.getElementById('root')!).render(
- 
+
   <Provider>
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode> 
+    <StrictMode>
+      <RouterProvider router={router} />
+    </StrictMode>
   </Provider>
 
 )
