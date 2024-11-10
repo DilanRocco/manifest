@@ -5,9 +5,10 @@ import { Input, Text } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
 import './App.css'
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate} from "react-router-dom";
 import { PasswordInput } from '@/components/ui/password-input';
 import { styleText } from 'util';
+import { c } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 
 export interface FormData {
   email: string;
@@ -25,6 +26,7 @@ const SignupForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
+  const navigate = useNavigate()
 
   const handleSubmit = async () => {
     //e.preventDefault();
@@ -41,6 +43,7 @@ const SignupForm = () => {
       const { email, password } = formData;
       await authApi.login({ email, password });
       setSuccess(true);
+      navigate("/")
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);

@@ -5,10 +5,8 @@ import { Input, Text } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
 import './App.css'
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import { PasswordInput } from '@/components/ui/password-input';
-import { styleText } from 'util';
-import { supabase } from '@/lib/supabase';
 
 export interface FormData {
   email: string;
@@ -17,6 +15,7 @@ export interface FormData {
 }
 
 const SignInForm = () => {
+  const navigate = useNavigate()
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
@@ -28,7 +27,6 @@ const SignInForm = () => {
 
 
   const handleSubmit = async () => {
-    //e.preventDefault();
     setLoading(true);
     setError('');
 
@@ -40,8 +38,10 @@ const SignInForm = () => {
 
     try {
       const { email, password } = formData;
-      const response = await authApi.login({ email, password });
+      await authApi.login({ email, password });
       setSuccess(true)
+      navigate("/")
+
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);
@@ -67,7 +67,7 @@ const SignInForm = () => {
       <Spacer />
       <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
       <Field label="Password"><PasswordInput name={"password"} value={formData.password} onChange={handleChange} placeholder="*********"/></Field>
-      <Button onClick={handleSubmit}> Sign In</Button>
+      <Button disabled={loading} onClick={handleSubmit}> Sign In</Button>
       {success && (<Text>Successful login!</Text>) }
       {error && (<Text color="red.300">{error}</Text>) }
       <Link reloadDocument to="/signup"> Never logged in? Sign up here.</Link>

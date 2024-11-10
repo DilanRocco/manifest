@@ -1,4 +1,4 @@
-import { HStack, VStack, Input, Text, Textarea} from "@chakra-ui/react"
+import { HStack, VStack, Input, Text, Textarea, Grid, GridItem} from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
 import { FaUser } from "react-icons/fa";
@@ -48,6 +48,11 @@ function Home() {
   }
       return (
         <>
+        <Grid templateColumns="repeat(2, 1fr)">
+          <GridItem>
+          <Text>Trends</Text>
+          </GridItem>
+          <GridItem>
           <VStack gap="4" width={400}>
             <h1><b>Manifest</b></h1>
             <HStack>
@@ -64,7 +69,10 @@ function Home() {
             <Button colorPalette='red' variant="subtle" size='lg' onSubmit={signOut}>
               <FaUser /> <h2>Logout</h2>
             </Button>
+            
           </VStack>
+          </GridItem>
+          </Grid>
           <Outlet/>
         </>
       )

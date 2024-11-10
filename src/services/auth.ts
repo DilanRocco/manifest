@@ -1,6 +1,7 @@
 
 import { SignupData, LoginData } from '@/types/auth';
 import { AuthResponse, createClient, SupabaseClient, UserResponse } from '@supabase/supabase-js';
+
 import * as dotenv from 'dotenv';
 dotenv.config();
 
@@ -77,7 +78,6 @@ export const authApi = {
   },
 
   async signout() {
-    
     try {
       const { error } = await supabase.auth.signOut()
     if (error) {
@@ -109,11 +109,7 @@ export const authApi = {
         token
     )
     if (error) {
-      throw new ApiError(
-        error.message || 'Login failed',
-        error.status,
-        error.code
-      );
+      return false
     }
 
     if (data.user) {
