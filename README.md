@@ -22,7 +22,7 @@ Some common manifestation phrases included:
 (Resend)[https://resend.com/] for SMTP server
 Cloudflare domain: manifesting.work
 
-
+Google Cloud - TextToSpeech
 https://github.com/supabase-community/supabase-go
 
 
