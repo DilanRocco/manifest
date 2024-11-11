@@ -6,11 +6,13 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 
-const API_BASE_URL = 'http://localhost:3001';
+
 const supabase = createClient(
-  'https://dpqpapwghkhmczofddna.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwcXBhcHdnaGtobWN6b2ZkZG5hIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzA1ODA0MDcsImV4cCI6MjA0NjE1NjQwN30.H1bhZvJq1aT-1Q7bY570tPV7GH3J1orse1mHzjXJVQQ'
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_KEY
 )
+
+const AUTH_TOKEN_STR = import.meta.env.VITE_AUTH_TOKEN_STR
 
 export class ApiError extends Error {
   constructor(
@@ -43,7 +45,7 @@ export const authApi = {
       }
       const authToken = data.session?.access_token;
         if (authToken) {
-          localStorage.setItem('authToken', authToken);
+          localStorage.setItem(AUTH_TOKEN_STR, authToken);
         }
       return true  
     } catch (error) {
@@ -67,7 +69,7 @@ export const authApi = {
       }
       const authToken = data.session?.access_token;
       if (authToken) {
-        localStorage.setItem('authToken', authToken);
+        localStorage.setItem(AUTH_TOKEN_STR, authToken);
       }
     } catch (error) {
       if (error instanceof ApiError) {
@@ -87,7 +89,7 @@ export const authApi = {
         error.code
       );
     } else {
-      localStorage.setItem('authToken', "");
+      localStorage.setItem(AUTH_TOKEN_STR, "");
     }
 
 
@@ -100,7 +102,7 @@ export const authApi = {
   },
 
   async credentialsValid(): Promise<boolean> {
-    const token = localStorage.getItem("authToken") 
+    const token = localStorage.getItem(AUTH_TOKEN_STR) 
     if (!token) {
       return false
     }

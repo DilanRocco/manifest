@@ -8,14 +8,16 @@ import { authApi } from '@/services/auth';
 import { useState, useCallback } from 'react';
 import { Outlet, useNavigate} from "react-router-dom";
 
+
 function Home() {
+  const max_chars = import.meta.env.VITE_MAX_CHARS_PER_USER
   const [manText, setManText] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
-  const [charactersLeft, setCharacterLeft] = useState(1000)
+  const [charactersLeft, setCharacterLeft] = useState(max_chars)
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioUrl, setAudioUrl] = useState('');
-
+  
   const navigate = useNavigate()
 
   const playNoise = async () => {
@@ -40,7 +42,7 @@ function Home() {
     }
   }
   function updateText(text: string) {
-    setCharacterLeft(1000 - text.length)
+    setCharacterLeft(max_chars - text.length)
     setManText(text)
   }
   function handleChange(text:string) {
@@ -63,7 +65,7 @@ function Home() {
             <HStack>
             <Button loading={loading} onClick={playNoise}>Listen</Button>
             <Button loading={loading} onClick={playNoise}>Read</Button>
-            {(charactersLeft < 21) && <Text color='red'>{charactersLeft}/1000 characters Left</Text>}
+            {(charactersLeft < 21) && <Text color='red'>{charactersLeft}/{max_chars} characters Left</Text>}
             </HStack>
             {error && <Text color='red'>{error}</Text>}
             <Button colorPalette='red' variant="subtle" size='lg' onSubmit={signOut}>
