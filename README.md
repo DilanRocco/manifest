@@ -55,7 +55,6 @@ streak: int
 max_streak: int
 cumulative_time_spent_manifesting: time
 time_of_day_manifesting [time]
-....
 
 
 

@@ -1,16 +1,9 @@
 
 import { SignupData, LoginData } from '@/types/auth';
 import { AuthResponse, createClient, SupabaseClient, UserResponse } from '@supabase/supabase-js';
-
-import * as dotenv from 'dotenv';
-dotenv.config();
+import { supabase } from '@/services/client';
 
 
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_KEY
-)
 
 const AUTH_TOKEN_STR = import.meta.env.VITE_AUTH_TOKEN_STR
 

@@ -30,12 +30,6 @@ const SignInForm = () => {
     setLoading(true);
     setError('');
 
-    // if (formData.password !== formData.confirmPassword) {
-    //   setError('Passwords do not match');
-    //   setLoading(false);
-    //   return;
-    // }
-
     try {
       const { email, password } = formData;
       await authApi.login({ email, password });

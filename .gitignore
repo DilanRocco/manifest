@@ -28,4 +28,5 @@ google-cloud-api-key.json
 
 # ME:
 designs/
+scripts/codegen.ts
 
