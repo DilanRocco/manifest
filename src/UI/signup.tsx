@@ -33,11 +33,11 @@ const SignupForm = () => {
     setLoading(true);
     setError('');
 
-    // if (formData.password !== formData.confirmPassword) {
-    //   setError('Passwords do not match');
-    //   setLoading(false);
-    //   return;
-    // }
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      setLoading(false);
+      return;
+    }
 
     try {
       const { email, password } = formData;
@@ -69,6 +69,7 @@ const SignupForm = () => {
       <Spacer />
       <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
       <Field label="Password"><PasswordInput name={"password"} value={formData.password} onChange={handleChange} placeholder="*********"/></Field>
+      <Field label="Confirm Password"><PasswordInput name={"confirm_password"} value={formData.confirmPassword} onChange={handleChange} placeholder="*********"/></Field>
       <Button onClick={handleSubmit}> Sign Up </Button>
       {success && (<Text>Successful login!</Text>) }
       {error && (<Text color="red.300">{error}</Text>) }

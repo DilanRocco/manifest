@@ -29,14 +29,33 @@ https://github.com/supabase-community/supabase-go
 # Things to do
 Trend View
 Setup Database
-Signout functionality
-Upload a manifest
-Listen to a manifest
-cookies on login
+Upload a manifest / Popover
+cookies on login (kinda done)
 Streak
-Possible AI playblack
 benefits of manifestoins
 tutorial on what to do
 build for production
+
+## Brainstorming what needs to be stored in the database
+
+user:
+primary_key id: int
+first_name: str
+last_name: str
+email: str
+
+manifest:
+primary_key id: int
+text: str
+last_manifest: date
+
+history:
+primary_key id: int
+streak: int
+max_streak: int
+cumulative_time_spent_manifesting: time
+time_of_day_manifesting [time]
+....
+
 
 

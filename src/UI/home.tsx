@@ -1,4 +1,4 @@
-import { HStack, VStack, Input, Text, Textarea, Grid, GridItem} from "@chakra-ui/react"
+import { HStack, VStack, Input, Text, Textarea, Grid, GridItem, Heading} from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
 import { FaUser } from "react-icons/fa";
@@ -17,7 +17,6 @@ function Home() {
   const [charactersLeft, setCharacterLeft] = useState(max_chars)
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioUrl, setAudioUrl] = useState('');
-  
   const navigate = useNavigate()
 
   const playNoise = async () => {
@@ -45,14 +44,15 @@ function Home() {
     setCharacterLeft(max_chars - text.length)
     setManText(text)
   }
-  function handleChange(text:string) {
-    setManText(text)
+  function playPreview(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    console.log('show-popup')
   }
       return (
         <>
         <Grid templateColumns="repeat(2, 1fr)">
           <GridItem>
-          <Text>Trends</Text>
+          <Heading>Trends</Heading>
           </GridItem>
           <GridItem>
           <VStack gap="4" width={400}>
@@ -64,7 +64,7 @@ function Home() {
             {audioUrl && <audio src={audioUrl} controls />}
             <HStack>
             <Button loading={loading} onClick={playNoise}>Listen</Button>
-            <Button loading={loading} onClick={playNoise}>Read</Button>
+            <Button loading={loading} onClick={e=>{playPreview(e)}}>Read</Button>
             {(charactersLeft < 21) && <Text color='red'>{charactersLeft}/{max_chars} characters Left</Text>}
             </HStack>
             {error && <Text color='red'>{error}</Text>}
