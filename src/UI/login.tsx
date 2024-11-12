@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import './App.css'
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { PasswordInput } from '@/components/ui/password-input';
+import { useMutation } from '@apollo/client';
+import { createUser } from '@/graphql/user';
 
 export interface FormData {
   email: string;
@@ -24,7 +26,6 @@ const SignInForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
-
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -62,7 +63,7 @@ const SignInForm = () => {
       <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
       <Field label="Password"><PasswordInput name={"password"} value={formData.password} onChange={handleChange} placeholder="*********"/></Field>
       <Button disabled={loading} onClick={handleSubmit}> Sign In</Button>
-      {success && (<Text>Successful login!</Text>) }
+      {success && (<Text color='green.400'>Success!</Text>) }
       {error && (<Text color="red.300">{error}</Text>) }
       <Link reloadDocument to="/signup"> Never logged in? Sign up here.</Link>
       <Outlet />

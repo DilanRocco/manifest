@@ -22,6 +22,7 @@ function Home() {
   const playNoise = async () => {
     try {
       console.log(manText)
+      uploadFest()
       const response = await textToSpeechApi.tos(manText)
       const audioBlob = await response.blob();
       const url = URL.createObjectURL(audioBlob);
@@ -32,6 +33,12 @@ function Home() {
       setIsPlaying(false);
     }
   };
+
+  function uploadFest() {
+
+  }
+
+
   function signOut() {
     try {
       authApi.signout()
@@ -46,6 +53,7 @@ function Home() {
   }
   function playPreview(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
+    uploadFest()
     console.log('show-popup')
   }
       return (
@@ -60,7 +68,6 @@ function Home() {
             <HStack>
             </HStack>
             <Textarea placeholder='Write your manifestation here...' onChange={(e) => updateText(e.target.value)} />
-
             {audioUrl && <audio src={audioUrl} controls />}
             <HStack>
             <Button loading={loading} onClick={playNoise}>Listen</Button>
@@ -70,8 +77,7 @@ function Home() {
             {error && <Text color='red'>{error}</Text>}
             <Button colorPalette='red' variant="subtle" size='lg' onSubmit={signOut}>
               <FaUser /> <h2>Logout</h2>
-            </Button>
-            
+            </Button> 
           </VStack>
           </GridItem>
           </Grid>

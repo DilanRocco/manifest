@@ -2,6 +2,7 @@
 import { SignupData, LoginData } from '@/types/auth';
 import { AuthResponse, createClient, SupabaseClient, UserResponse } from '@supabase/supabase-js';
 import { supabase } from '@/services/client';
+import { error } from 'console';
 
 
 
@@ -19,7 +20,6 @@ export class ApiError extends Error {
 }
 
 export const authApi = {
-  
   async signup(userData: SignupData): Promise<boolean> {
     try {
       const { data, error } = await supabase.auth.signUp(
@@ -27,7 +27,7 @@ export const authApi = {
           email: userData.email,
           password: userData.password,
         }
-      ) 
+      )
 
       if (error) {
         throw new ApiError(
@@ -37,16 +37,16 @@ export const authApi = {
         );
       }
       const authToken = data.session?.access_token;
-        if (authToken) {
-          localStorage.setItem(AUTH_TOKEN_STR, authToken);
-        }
-      return true  
+      if (authToken) {
+        localStorage.setItem(AUTH_TOKEN_STR, authToken);
+      }
+      return true
     } catch (error) {
       throw new ApiError("Error occured", 404);
     }
   },
 
-  async login(credentials: LoginData) {
+  async login(credentials: LoginData): Promise<string> {
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: credentials.email,
@@ -64,6 +64,7 @@ export const authApi = {
       if (authToken) {
         localStorage.setItem(AUTH_TOKEN_STR, authToken);
       }
+      return data.user.id
     } catch (error) {
       if (error instanceof ApiError) {
         throw error;
@@ -75,15 +76,15 @@ export const authApi = {
   async signout() {
     try {
       const { error } = await supabase.auth.signOut()
-    if (error) {
-      throw new ApiError(
-        error.message || 'Login failed',
-        error.status,
-        error.code
-      );
-    } else {
-      localStorage.setItem(AUTH_TOKEN_STR, "");
-    }
+      if (error) {
+        throw new ApiError(
+          error.message || 'Login failed',
+          error.status,
+          error.code
+        );
+      } else {
+        localStorage.setItem(AUTH_TOKEN_STR, "");
+      }
 
 
     } catch (error) {
@@ -95,23 +96,23 @@ export const authApi = {
   },
 
   async credentialsValid(): Promise<boolean> {
-    const token = localStorage.getItem(AUTH_TOKEN_STR) 
+    const token = localStorage.getItem(AUTH_TOKEN_STR)
     if (!token) {
       return false
     }
     try {
       const { data, error } = await supabase.auth.getUser(
         token
-    )
-    if (error) {
-      return false
-    }
+      )
+      if (error) {
+        return false
+      }
 
-    if (data.user) {
-      return true
-    } else {
-      return false
-    }
+      if (data.user) {
+        return true
+      } else {
+        return false
+      }
 
     } catch (error) {
       if (error instanceof ApiError) {
@@ -120,6 +121,31 @@ export const authApi = {
       throw new ApiError('Network error occurred', 500, 'NETWORK_ERROR');
     }
   },
- 
 
-};
+  async uuid(): Promise<string> {
+    const token = localStorage.getItem(AUTH_TOKEN_STR)
+    if (!token) {
+      throw error("No token found")
+    }
+    try {
+      const { data, error } = await supabase.auth.getUser(
+        token
+      )
+      if (error) {
+        throw new ApiError(
+          error.message || 'Login failed',
+          error.status,
+          error.code
+        );
+      }
+
+      return data.user.id
+
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      }
+      throw new ApiError('Network error occurred', 500, 'NETWORK_ERROR');
+    }
+  },
+}
