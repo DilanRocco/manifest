@@ -24,10 +24,15 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
-
+    "plugins": [{
+      "name": "@0no-co/graphqlsp",
+      "schema": "./schema.graphql"
+    }],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

@@ -15,9 +15,8 @@ Some common manifestation phrases included:
 - Typescript/React
 - Chakra UI
 - Vite
-- NextJS (maybe)
-- Supabase 
-- Go
+- Supabase (auth and database)
+- Go (echo backend) - currently Node.JS
 
 (Resend)[https://resend.com/] for SMTP server
 Cloudflare domain: manifesting.work

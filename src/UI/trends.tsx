@@ -1,30 +1,19 @@
 import { Text, VStack } from "@chakra-ui/react"
-import { gql, useQuery } from '@apollo/client';
+import {  useQuery } from '@apollo/client';
 import { useEffect } from "react";
+import { getUsers } from "@/graphql/user";
+import { GetUsersQuery, GetUsersQueryVariables }  from "@/generated/graphql"
 
-const USER = gql`
-{
-
-  userCollection{
-     edges {
-        node {
-        first
-        }
-
-}
-}
-}
-`;
 
 const Trends = () => {
-    const { loading, error, data } = useQuery(USER);
+    const { loading, error, data } = useQuery<GetUsersQuery, GetUsersQueryVariables>(getUsers);
 
     useEffect(() => {
         console.log(loading)
         console.log(error)
         console.log(data)
     })
-    return <VStack><Text>{}</Text></VStack>
+    return <VStack><Text>{data?.userCollection?.edges[0].node.first}</Text></VStack>
 }
 
 export default Trends

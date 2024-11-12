@@ -9,7 +9,7 @@ module.exports = {
         }
       }
     ],
-    documents: 'src/**/*.graphql', // Adjust this path to match where your GraphQL queries are
+    documents: 'src/**/*.ts', // Adjust this path to match where your GraphQL queries are
     generates: {
       'src/generated/graphql.ts': {
         plugins: [

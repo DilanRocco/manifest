@@ -409,7 +409,7 @@ export type UserUpdateResponse = {
   records: Array<User>;
 };
 
-export type Unnamed_1_QueryVariables = Exact<{ [key: string]: never; }>;
+export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type Unnamed_1_Query = { __typename?: 'Query', userCollection?: { __typename?: 'userConnection', edges: Array<{ __typename?: 'userEdge', node: { __typename?: 'user', first?: string | null } }> } | null };
+export type GetUsersQuery = { __typename?: 'Query', userCollection?: { __typename?: 'userConnection', edges: Array<{ __typename?: 'userEdge', node: { __typename?: 'user', first?: string | null } }> } | null };
