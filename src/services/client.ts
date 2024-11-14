@@ -19,9 +19,9 @@ const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_STR);
   return {
     headers: {
-      apiKey: import.meta.env.VITE_SUPABASE_KEY,
+      apikey: import.meta.env.VITE_SUPABASE_KEY,
       ...headers,
-      authorization: token ? `Bearer ${token}` : "",
+      ...(token && { authorization: `Bearer ${token}` }),
     }
   }
 });

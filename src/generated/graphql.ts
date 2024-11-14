@@ -412,7 +412,6 @@ export type UuidListFilter = {
 
 export type Fest = Node & {
   __typename?: 'fest';
-  created_at: Scalars['Datetime']['output'];
   fest_text?: Maybe<Scalars['JSON']['output']>;
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']['output'];
@@ -442,7 +441,6 @@ export type FestEdge = {
 export type FestFilter = {
   /** Returns true only if all its inner filters are true, otherwise returns false */
   and?: InputMaybe<Array<FestFilter>>;
-  created_at?: InputMaybe<DatetimeFilter>;
   nodeId?: InputMaybe<IdFilter>;
   /** Negates a filter */
   not?: InputMaybe<FestFilter>;
@@ -452,7 +450,6 @@ export type FestFilter = {
 };
 
 export type FestInsertInput = {
-  created_at?: InputMaybe<Scalars['Datetime']['input']>;
   fest_text?: InputMaybe<Scalars['JSON']['input']>;
   user_id?: InputMaybe<Scalars['UUID']['input']>;
 };
@@ -466,12 +463,10 @@ export type FestInsertResponse = {
 };
 
 export type FestOrderBy = {
-  created_at?: InputMaybe<OrderByDirection>;
   user_id?: InputMaybe<OrderByDirection>;
 };
 
 export type FestUpdateInput = {
-  created_at?: InputMaybe<Scalars['Datetime']['input']>;
   fest_text?: InputMaybe<Scalars['JSON']['input']>;
   user_id?: InputMaybe<Scalars['UUID']['input']>;
 };
@@ -486,7 +481,6 @@ export type FestUpdateResponse = {
 
 export type History = Node & {
   __typename?: 'history';
-  created_at: Scalars['Datetime']['output'];
   fest_time?: Maybe<Scalars['JSON']['output']>;
   max_streak?: Maybe<Scalars['BigInt']['output']>;
   /** Globally Unique Record Identifier */
@@ -518,7 +512,6 @@ export type HistoryEdge = {
 export type HistoryFilter = {
   /** Returns true only if all its inner filters are true, otherwise returns false */
   and?: InputMaybe<Array<HistoryFilter>>;
-  created_at?: InputMaybe<DatetimeFilter>;
   max_streak?: InputMaybe<BigIntFilter>;
   nodeId?: InputMaybe<IdFilter>;
   /** Negates a filter */
@@ -530,7 +523,6 @@ export type HistoryFilter = {
 };
 
 export type HistoryInsertInput = {
-  created_at?: InputMaybe<Scalars['Datetime']['input']>;
   fest_time?: InputMaybe<Scalars['JSON']['input']>;
   max_streak?: InputMaybe<Scalars['BigInt']['input']>;
   streak?: InputMaybe<Scalars['BigInt']['input']>;
@@ -546,14 +538,12 @@ export type HistoryInsertResponse = {
 };
 
 export type HistoryOrderBy = {
-  created_at?: InputMaybe<OrderByDirection>;
   max_streak?: InputMaybe<OrderByDirection>;
   streak?: InputMaybe<OrderByDirection>;
   user_id?: InputMaybe<OrderByDirection>;
 };
 
 export type HistoryUpdateInput = {
-  created_at?: InputMaybe<Scalars['Datetime']['input']>;
   fest_time?: InputMaybe<Scalars['JSON']['input']>;
   max_streak?: InputMaybe<Scalars['BigInt']['input']>;
   streak?: InputMaybe<Scalars['BigInt']['input']>;
@@ -649,7 +639,45 @@ export type UserUpdateResponse = {
   records: Array<User>;
 };
 
+export type GetFestQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetFestQuery = { __typename?: 'Query', festCollection?: { __typename?: 'festConnection', edges: Array<{ __typename?: 'festEdge', node: { __typename?: 'fest', user_id: any, fest_text?: any | null } }> } | null };
+
+export type CreateFestMutationVariables = Exact<{
+  userid?: InputMaybe<Scalars['UUID']['input']>;
+  festtext?: InputMaybe<Scalars['JSON']['input']>;
+}>;
+
+
+export type CreateFestMutation = { __typename?: 'Mutation', insertIntofestCollection?: { __typename?: 'festInsertResponse', records: Array<{ __typename?: 'fest', user_id: any }> } | null };
+
+export type GetHistoryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetHistoryQuery = { __typename?: 'Query', historyCollection?: { __typename?: 'historyConnection', edges: Array<{ __typename?: 'historyEdge', node: { __typename?: 'history', user_id: any, streak?: any | null, max_streak?: any | null, fest_time?: any | null } }> } | null };
+
+export type CreateHistoryMutationVariables = Exact<{
+  userid?: InputMaybe<Scalars['UUID']['input']>;
+  streak?: InputMaybe<Scalars['BigInt']['input']>;
+  maxstreak?: InputMaybe<Scalars['BigInt']['input']>;
+  festTime?: InputMaybe<Scalars['JSON']['input']>;
+}>;
+
+
+export type CreateHistoryMutation = { __typename?: 'Mutation', insertIntohistoryCollection?: { __typename?: 'historyInsertResponse', records: Array<{ __typename?: 'history', user_id: any }> } | null };
+
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetUsersQuery = { __typename?: 'Query', userCollection?: { __typename?: 'userConnection', edges: Array<{ __typename?: 'userEdge', node: { __typename?: 'user', user_id: any, created_at: any, first?: string | null, last?: string | null } }> } | null };
+
+export type CreateUserMutationVariables = Exact<{
+  userid?: InputMaybe<Scalars['UUID']['input']>;
+  first?: InputMaybe<Scalars['String']['input']>;
+  last?: InputMaybe<Scalars['String']['input']>;
+  createdAt?: InputMaybe<Scalars['Datetime']['input']>;
+}>;
+
+
+export type CreateUserMutation = { __typename?: 'Mutation', insertIntouserCollection?: { __typename?: 'userInsertResponse', records: Array<{ __typename?: 'user', user_id: any }> } | null };

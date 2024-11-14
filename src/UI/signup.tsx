@@ -11,6 +11,7 @@ import { styleText } from 'util';
 import { c } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 import { useMutation } from '@apollo/client';
 import { createUser } from '@/graphql/user';
+import { createHistory } from '@/graphql/history';
 import { createFest } from '@/graphql/fest';
 
 export interface FormData {
@@ -35,12 +36,31 @@ const SignupForm = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [createUserMutation, userResult ] = useMutation(createUser);
   const [createFestMutation, festResult] = useMutation(createFest);
+  const [createHistoryMutation, historyResult] = useMutation(createHistory);
   const navigate = useNavigate()
 
-  async function testApi() {
+  async function addRowsInDatabase() {
+    const id = await authApi.uuid()
+    createUserMutation({
+      variables: {
+        userid: id,
+        first: formData.first,
+        last: formData.last,
+        created_at: new Date().toISOString(),
+      }
+    })
     createFestMutation({
       variables: {
-        userid: await authApi.uuid(),
+         userid: id,
+         festtext: JSON.stringify({"1":"here is the text"}),
+      }
+    })
+    createHistoryMutation({
+      variables: {
+        userid: id,
+        streak: 0,
+        maxstreak: 0,
+        festTime: JSON.stringify({"5":"5"})
       }
     })
   }
@@ -58,16 +78,9 @@ const SignupForm = () => {
 
     try {
       const { email, password } = formData;
-      const id = await authApi.signup({ email, password });
+      const userId = await authApi.signup({ email, password });
 
-      createUserMutation({
-        variables: {
-          userid: await authApi.uuid(),
-          first: formData.first,
-          last: formData.last,
-          created_at: new Date().toISOString(),
-        }
-      })
+      addRowsInDatabase()
       setSuccess(true);
       navigate("/")
     } catch (err) {
@@ -93,7 +106,6 @@ const SignupForm = () => {
     <VStack minW="20rem" >
       <Text> Manifest</Text>
       <Spacer />
-      <Button onClick={testApi}>test</Button>
       <HStack>
         <Field label="First Name"><Input name={"first"} value={formData.first} onChange={handleChange} placeholder="John"/></Field>
         <Field label="Last Name"><Input name={"last"} value={formData.last} onChange={handleChange} placeholder="Smith"/></Field>
@@ -102,6 +114,8 @@ const SignupForm = () => {
       <Field label="Password"><PasswordInput name={"password"} value={formData.password} onChange={handleChange} placeholder="*********"/></Field>
       <Field label="Confirm Password"><PasswordInput name={"confirmPassword"} value={formData.confirmPassword} onChange={handleChange} placeholder="*********"/></Field>
       <Button onClick={handleSubmit}> Sign Up </Button>
+      <Link reloadDocument to="/login"> Sign In here.</Link>
+      <Outlet />
       {success && (<Text color="green.400"><b>Success!</b></Text>) }
       {error && (<Text color="red.300">{error}</Text>) }
       <Outlet />

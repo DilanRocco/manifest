@@ -63,7 +63,7 @@ const SignInForm = () => {
       <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
       <Field label="Password"><PasswordInput name={"password"} value={formData.password} onChange={handleChange} placeholder="*********"/></Field>
       <Button disabled={loading} onClick={handleSubmit}> Sign In</Button>
-      {success && (<Text color='green.400'>Success!</Text>) }
+      {success && (<Text color='green.400'><b>Success!</b></Text>) }
       {error && (<Text color="red.300">{error}</Text>) }
       <Link reloadDocument to="/signup"> Never logged in? Sign up here.</Link>
       <Outlet />

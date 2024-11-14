@@ -20,7 +20,7 @@ export class ApiError extends Error {
 }
 
 export const authApi = {
-  async signup(userData: SignupData): Promise<boolean> {
+  async signup(userData: SignupData): Promise<string> {
     try {
       const { data, error } = await supabase.auth.signUp(
         {
@@ -40,7 +40,7 @@ export const authApi = {
       if (authToken) {
         localStorage.setItem(AUTH_TOKEN_STR, authToken);
       }
-      return true
+      return data.user?.id || ""
     } catch (error) {
       throw new ApiError("Error occured", 404);
     }
@@ -101,6 +101,7 @@ export const authApi = {
       return false
     }
     try {
+      supabase.auth.getSession()
       const { data, error } = await supabase.auth.getUser(
         token
       )

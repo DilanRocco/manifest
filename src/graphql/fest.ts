@@ -14,8 +14,10 @@ query getFest {
 `)
 
 export const createFest = gql(`
-    mutation CreateFest($userid: UUID, $festtext: String) {
-       insertIntofestCollection(objects: [{user_id: $userid, festtext: $festtext}]) {
+    mutation CreateFest($userid: UUID, $festtext: JSON) {
+       insertIntofestCollection(objects: 
+       [{user_id: $userid, 
+       fest_text: $festtext}]) {
        records {
          user_id
        }

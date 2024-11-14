@@ -1,0 +1,53 @@
+.streaks {
+  color: pink;
+
+
+  inset: 50% 30% 30% 30% round 50%;
+  height: 200px;
+  width: 200px;
+  margin-left: -100px;
+  margin-top: -100px;
+  position: absolute;
+}
+
+
+
+
+
+.container {
+  width: 100px;
+  height: 100px;
+  background-color: #F17300;
+  border-radius: 20%;
+
+  clip-path: polygon(0% 0%,
+      20% 40%,
+      41% 5%,
+      55% 40%,
+      100% 5%,
+      100% 100%,
+      00% 100%);
+  display: grid;
+  grid-template-rows: 37px 63px;
+  grid-template-columns: auto;
+  grid-template-areas:
+    "sp"
+    "streak"
+
+}
+
+.streak {
+  font-weight: bolder;
+  font-size: xx-large;
+  grid-area: streak;
+}
+
+.space>div {
+  grid-area: sp;
+
+}
+
+.text {
+  font-weight: bolder;
+  text-align: center;
+}

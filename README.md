@@ -46,14 +46,13 @@ email: str
 manifest:
 primary_key id: int
 text: str
-last_manifest: date
+last_manifest: {fest: [""]}
 
 history:
 primary_key id: int
 streak: int
 max_streak: int
-cumulative_time_spent_manifesting: time
-time_of_day_manifesting [time]
+time_of_day_manifesting [time] {time: [timeSince1970]}
 
 
 

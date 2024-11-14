@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const getUser = gql(/* GraphQL */ `
+export const getUser = gql(`
 query getUsers {
     userCollection{
         edges {

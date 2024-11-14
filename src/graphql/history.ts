@@ -16,11 +16,11 @@ export const getHistory = gql(`
     }
       `)
 export const createHistory = gql(`
-mutation CreateHistory($userid: UUID, $streak: BigInt, $maxStreak: BigInt, $festTime: JSON) {
+mutation CreateHistory($userid: UUID, $streak: BigInt, $maxstreak: BigInt, $festTime: JSON) {
     insertIntohistoryCollection(objects: 
      [{user_id: $userid, 
        streak: $streak, 
-       max_streak: $maxStreak, 
+       max_streak: $maxstreak, 
        fest_time: $festTime}]) {
     records {
       user_id
