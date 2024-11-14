@@ -7,6 +7,7 @@ import { textToSpeechApi } from '@/services/tos';
 import { authApi } from '@/services/auth';
 import { useState, useCallback } from 'react';
 import { Outlet, useNavigate} from "react-router-dom";
+import Trends from "./trends";
 
 
 function Home() {
@@ -42,10 +43,12 @@ function Home() {
   function signOut() {
     try {
       authApi.signout()
-      navigate('/login')
+      localStorage.setItem(import.meta.env.VITE_AUTH_TOKEN_STR, "")
+      
     } catch (err) {
       setError('Error signing out')
     }
+    navigate('/login')
   }
   function updateText(text: string) {
     setCharacterLeft(max_chars - text.length)
@@ -61,6 +64,7 @@ function Home() {
         <Grid templateColumns="repeat(2, 1fr)">
           <GridItem>
           <Heading>Trends</Heading>
+          <Trends />
           </GridItem>
           <GridItem>
           <VStack gap="4" width={400}>
@@ -75,7 +79,7 @@ function Home() {
             {(charactersLeft < 21) && <Text color='red'>{charactersLeft}/{max_chars} characters Left</Text>}
             </HStack>
             {error && <Text color='red'>{error}</Text>}
-            <Button colorPalette='red' variant="subtle" size='lg' onSubmit={signOut}>
+            <Button colorPalette='red' variant="subtle" size='lg' onClick={signOut}>
               <FaUser /> <h2>Logout</h2>
             </Button> 
           </VStack>
