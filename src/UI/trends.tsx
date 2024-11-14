@@ -40,8 +40,35 @@ const Trends = () => {
     const history = historyQuery.data?.historyCollection?.edges[0].node 
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
-      const chartRef = useRef<Chart | null>(null);
+    const chartRef = useRef<Chart | null>(null);
+    const val = [1730776527000, 1731035727000, 1731122127000, 1731294927000, 1731381327000, 1731467727000]
+    const convertHistoryToGraph = () => {
+        // const times: [number] = history?.fest_time['times']
+        const times: number[] = val
+        var now = new Date();
+        const daySinceEpoch = Math.floor(now.valueOf()/8.64e7)
+        const newTimes = times.map(time => {  
+            // daySinceEpoch - (time.valueOf()/8.64e7)
+            return daySinceEpoch - Math.floor((time/8.64e7))
+        })
+
+        const max = newTimes.reduce((a, b) => Math.max(a, b), -Infinity);
+        console.log(newTimes)
+        let data: number[] = []
+        for (let i = max; i > 0; i--) {
+            if (newTimes.indexOf(i) != -1){
+                (i!=max) ? data.push(data[data.length-1]+1) : data.push(1)
+            } else {
+                data.push(0)
+            }
+            
+        }
+        return data
+    }
+   
+    
       useEffect(() => {
+         console.log(convertHistoryToGraph())
         if (!canvasRef.current) {
             console.log("STUCK IN THIS")
             return
@@ -53,32 +80,27 @@ const Trends = () => {
             chartRef.current.destroy();
           }
           chartRef.current?.destroy()
-        //myChart.destroy()
-        console.log("ARE WE GETTING HERER?")
         chartRef.current = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6'],
+                labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7', 'Day 8','Day 9'],
                 datasets: [
                   {
                     label: 'Dataset',
-                    data: [0,1,2,3,4,5],
+                    data: convertHistoryToGraph(),
                     borderColor: "#ffffff",
                     backgroundColor: "#ffffff",
                     pointStyle: 'circle',
                     pointRadius: 10,
                     pointHoverRadius: 15
+                    
                   }
                 ]
               },
             options: {
+             
               responsive: true,
-              plugins: {
-                title: {
-                  display: true,
-                  text: (ctx) => 'Point Style: ' + ctx.chart.data.datasets[0].pointStyle,
-                }
-              }
+
             }
     
           })
