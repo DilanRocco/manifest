@@ -57,7 +57,7 @@ function Home() {
   function playPreview(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault()
     uploadFest()
-    console.log('show-popup')
+
   }
       return (
         <>

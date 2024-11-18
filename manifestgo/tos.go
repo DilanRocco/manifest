@@ -56,7 +56,7 @@ func SynthesizeSpeechHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/auth/tos", SynthesizeSpeechHandler)
+	http.HandleFunc("/tos/synthesize/", SynthesizeSpeechHandler)
 	port := "8080"
 	fmt.Printf("Server started on " + port)
 
