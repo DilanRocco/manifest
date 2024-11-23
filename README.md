@@ -48,6 +48,8 @@ primary_key id: int
 text: str
 last_manifest: {fest: [""]}
 
+
+
 history:
 primary_key id: int
 streak: int
