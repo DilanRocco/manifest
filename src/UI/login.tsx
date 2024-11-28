@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/button"
 import './App.css'
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { PasswordInput } from '@/components/ui/password-input';
-import { useMutation } from '@apollo/client';
-import { createUser } from '@/graphql/user';
 
 export interface FormData {
   email: string;

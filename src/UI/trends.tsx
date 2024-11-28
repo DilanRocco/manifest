@@ -1,11 +1,11 @@
-import { Heading, HStack, Text, VStack } from "@chakra-ui/react"
+import { Heading, HStack, VStack } from "@chakra-ui/react"
 import {  useQuery } from '@apollo/client';
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { getUser } from "@/graphql/user";
 import { GetHistoryQuery, GetHistoryQueryVariables, GetUsersQuery, GetUsersQueryVariables }  from "@/generated/graphql"
 import '@/UI/trends.css'
 import { getHistory } from "@/graphql/history";
-import { ChartOptions, Chart, ChartData } from "chart.js";
+import { Chart } from "chart.js";
 import {
     Chart as ChartJS,
     CategoryScale,

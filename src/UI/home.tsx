@@ -1,13 +1,13 @@
-import { HStack, VStack, Input, Text, Textarea, Grid, GridItem, Heading} from "@chakra-ui/react"
-import { Field } from "@/components/ui/field"
+import { HStack, VStack, Text, Textarea, Grid, GridItem, Heading} from "@chakra-ui/react"
 import { Button } from "@/components/ui/button"
 import { FaUser } from "react-icons/fa";
 import './App.css'
 import { textToSpeechApi } from '@/services/tos';
 import { authApi } from '@/services/auth';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { Outlet, useNavigate} from "react-router-dom";
 import Trends from "./trends";
+import { AUTH_TOKEN_STR, CHARS_BEFORE_TEXT } from "@/constants";
 
 
 function Home() {
@@ -43,7 +43,7 @@ function Home() {
   function signOut() {
     try {
       authApi.signout()
-      localStorage.setItem(import.meta.env.VITE_AUTH_TOKEN_STR, "")
+      localStorage.setItem(AUTH_TOKEN_STR, "")
       
     } catch (err) {
       setError('Error signing out')
@@ -76,7 +76,7 @@ function Home() {
             <HStack>
             <Button loading={loading} onClick={playNoise}>Listen</Button>
             <Button loading={loading} onClick={e=>{playPreview(e)}}>Read</Button>
-            {(charactersLeft > import.meta.env.VITE_CHARS_BEFORE_TEXT) && <Text color='red'>{charactersLeft}/{max_chars} characters Left</Text>}
+            {(charactersLeft > CHARS_BEFORE_TEXT) && <Text color='red'>{charactersLeft}/{max_chars} characters Left</Text>}
             </HStack>
             {error && <Text color='red'>{error}</Text>}
             <Button colorPalette='red' variant="subtle" size='lg' onClick={signOut}>

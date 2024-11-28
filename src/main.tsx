@@ -1,4 +1,4 @@
-import { StrictMode, useState } from 'react'
+import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from "../src/components/ui/provider"
 import './index.css'
@@ -6,7 +6,6 @@ import Home from '@/UI/home.tsx'
 import SignInForm from '@/UI/login'
 import SignUpForm from '@/UI/signup'
 import Trends from '@/UI/trends'
-import LandingPage from '@/UI/landingPage.tsx'
 import ProtectedProvider from '@/UI/protectedPage.tsx'
 import { client}  from '@/services/client';
 import {

@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { useQuery, gql, HttpLink, ApolloClient, InMemoryCache } from "@apollo/client"
+import { HttpLink, ApolloClient, InMemoryCache } from "@apollo/client"
 import { setContext } from '@apollo/client/link/context';
 import { AUTH_TOKEN_STR } from "@/constants";
 

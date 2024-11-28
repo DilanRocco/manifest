@@ -1,6 +1,6 @@
-import { ReactNode, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { authApi } from '@/services/auth'
-import { Navigate, Outlet, useNavigate } from "react-router-dom"
+import { Navigate } from "react-router-dom"
 import { AUTH_TOKEN_STR } from "@/constants"
 
 type Props = {

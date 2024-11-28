@@ -7,8 +7,6 @@ import { Button } from "@/components/ui/button"
 import './App.css'
 import { Outlet, Link, useNavigate} from "react-router-dom";
 import { PasswordInput } from '@/components/ui/password-input';
-import { styleText } from 'util';
-import { c } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 import { useMutation } from '@apollo/client';
 import { createUser } from '@/graphql/user';
 import { createHistory } from '@/graphql/history';
