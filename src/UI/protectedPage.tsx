@@ -15,7 +15,7 @@ const ProtectedProvider = (children: Props) => {
         setValid(credientialsValid)
         setLoading(false)
         if (!credientialsValid) {
-            localStorage.setItem(import.meta.env.VITE_AUTH_TOKEN_STR, "")
+            localStorage.setItem(AUTH_TOKEN_STR, "")
         }
 
     }

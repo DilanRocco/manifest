@@ -76,7 +76,7 @@ function Home() {
             <HStack>
             <Button loading={loading} onClick={playNoise}>Listen</Button>
             <Button loading={loading} onClick={e=>{playPreview(e)}}>Read</Button>
-            {(charactersLeft < 21) && <Text color='red'>{charactersLeft}/{max_chars} characters Left</Text>}
+            {(charactersLeft > import.meta.env.VITE_CHARS_BEFORE_TEXT) && <Text color='red'>{charactersLeft}/{max_chars} characters Left</Text>}
             </HStack>
             {error && <Text color='red'>{error}</Text>}
             <Button colorPalette='red' variant="subtle" size='lg' onClick={signOut}>
