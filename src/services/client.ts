@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { useQuery, gql, HttpLink, ApolloClient, InMemoryCache } from "@apollo/client"
 import { setContext } from '@apollo/client/link/context';
+import { AUTH_TOKEN_STR } from "@/constants";
 
 
 export const supabase = createClient(
@@ -16,7 +17,7 @@ const httpLink = new HttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem(import.meta.env.VITE_AUTH_TOKEN_STR);
+  const token = localStorage.getItem(AUTH_TOKEN_STR);
   return {
     headers: {
       apikey: import.meta.env.VITE_SUPABASE_KEY,

@@ -3,10 +3,8 @@ import { SignupData, LoginData } from '@/types/auth';
 import { AuthResponse, createClient, SupabaseClient, UserResponse } from '@supabase/supabase-js';
 import { supabase } from '@/services/client';
 import { error } from 'console';
+import { AUTH_TOKEN_STR } from '@/constants';
 
-
-
-const AUTH_TOKEN_STR = import.meta.env.VITE_AUTH_TOKEN_STR
 
 export class ApiError extends Error {
   constructor(

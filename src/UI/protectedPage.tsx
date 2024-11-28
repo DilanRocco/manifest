@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from "react"
 import { authApi } from '@/services/auth'
 import { Navigate, Outlet, useNavigate } from "react-router-dom"
+import { AUTH_TOKEN_STR } from "@/constants"
 
 type Props = {
     children: React.ReactNode
@@ -17,7 +18,6 @@ const ProtectedProvider = (children: Props) => {
         if (!credientialsValid) {
             localStorage.setItem(AUTH_TOKEN_STR, "")
         }
-
     }
     useEffect(() => {
         fetchData()
