@@ -25,6 +25,14 @@ Google Cloud - TextToSpeech
 https://github.com/supabase-community/supabase-go
 
 
+- Vercel Deployment frontend
+
+todo:
+- ECR
+- APIGateway
+- AWS lambda 
+
+
 # Things to do
 Trend View
 Setup Database
