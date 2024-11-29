@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -68,7 +67,6 @@ func main() {
 		return
 	}
 
-	fmt.Println(os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 	router := mux.NewRouter()
 	router.HandleFunc("/tos/synthesize/", SynthesizeSpeechHandler).Methods("POST")
 
