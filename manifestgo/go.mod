@@ -37,6 +37,7 @@ require (
 
 require (
 	cloud.google.com/go/texttospeech v1.10.0
+	github.com/aws/aws-lambda-go v1.47.0
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect

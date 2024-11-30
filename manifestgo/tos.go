@@ -4,43 +4,61 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
-	"net/http"
 
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
-	"github.com/joho/godotenv"
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
 
 	texttospeech "cloud.google.com/go/texttospeech/apiv1"
 	texttospeechpb "cloud.google.com/go/texttospeech/apiv1/texttospeechpb"
 )
 
 type RequestPayload struct {
-	Text string
+	Text string `json:"text"`
 }
 
-func SynthesizeSpeechHandler(w http.ResponseWriter, r *http.Request) {
-	var reqPayload RequestPayload
-	if err := json.NewDecoder(r.Body).Decode(&reqPayload); err != nil {
-		http.Error(w, "Invalid JSON payload", http.StatusBadRequest)
-		return
+func SynthesizeSpeechHandler(ctx context.Context, request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	corsHeaders := map[string]string{
+		"Access-Control-Allow-Origin":      "*",
+		"Access-Control-Allow-Methods":     "POST, OPTIONS",
+		"Access-Control-Allow-Credentials": "true",
+		"Access-Control-Allow-Headers":     "Content-Type",
 	}
 
-	ctx := context.Background()
+	if request.HTTPMethod == "OPTIONS" {
+		fmt.Println("We are in the options parts")
+		return events.APIGatewayProxyResponse{
+			StatusCode: 200,
+			Headers:    corsHeaders,
+			Body:       "",
+		}, nil
+	}
+
+	var reqPayload RequestPayload
+
+	if err := json.Unmarshal([]byte(request.Body), &reqPayload); err != nil {
+		return events.APIGatewayProxyResponse{
+			StatusCode: 400,
+			Headers:    corsHeaders,
+			Body:       `{"error": "Invalid JSON payload"}`,
+		}, nil
+	}
 
 	c, err := texttospeech.NewClient(ctx)
 	if err != nil {
-		http.Error(w, "Failed to create Text-to-Speech client: "+err.Error(), http.StatusInternalServerError)
-		return
+		return events.APIGatewayProxyResponse{
+			StatusCode: 500,
+			Headers:    corsHeaders,
+			Body:       fmt.Sprintf(`{"error": "Failed to create Text-to-Speech client: %s"}`, err.Error()),
+		}, nil
 	}
 	defer c.Close()
 
 	voice := &texttospeechpb.VoiceSelectionParams{
 		LanguageCode: "en-US",
-		SsmlGender:   1,
+		SsmlGender:   texttospeechpb.SsmlVoiceGender_NEUTRAL,
 	}
 	audioConfig := &texttospeechpb.AudioConfig{
-		AudioEncoding: texttospeechpb.AudioEncoding(texttospeechpb.AudioEncoding_value["MP3"]),
+		AudioEncoding: texttospeechpb.AudioEncoding_MP3,
 	}
 	input := &texttospeechpb.SynthesisInput{
 		InputSource: &texttospeechpb.SynthesisInput_Text{Text: reqPayload.Text},
@@ -50,33 +68,38 @@ func SynthesizeSpeechHandler(w http.ResponseWriter, r *http.Request) {
 		AudioConfig: audioConfig,
 		Voice:       voice,
 	}
+
 	resp, err := c.SynthesizeSpeech(ctx, synthesisRequest)
 	if err != nil {
-		http.Error(w, "Failed to synthesize speech: "+err.Error(), http.StatusInternalServerError)
-		return
+		return events.APIGatewayProxyResponse{
+			StatusCode: 500,
+			Headers:    corsHeaders,
+			Body:       fmt.Sprintf(`{"error": "Failed to synthesize speech: %s"}`, err.Error()),
+		}, nil
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(resp.AudioContent)
 
+	audioBase64 := fmt.Sprintf(`{"audioContent": "%s"}`, resp.AudioContent)
+	fmt.Println("We have an audiobase")
+	return events.APIGatewayProxyResponse{
+		StatusCode: 200,
+
+		Headers: map[string]string{
+			"Content-Type":                     "application/json",
+			"Access-Control-Allow-Origin":      "*",
+			"Access-Control-Allow-Credentials": "true",
+			"Access-Control-Allow-Methods":     "POST, OPTIONS",
+			"Access-Control-Allow-Headers":     "Content-Type",
+		},
+		Body: audioBase64,
+	}, nil
 }
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		fmt.Println("Error loading .env file")
-		return
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	fmt.Println("Error loading .env file")
+	// }
 
-	router := mux.NewRouter()
-	router.HandleFunc("/tos/synthesize/", SynthesizeSpeechHandler).Methods("POST")
-
-	port := "8080"
-	fmt.Printf("Server started on " + port)
-
-	log.Fatal(http.ListenAndServe(":"+port,
-		handlers.CORS(
-			handlers.AllowedOrigins([]string{"*"}),
-			handlers.AllowedMethods([]string{"POST"}),
-			handlers.AllowedHeaders([]string{"Content-Type"}),
-		)(router)))
+	// Start AWS Lambda handler
+	lambda.Start(SynthesizeSpeechHandler)
 }

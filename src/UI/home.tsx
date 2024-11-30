@@ -25,8 +25,7 @@ function Home() {
       console.log(manText)
       uploadFest()
       const response = await textToSpeechApi.tos(manText)
-      const audioBlob = await response.blob();
-      const url = URL.createObjectURL(audioBlob);
+      const url = URL.createObjectURL(response.audioContent);
       setAudioUrl(url);
     } catch (err) {
       console.error('Audio error:', err);
