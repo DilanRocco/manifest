@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 
@@ -78,8 +79,10 @@ func SynthesizeSpeechHandler(ctx context.Context, request events.APIGatewayProxy
 		}, nil
 	}
 
-	audioBase64 := fmt.Sprintf(`{"audioContent": "%s"}`, resp.AudioContent)
+	//audioBase64 := fmt.Sprintf(`{"audioContent": "%s"}`, resp.AudioContent)
 	fmt.Println("We have an audiobase")
+	audioContentBase64 := base64.StdEncoding.EncodeToString(resp.AudioContent)
+
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
 
@@ -90,16 +93,11 @@ func SynthesizeSpeechHandler(ctx context.Context, request events.APIGatewayProxy
 			"Access-Control-Allow-Methods":     "POST, OPTIONS",
 			"Access-Control-Allow-Headers":     "Content-Type",
 		},
-		Body: audioBase64,
+		Body: fmt.Sprintf(`{"audioContent": "%s"}`, audioContentBase64),
 	}, nil
 }
 
 func main() {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	fmt.Println("Error loading .env file")
-	// }
-
 	// Start AWS Lambda handler
 	lambda.Start(SynthesizeSpeechHandler)
 }
