@@ -1,4 +1,4 @@
-import { TosResponse, HelloResponse } from "@/types/tos";
+import {  HelloResponse } from "@/types/tos";
 
 
 export const textToSpeechApi = {
