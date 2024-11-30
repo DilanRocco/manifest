@@ -7,6 +7,9 @@ Description: 'manifest-app
   '
 Globals:
   Function:
+    Environment:
+      Variables:
+        GOOGLE_APPLICATION_CREDENTIALS: /google-cloud-api-key.json
     Timeout: 5
     MemorySize: 128
     Tracing: Active
@@ -60,17 +63,23 @@ Resources:
       Architectures:
       - arm64
       Events:
-        CatchAll:
+        CatchAllPost:
           Type: Api
           Properties:
-            Path: /hellotwo
-            Method: GET
-      Environment:
-        Variables:
-          PARAM1: VALUE
+            Path: /tos
+            Method: POST
+            RestApiId:
+              Ref: ApiGatewayApi
+        CatchAllOptions:
+          Type: Api
+          Properties:
+            Path: /tos
+            Method: OPTIONS
+            RestApiId:
+              Ref: ApiGatewayApi
       ImageUri: tosfunction:provided.al2023-v1
     Metadata:
-      DockerContext: /Users/dilan/code/manifest/manifestgo/manifest-app/hello-world2
+      DockerContext: /Users/dilan/code/manifest/manifestgo/manifest-app/tos
       DockerTag: provided.al2023-v1
       Dockerfile: Dockerfile
       SamResourceId: TOSFunction

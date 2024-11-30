@@ -6,8 +6,11 @@ Description: >
   Sample SAM Template for manifest-app
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
-Globals:
+Globals:    
   Function:
+    Environment:
+      Variables:
+        GOOGLE_APPLICATION_CREDENTIALS: /google-cloud-api-key.json
     Timeout: 5
     MemorySize: 128
 
@@ -63,17 +66,23 @@ Resources:
       Architectures:
       - arm64
       Events:
-        CatchAll:
+        CatchAllPost:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /hellotwo
-            Method: GET
-      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
-        Variables:
-          PARAM1: VALUE
+            Path: /tos
+            Method: POST
+            RestApiId:
+              Ref: ApiGatewayApi
+        CatchAllOptions:
+          Type: Api
+          Properties:
+            Path: /tos
+            Method: OPTIONS
+            RestApiId:
+              Ref: ApiGatewayApi
     Metadata:
       DockerTag: provided.al2023-v1
-      DockerContext: ./hello-world2
+      DockerContext: ./tos
       Dockerfile: Dockerfile
 
   ApplicationResourceGroup:

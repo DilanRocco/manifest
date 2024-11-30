@@ -2,21 +2,29 @@ import { TosResponse, HelloResponse } from "@/types/tos";
 
 
 export const textToSpeechApi = {
-    async tos(text: string): Promise<TosResponse> {
+    async tos(text: string): Promise<Blob> {
         try {
-            const response = await fetch(`http://localhost:9000/2015-03-31/functions/function/invocations`, {
+            const response = await fetch(`http://localhost:3000/tos`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ text }),
             });
-
             if (!response.ok) {
                 throw new Error('Failed to synthesize speech');
             }
-            const data: TosResponse = await response.json()
-            return data
+            console.log("response json working")
+            
+            const data = await response.json();
+            if (!data.audioContent) {
+                throw new Error('Audio content not found in response');
+            }
+
+            const audioBytes = Uint8Array.from(atob(data.audioContent), c => c.charCodeAt(0));
+            const blob = new Blob([audioBytes], { type: 'audio/mpeg' }); 
+
+            return blob;
         } catch (error) {
             console.error('Error:', error);
             throw error

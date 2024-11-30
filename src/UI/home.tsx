@@ -23,10 +23,10 @@ function Home() {
 
   const playNoise = async () => {
     try {
-      console.log(manText)
+  
       uploadFest()
       const response = await textToSpeechApi.tos(manText)
-      const url = URL.createObjectURL(response.audioContent);
+      const url = URL.createObjectURL(response);
       setAudioUrl(url);
     } catch (err) {
       console.error('Audio error:', err);
