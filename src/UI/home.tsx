@@ -18,6 +18,7 @@ function Home() {
   const [charactersLeft, setCharacterLeft] = useState(max_chars)
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioUrl, setAudioUrl] = useState('');
+  const [helloText, setHelloText] = useState('')
   const navigate = useNavigate()
 
   const playNoise = async () => {
@@ -58,6 +59,12 @@ function Home() {
     uploadFest()
 
   }
+
+  const testHello = async () => {
+    const response = await textToSpeechApi.hello()
+    setHelloText(response.value)
+    console.log(response)
+  }
       return (
         <>
         <Grid templateColumns="repeat(2, 1fr)">
@@ -73,10 +80,12 @@ function Home() {
             <Textarea placeholder='Write your manifestation here...' onChange={(e) => updateText(e.target.value)} />
             {audioUrl && <audio src={audioUrl} controls />}
             <HStack>
+            <Button onClick={testHello}>Test Hello</Button>
             <Button loading={loading} onClick={playNoise}>Listen</Button>
             <Button loading={loading} onClick={e=>{playPreview(e)}}>Read</Button>
             {(charactersLeft > CHARS_BEFORE_TEXT) && <Text color='red'>{charactersLeft}/{max_chars} characters Left</Text>}
             </HStack>
+            <Text>{helloText}</Text>
             {error && <Text color='red'>{error}</Text>}
             <Button colorPalette='red' variant="subtle" size='lg' onClick={signOut}>
               <FaUser /> <h2>Logout</h2>

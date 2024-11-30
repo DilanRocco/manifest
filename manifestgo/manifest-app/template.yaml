@@ -18,7 +18,45 @@ Globals:
   Api:
     TracingEnabled: true
 Resources:
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: "'OPTIONS, POST, GET'"
+        AllowHeaders: "'Content-Type'"
+        AllowOrigin: "'*'" #DO NOT USE THIS VALUE IN PRODUCTION - https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-cors.html
   HelloWorldFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      PackageType: Image
+      Architectures:
+      - arm64
+      Events:
+        CatchAllGet:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /hello
+            Method: GET
+            RestApiId:
+              Ref: ApiGatewayApi
+        CatchAllOptions:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: OPTIONS
+            RestApiId:
+              Ref: ApiGatewayApi
+
+      Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
+        Variables:
+          PARAM1: VALUE
+
+    Metadata:
+      DockerTag: provided.al2023-v1
+      DockerContext: ./hello-world
+      Dockerfile: Dockerfile
+  TOSFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
       PackageType: Image
@@ -28,14 +66,14 @@ Resources:
         CatchAll:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
-            Path: /hello
+            Path: /hellotwo
             Method: GET
       Environment: # More info about Env Vars: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#environment-object
         Variables:
           PARAM1: VALUE
     Metadata:
       DockerTag: provided.al2023-v1
-      DockerContext: ./hello-world
+      DockerContext: ./hello-world2
       Dockerfile: Dockerfile
 
   ApplicationResourceGroup:
@@ -58,6 +96,9 @@ Outputs:
   HelloWorldAPI:
     Description: API Gateway endpoint URL for Prod environment for First Function
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+  HelloTwoAPI:
+    Description: API Gateway endpoint URL for Prod environment for Second Function
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hellotwo/"
   HelloWorldFunction:
     Description: First Lambda Function ARN
     Value: !GetAtt HelloWorldFunction.Arn

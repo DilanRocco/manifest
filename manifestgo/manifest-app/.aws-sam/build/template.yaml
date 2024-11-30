@@ -15,6 +15,14 @@ Globals:
   Api:
     TracingEnabled: true
 Resources:
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: '''OPTIONS, POST, GET'''
+        AllowHeaders: '''Content-Type'''
+        AllowOrigin: '''*'''
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -22,11 +30,20 @@ Resources:
       Architectures:
       - arm64
       Events:
-        CatchAll:
+        CatchAllGet:
           Type: Api
           Properties:
             Path: /hello
             Method: GET
+            RestApiId:
+              Ref: ApiGatewayApi
+        CatchAllOptions:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: OPTIONS
+            RestApiId:
+              Ref: ApiGatewayApi
       Environment:
         Variables:
           PARAM1: VALUE
@@ -36,6 +53,27 @@ Resources:
       DockerTag: provided.al2023-v1
       Dockerfile: Dockerfile
       SamResourceId: HelloWorldFunction
+  TOSFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      PackageType: Image
+      Architectures:
+      - arm64
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /hellotwo
+            Method: GET
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      ImageUri: tosfunction:provided.al2023-v1
+    Metadata:
+      DockerContext: /Users/dilan/code/manifest/manifestgo/manifest-app/hello-world2
+      DockerTag: provided.al2023-v1
+      Dockerfile: Dockerfile
+      SamResourceId: TOSFunction
   ApplicationResourceGroup:
     Type: AWS::ResourceGroups::Group
     Properties:
@@ -54,6 +92,10 @@ Outputs:
     Description: API Gateway endpoint URL for Prod environment for First Function
     Value:
       Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
+  HelloTwoAPI:
+    Description: API Gateway endpoint URL for Prod environment for Second Function
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hellotwo/
   HelloWorldFunction:
     Description: First Lambda Function ARN
     Value:
