@@ -5,8 +5,10 @@ import { Input, Text } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
 import './App.css'
+import { Image } from "@chakra-ui/react"
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { PasswordInput } from '@/components/ui/password-input';
+import ManifestaLogo from '@/assets/manifesta_logo.svg';
 
 export interface FormData {
   email: string;
@@ -56,7 +58,7 @@ const SignInForm = () => {
 
   return (
     <VStack minW="20rem" >
-      <Text> Manifest</Text>
+      <Image src={ManifestaLogo} alt="Manifesta Logo"/>
       <Spacer />
       <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
       <Field label="Password"><PasswordInput name={"password"} value={formData.password} onChange={handleChange} placeholder="*********"/></Field>

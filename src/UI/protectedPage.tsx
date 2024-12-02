@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { authApi } from '@/services/auth'
 import { Navigate } from "react-router-dom"
 import { AUTH_TOKEN_STR } from "@/constants"
-
+import Loading from "@/UI/loading"
 type Props = {
     children: React.ReactNode
 }
@@ -25,7 +25,7 @@ const ProtectedProvider = (children: Props) => {
 
 
     if (loading) {
-        return <div>loading</div>
+        return (<Loading/>)
     }
       
     return valid ? children.children : <Navigate to='/login' />

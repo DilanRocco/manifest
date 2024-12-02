@@ -24,24 +24,24 @@ Cloudflare domain: manifesting.work
 Google Cloud - TextToSpeech
 https://github.com/supabase-community/supabase-go
 
-
+https://9mahhz63w1.execute-api.us-east-1.amazonaws.com/Prod/tos/
 - Vercel Deployment frontend
 
 todo:
-- ECR
+- SAM (serverless application management)
 - APIGateway
 - AWS lambda 
+- IAM 
 
 
 # Things to do
 Trend View
 Setup Database
 Upload a manifest / Popover
-cookies on login (kinda done)
 Streak
 benefits of manifestoins
 tutorial on what to do
-build for production
+build for production (mostly done)
 
 ## Brainstorming what needs to be stored in the database
 
