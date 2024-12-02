@@ -52,7 +52,7 @@ Resources:
           PARAM1: VALUE
       ImageUri: helloworldfunction:provided.al2023-v1
     Metadata:
-      DockerContext: /Users/dilan/code/manifest/manifestgo/manifest-app/hello-world
+      DockerContext: /Users/dilan/code/manifest/backend/hello-world
       DockerTag: provided.al2023-v1
       Dockerfile: Dockerfile
       SamResourceId: HelloWorldFunction
@@ -79,7 +79,7 @@ Resources:
               Ref: ApiGatewayApi
       ImageUri: tosfunction:provided.al2023-v1
     Metadata:
-      DockerContext: /Users/dilan/code/manifest/manifestgo/manifest-app/tos
+      DockerContext: /Users/dilan/code/manifest/backend/tos
       DockerTag: provided.al2023-v1
       Dockerfile: Dockerfile
       SamResourceId: TOSFunction
@@ -100,20 +100,32 @@ Outputs:
   HelloWorldAPI:
     Description: API Gateway endpoint URL for Prod environment for First Function
     Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
-  HelloTwoAPI:
+      Fn::Sub: https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/
+  TOSFunctionAPI:
     Description: API Gateway endpoint URL for Prod environment for Second Function
     Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hellotwo/
+      Fn::Sub: https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/tos/
   HelloWorldFunction:
     Description: First Lambda Function ARN
     Value:
       Fn::GetAtt:
       - HelloWorldFunction
       - Arn
+  TOSFunction:
+    Description: Second Lambda Function ARN for tos functionality
+    Value:
+      Fn::GetAtt:
+      - TOSFunction
+      - Arn
   HelloWorldFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
+    Description: Implicit IAM Role created for HelloWorldFunction
     Value:
       Fn::GetAtt:
       - HelloWorldFunctionRole
+      - Arn
+  TOSFunctionIamRole:
+    Description: Implicit IAM Role created for TOSFunction
+    Value:
+      Fn::GetAtt:
+      - TOSFunctionRole
       - Arn

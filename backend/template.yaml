@@ -104,13 +104,20 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   HelloWorldAPI:
     Description: API Gateway endpoint URL for Prod environment for First Function
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloTwoAPI:
+    Value: !Sub "https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
+  TOSFunctionAPI:
     Description: API Gateway endpoint URL for Prod environment for Second Function
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hellotwo/"
+    Value: !Sub "https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/tos/"
   HelloWorldFunction:
     Description: First Lambda Function ARN
     Value: !GetAtt HelloWorldFunction.Arn
+  TOSFunction:
+    Description: Second Lambda Function ARN for tos functionality
+    Value: !GetAtt TOSFunction.Arn
   HelloWorldFunctionIamRole:
-    Description: Implicit IAM Role created for Hello World function
+    Description: Implicit IAM Role created for HelloWorldFunction
     Value: !GetAtt HelloWorldFunctionRole.Arn
+  TOSFunctionIamRole:
+    Description: Implicit IAM Role created for TOSFunction
+    Value: !GetAtt TOSFunctionRole.Arn
+
