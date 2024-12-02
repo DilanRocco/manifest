@@ -4,7 +4,7 @@ import {  HelloResponse } from "@/types/tos";
 export const textToSpeechApi = {
     async tos(text: string): Promise<Blob> {
         try {
-            const response = await fetch(`http://localhost:3000/tos`, {
+            const response = await fetch(`https://9mahhz63w1.execute-api.us-east-1.amazonaws.com/Prod/tos/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ export const textToSpeechApi = {
     },
     async hello(): Promise<HelloResponse> {
         try {
-            const response = await fetch(`http://localhost:3000/hello`, {
+            const response = await fetch(`https://9mahhz63w1.execute-api.us-east-1.amazonaws.com/Prod/hello/`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'text/plain',
