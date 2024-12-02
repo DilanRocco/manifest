@@ -8,7 +8,7 @@ Some common manifestation phrases included:
 
 'I know people like me before I even talk to them'
 
-'I am someone who makes peoples' day better'
+'I am someone who makes people's day better'
 
 # Techstack
 
