@@ -25,4 +25,13 @@ export const createFest = gql(`
 }
 `);
 
-    
+export const updateFestText = gql(`
+    mutation UpdateFestText($userid: UUID!, $festtext: JSON) {
+        updatefestCollection(
+            filter: { user_id: { eq: $userid } },
+            set: { fest_text: $festtext }
+        ) {
+            affectedCount
+        }
+    }   
+`);

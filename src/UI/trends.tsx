@@ -43,12 +43,10 @@ const Trends = () => {
     const chartRef = useRef<Chart | null>(null);
     const val = [1730776527000, 1731035727000, 1731122127000, 1731294927000, 1731381327000, 1731467727000]
     const convertHistoryToGraph = () => {
-        // const times: [number] = history?.fest_time['times']
         const times: number[] = val
         var now = new Date();
         const daySinceEpoch = Math.floor(now.valueOf()/8.64e7)
         const newTimes = times.map(time => {  
-            // daySinceEpoch - (time.valueOf()/8.64e7)
             return daySinceEpoch - Math.floor((time/8.64e7))
         })
 

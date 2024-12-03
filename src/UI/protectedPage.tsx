@@ -12,11 +12,14 @@ const ProtectedProvider = (children: Props) => {
     const fetchData = async () => {
         setLoading(true)
         const credientialsValid = await authApi.credentialsValid()
+        
         console.log(credientialsValid)
         setValid(credientialsValid)
         setLoading(false)
         if (!credientialsValid) {
             localStorage.setItem(AUTH_TOKEN_STR, "")
+        } else {
+            sessionStorage.setItem("userId", await authApi.uuid());
         }
     }
     useEffect(() => {

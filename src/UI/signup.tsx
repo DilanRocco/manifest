@@ -11,6 +11,8 @@ import { useMutation } from '@apollo/client';
 import { createUser } from '@/graphql/user';
 import { createHistory } from '@/graphql/history';
 import { createFest } from '@/graphql/fest';
+import { Image } from "@chakra-ui/react"
+import ManifestaLogo from '@/assets/manifesta_logo.svg';
 
 export interface FormData {
   first: string;
@@ -39,6 +41,7 @@ const SignupForm = () => {
 
   async function addRowsInDatabase() {
     const id = await authApi.uuid()
+    sessionStorage.setItem("userId", id)
     createUserMutation({
       variables: {
         userid: id,
@@ -50,7 +53,7 @@ const SignupForm = () => {
     createFestMutation({
       variables: {
          userid: id,
-         festtext: JSON.stringify({"1":"here is the text"}),
+         festtext: JSON.stringify([""]),
       }
     })
     createHistoryMutation({
@@ -102,7 +105,7 @@ const SignupForm = () => {
 
   return (
     <VStack minW="20rem" >
-      <Text> Manifest</Text>
+      <Image src={ManifestaLogo} alt="Manifesta Logo"/>
       <Spacer />
       <HStack>
         <Field label="First Name"><Input name={"first"} value={formData.first} onChange={handleChange} placeholder="John"/></Field>

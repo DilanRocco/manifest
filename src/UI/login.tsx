@@ -34,6 +34,7 @@ const SignInForm = () => {
     try {
       const { email, password } = formData;
       await authApi.login({ email, password });
+      sessionStorage.setItem("userId", await authApi.uuid())
       setSuccess(true)
       navigate("/")
 

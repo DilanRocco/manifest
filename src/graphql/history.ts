@@ -28,3 +28,14 @@ mutation CreateHistory($userid: UUID, $streak: BigInt, $maxstreak: BigInt, $fest
 }
 }
 `)
+
+// export const updateHistoryField = gql(`
+//     mutation UpdateHistoryField($userid: UUID!, $field: String!, $value: JSON) {
+//         updateHistoryCollection(
+//             where: { user_id: { _eq: $userid } },
+//             _set: { [$field]: $value }
+//         ) {
+//             affected_rows
+//         }
+//     }
+// `);

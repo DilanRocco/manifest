@@ -114,10 +114,7 @@ export const authApi = {
       }
 
     } catch (error) {
-      if (error instanceof ApiError) {
-        throw error;
-      }
-      throw new ApiError('Network error occurred', 500, 'NETWORK_ERROR');
+      return false
     }
   },
 
