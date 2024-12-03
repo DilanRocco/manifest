@@ -1,4 +1,4 @@
-# manifest
+# manifesta
 
 Manifesting can change your life. I read the book *Secret* by Rhonda Byrne. The secret which is revealed on page two is the law of attraction. I had a personal dating coach once tell me about how I should be *manifesting* everyday. What does that really mean though? In the dating coaches mind, it meant thinking about where you want to be in the future. This could be in the next five minutes or the next five years. 
 
