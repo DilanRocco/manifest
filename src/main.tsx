@@ -15,6 +15,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { ApolloProvider } from '@apollo/client'
+import { FestProvider } from './context/databaseProvider'
 
 
 
@@ -29,14 +30,18 @@ const router = createBrowserRouter(
         path="/trends"
         element={
           <ProtectedProvider>
-            <Trends />
+            <FestProvider>
+              <Trends />
+            </FestProvider> 
           </ProtectedProvider>
         } />
       <Route
         path=""
         element={
           <ProtectedProvider>
-            <Home />
+            <FestProvider>
+              <Home />
+            </FestProvider>
           </ProtectedProvider>
         }
       />

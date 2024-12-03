@@ -11,8 +11,10 @@ import { AUTH_TOKEN_STR, CHARS_BEFORE_TEXT } from "@/constants";
 
 import { useMutation, useQuery } from "@apollo/client";
 import { session } from "passport";
-import { GetFestQuery, GetFestQueryVariables } from "@/generated/graphql";
+import { GetFestQuery, GetFestQueryVariables, GetHistoryQuery, GetHistoryQueryVariables } from "@/generated/graphql";
 import { createFest, getFest, updateFestText } from "@/graphql/fest";
+import { getHistory } from "@/graphql/history";
+import { useDatabase } from "@/context/databaseProvider";
 
 // type Fest  {
 
@@ -30,20 +32,23 @@ function Home() {
   const [audioUrl, setAudioUrl] = useState('');
   const [helloText, setHelloText] = useState('')
   const navigate = useNavigate()
-  const festQuery = useQuery<GetFestQuery, GetFestQueryVariables>(getFest);
+ 
 
-  
+
+  const {fest, history, user, loading: databaseLoading, error: databaseError } = useDatabase()
 
   useEffect(() => { 
-    
-    
-    const v = festQuery.data?.festCollection?.edges[0].node.fest_text
-    console.log(typeof(v))
-    if (v != undefined){
-      setManText(JSON.parse(v)[0])
+    const fest2 = fest?.festCollection?.edges[0].node.fest_text
+    const history2 = history?.historyCollection?.edges[0].node
+    if (fest != undefined){
+      setManText(JSON.parse(fest2)[0])
     }
    
-  }, [festQuery])
+  }, [])
+
+  async function uploadHistory() {
+    //history.
+  }
 
   const playNoise = async () => {
     try {
@@ -59,7 +64,9 @@ function Home() {
 
   function playPreview() {
     uploadFest()
+    uploadHistory()
   }
+  
 
   async function uploadFest() {
     try {
@@ -91,8 +98,6 @@ function Home() {
     setCharacterLeft(max_chars - text.length)
     setManText(text)
   }
-
-
 
       return (
         <>
