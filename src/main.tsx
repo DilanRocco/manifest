@@ -15,7 +15,7 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import { ApolloProvider } from '@apollo/client'
-import { FestProvider } from './context/databaseProvider'
+import { FestProvider } from './provider/databaseProvider'
 
 
 

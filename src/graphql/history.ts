@@ -39,3 +39,14 @@ mutation UpdateHistoryField($userid: UUID!, $streak: BigInt, $max_streak: BigInt
         }
     }
 `);
+
+
+export const subscriptionHistory = gql(`
+    subscription OnCommentAdded($postID: ID!) {
+    commentAdded(postID: $postID) {
+      id
+      content
+    }
+  }
+
+    `)

@@ -14,7 +14,7 @@ import { session } from "passport";
 import { GetFestQuery, GetFestQueryVariables, GetHistoryQuery, GetHistoryQueryVariables } from "@/generated/graphql";
 import { createFest, getFest, updateFestText } from "@/graphql/fest";
 import { updateHistory, getHistory } from "@/graphql/history";
-import { useDatabase } from "@/context/databaseProvider";
+import { useDatabase } from "@/provider/databaseProvider";
 
 
 // type Fest  {
@@ -40,7 +40,7 @@ function Home() {
  
 
   
-  const {fest, history, user, loading: databaseLoading, error: databaseError } = useDatabase()
+  const {fest, history, user, loading: databaseLoading, error: databaseError, refresh } = useDatabase()
 
   useEffect(() => { 
     const fest2 = fest?.festCollection?.edges[0].node.fest_text
@@ -74,6 +74,7 @@ function Home() {
             fest_time: JSON.stringify(festTimes)
         },
     });
+    refresh()
     console.log(val)
 
     } catch (error) {

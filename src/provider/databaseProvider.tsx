@@ -2,7 +2,8 @@ import { GetFestQuery, GetFestQueryVariables, GetHistoryQuery, GetHistoryQueryVa
 import { getFest } from '@/graphql/fest';
 import { getHistory } from '@/graphql/history';
 import { getUser } from '@/graphql/user';
-import { useQuery } from '@apollo/client';
+import { RefetchQueriesFunction, useQuery, useSubscription } from '@apollo/client';
+import { RefetchFunction } from '@apollo/client/react/hooks/useSuspenseQuery';
 import React, { createContext, useContext } from 'react';
 
 interface FestContextType {
@@ -11,14 +12,21 @@ interface FestContextType {
   user: GetUsersQuery | undefined;
   loading: boolean;
   error: any;
+  refresh: () => void;
 }
 
 const FestContext = createContext<FestContextType | undefined>(undefined);
 
 export const FestProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { loading: festLoading, error: festError, data: festData } = useQuery<GetFestQuery, GetFestQueryVariables>(getFest);
-  const { loading: historyLoading, error: historyError, data: historyData } = useQuery<GetHistoryQuery, GetHistoryQueryVariables>(getHistory);
-  const { loading: userLoading, error: userError, data: userData } = useQuery<GetFestQuery, GetFestQueryVariables>(getUser);
+  const { loading: festLoading, error: festError, data: festData, refetch: festRefetch } = useQuery<GetFestQuery, GetFestQueryVariables>(getFest);
+  const { loading: historyLoading, error: historyError, data: historyData, refetch: historyRefetch } = useQuery<GetHistoryQuery, GetHistoryQueryVariables>(getHistory);
+  const { loading: userLoading, error: userError, data: userData, refetch: userRefetch } = useQuery<GetFestQuery, GetFestQueryVariables>(getUser);
+
+  const refresh = () => {
+    festRefetch();
+    historyRefetch();
+    userRefetch();
+  };
 
   return (
     <FestContext.Provider 
@@ -27,7 +35,8 @@ export const FestProvider: React.FC<{ children: React.ReactNode }> = ({ children
         history: historyData,
         user: userData,
         loading: (festLoading || historyLoading || userLoading), 
-        error: festError ?? historyError ?? userError
+        error: festError ?? historyError ?? userError,
+        refresh: refresh,
       }}
     >
       {children}
