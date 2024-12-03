@@ -60,6 +60,7 @@ function Home() {
     const now = Date.now()
     const historyObject = history?.historyCollection?.edges[0].node
     const festTimes = JSON.parse(historyObject?.fest_time)
+    console.log(festTimes)
     festTimes.push(now)
     const maxStreak = Math.max(historyObject?.max_streak, festTimes.length)
     console.log(festTimes)
@@ -70,7 +71,7 @@ function Home() {
             userid: sessionStorage.getItem("userId"),
             streak: JSON.stringify(festTimes.length),
             max_streak: JSON.stringify(maxStreak),
-            fest_time: JSON.stringify([festTimes])
+            fest_time: JSON.stringify(festTimes)
         },
     });
     console.log(val)
