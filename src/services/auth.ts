@@ -134,7 +134,6 @@ export const authApi = {
           error.code
         );
       }
-
       return data.user.id
 
     } catch (error) {

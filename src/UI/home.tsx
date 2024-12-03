@@ -13,8 +13,9 @@ import { useMutation, useQuery } from "@apollo/client";
 import { session } from "passport";
 import { GetFestQuery, GetFestQueryVariables, GetHistoryQuery, GetHistoryQueryVariables } from "@/generated/graphql";
 import { createFest, getFest, updateFestText } from "@/graphql/fest";
-import { getHistory } from "@/graphql/history";
+import { updateHistory, getHistory } from "@/graphql/history";
 import { useDatabase } from "@/context/databaseProvider";
+
 
 // type Fest  {
 
@@ -27,14 +28,18 @@ function Home() {
   const [isLoading, setLoading] = useState(false)
   const [charactersLeft, setCharacterLeft] = useState(max_chars)
   const [isPlaying, setIsPlaying] = useState(false);
-  const [updateField, { data, loading, error }] = useMutation(updateFestText);
+  const [updateFestField, { data, loading, error }] = useMutation(updateFestText);
+  const [updateHistoryField, { data: dataHistory, loading: loadingHistory, error: errorHistory }] = useMutation(updateHistory);
+
+  
+
 
   const [audioUrl, setAudioUrl] = useState('');
   const [helloText, setHelloText] = useState('')
   const navigate = useNavigate()
  
 
-
+  
   const {fest, history, user, loading: databaseLoading, error: databaseError } = useDatabase()
 
   useEffect(() => { 
@@ -44,10 +49,36 @@ function Home() {
       setManText(JSON.parse(fest2)[0])
     }
    
-  }, [])
+  }, [fest, history])
 
   async function uploadHistory() {
-    //history.
+    const userId = sessionStorage.getItem("userId")
+    if (userId == undefined){
+      setError('Invalid Session Token, Try Reloading')
+      return
+    } 
+    const now = Date.now()
+    const historyObject = history?.historyCollection?.edges[0].node
+    const festTimes = JSON.parse(historyObject?.fest_time)
+    festTimes.push(now)
+    const maxStreak = Math.max(historyObject?.max_streak, festTimes.length)
+    console.log(festTimes)
+    console.log(userId)
+    try {
+      const val = await updateHistoryField({
+        variables: {
+            userid: sessionStorage.getItem("userId"),
+            streak: JSON.stringify(festTimes.length),
+            max_streak: JSON.stringify(maxStreak),
+            fest_time: JSON.stringify([festTimes])
+        },
+    });
+    console.log(val)
+
+    } catch (error) {
+      console.log(error)
+      setError('Error trying to upload Manifest text')
+    }
   }
 
   const playNoise = async () => {
@@ -70,13 +101,12 @@ function Home() {
 
   async function uploadFest() {
     try {
-      const val = await updateField({
+      const val = await updateFestField({
         variables: {
             userid: sessionStorage.getItem("userId"),
             festtext: JSON.stringify([manText]),
         },
     });
-    console.log(val)
     } catch (error) {
       console.log(error)
       setError('Error trying to upload Manifest text')

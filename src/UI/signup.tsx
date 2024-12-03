@@ -61,7 +61,7 @@ const SignupForm = () => {
         userid: id,
         streak: 0,
         maxstreak: 0,
-        festTime: JSON.stringify({"5":"5"})
+        festTime: JSON.stringify([])
       }
     })
   }
@@ -70,7 +70,7 @@ const SignupForm = () => {
     //e.preventDefault();
     setLoading(true);
     setError('');
-
+    addRowsInDatabase()
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       setLoading(false);
@@ -81,7 +81,6 @@ const SignupForm = () => {
       const { email, password } = formData;
       const userId = await authApi.signup({ email, password });
 
-      addRowsInDatabase()
       setSuccess(true);
       navigate("/")
     } catch (err) {
