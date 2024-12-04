@@ -1,8 +1,10 @@
 # manifesta
 
-Manifesting can change your life. I read the book *Secret* by Rhonda Byrne. The secret which is revealed on page two is the law of attraction. I had a personal dating coach once tell me about how I should be *manifesting* everyday. What does that really mean though? In the dating coaches mind, it meant thinking about where you want to be in the future. This could be in the next five minutes or the next five years. 
+A way to *trick* your brain to go from where you are now to where you want to be.
 
-Some common manifestation phrases included:
+## How to Manifest
+
+Manifesting is listening or reading postiive thoughts. You are the one who creates these phrases. 
 
 'I can get whatever I put my mind towards'
 
@@ -10,59 +12,42 @@ Some common manifestation phrases included:
 
 'I am someone who makes people's day better'
 
-# Techstack
 
+## Background 
+
+The book *Secret* by Rhonda Byrne claims when you manifest your thoughts and  creates a pull similar to gravity   
+
+In the bible it's states
+- Mark 11:24: “Therefore I tell you, whatever you ask in prayer, believe that you have received it, and it will be yours.”
+
+Or maybe it's just placebo...
+
+No matter why you think this appraoch works, it works. 
+
+
+## Teckstack
 - Typescript/React
 - Chakra UI
 - Vite
 - Supabase (auth and database)
-- Go (echo backend) - currently Node.JS
+- Go
+- Google Cloud - TextToSpeech
 
 (Resend)[https://resend.com/] for SMTP server
 Cloudflare domain: manifesting.work
 
-Google Cloud - TextToSpeech
-https://github.com/supabase-community/supabase-go
-
-https://9mahhz63w1.execute-api.us-east-1.amazonaws.com/Prod/tos/
-- Vercel Deployment frontend
-
-todo:
-- SAM (serverless application management)
-- APIGateway
+## Deployment
+- Vercel  frontend
+- AWS APIGateway
 - AWS lambda 
 - IAM 
 
 
 # Things to do
 Trend View
-Setup Database
-Upload a manifest / Popover
-Streak
 benefits of manifestoins
 tutorial on what to do
-build for production (mostly done)
-
-## Brainstorming what needs to be stored in the database
-
-user:
-primary_key id: int
-first_name: str
-last_name: str
-email: str
-
-manifest:
-primary_key id: int
-text: str
-last_manifest: {fest: [""]}
-
-
-
-history:
-primary_key id: int
-streak: int
-max_streak: int
-time_of_day_manifesting [time] {time: [timeSince1970]}
+Settings/Logout
 
 
 
