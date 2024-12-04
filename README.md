@@ -12,7 +12,7 @@ Manifesting is listening or reading positive thoughts. You are the one who creat
 
 - 'I am someone who makes people's day better'
 
-Start to consisently listen to these manifests. Pick a time every day to play these thoughts back. The app stores your previous manifests. Within a week, you can start to see the impact. Now imagine if you did it for a year..
+Start to consistently listen to these manifests. Pick a time every day to play these thoughts back. The app stores your previous manifests. Within a week, you can start to see the impact. Now imagine if you did it for a year..
 
 ## Background 
 
