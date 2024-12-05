@@ -1,4 +1,4 @@
-import { Fest, GetFestQuery, GetFestQueryVariables, GetHistoryQuery, GetHistoryQueryVariables, GetUsersQuery, History, User } from '@/generated/graphql';
+import { Fest, GetFestQuery, GetFestQueryVariables, GetHistoryQuery, GetHistoryQueryVariables, GetUsersQuery, GetUsersQueryVariables, History, User } from '@/generated/graphql';
 import { getFest } from '@/graphql/fest';
 import { getHistory } from '@/graphql/history';
 import { getUser } from '@/graphql/user';
@@ -21,7 +21,7 @@ const FestContext = createContext<FestContextType | undefined>(undefined);
 export const FestProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { loading: festLoading, error: festError, data: festData, refetch: festRefetch } = useQuery<GetFestQuery, GetFestQueryVariables>(getFest);
   const { loading: historyLoading, error: historyError, data: historyData, refetch: historyRefetch } = useQuery<GetHistoryQuery, GetHistoryQueryVariables>(getHistory);
-  const { loading: userLoading, error: userError, data: userData, refetch: userRefetch } = useQuery<GetFestQuery, GetFestQueryVariables>(getUser);
+const { loading: userLoading, error: userError, data: userData, refetch: userRefetch } = useQuery<GetUsersQuery, GetUsersQueryVariables>(getUser);
 
   const refresh = () => {
     festRefetch();
@@ -34,7 +34,7 @@ export const FestProvider: React.FC<{ children: React.ReactNode }> = ({ children
       value={{ 
         fest: festData?.festCollection?.edges[0].node as Fest,
         history: historyData?.historyCollection?.edges[0].node as History,
-        user: userData?.festCollection?.edges[0].node as User,
+        user: userData?.userCollection?.edges[0].node as User,
         loading: (festLoading || historyLoading || userLoading), 
         error: festError ?? historyError ?? userError,
         refresh: refresh,
