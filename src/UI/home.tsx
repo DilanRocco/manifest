@@ -1,6 +1,6 @@
 import { HStack, VStack, Text, Textarea, Grid, GridItem, Heading, Link} from "@chakra-ui/react"
 import { Button } from "@/components/ui/button"
-import { FaUser } from "react-icons/fa";
+import { FaGear } from "react-icons/fa6";
 import './App.css'
 import { textToSpeechApi } from '@/services/tos';
 import { useEffect, useState } from 'react';
@@ -159,9 +159,10 @@ function Home() {
             <Text>{helloText}</Text>
             {error && <Text color='red'>{errorMessage}</Text>}
             <Link href="/benefits"> Learn how to Manifest</Link>
-            <Button colorPalette='red' variant="subtle" size='lg' onClick={signOut}>
-              <FaUser /> <h2>Logout</h2>
-            </Button> 
+            <Link href="/settings" colorPalette='red'>
+              <FaGear /> <h2>Settings</h2>
+            </Link> 
+
           </VStack>
           </GridItem>
           </Grid>
