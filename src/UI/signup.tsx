@@ -1,5 +1,4 @@
 import { useState, ChangeEvent } from 'react';
-import { authApi, ApiError } from '@/services/auth';
 import { HStack, Spacer, VStack } from '@chakra-ui/react';
 import { Input, Text } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
@@ -13,6 +12,7 @@ import { createHistory } from '@/graphql/history';
 import { createFest } from '@/graphql/fest';
 import { Image } from "@chakra-ui/react"
 import ManifestaLogo from '@/assets/manifesta_logo.svg';
+import { useAuth } from '@/provider/authProvider';
 
 export interface FormData {
   first: string;
@@ -37,10 +37,11 @@ const SignupForm = () => {
   const [createUserMutation, userResult ] = useMutation(createUser);
   const [createFestMutation, festResult] = useMutation(createFest);
   const [createHistoryMutation, historyResult] = useMutation(createHistory);
+  const authApi = useAuth()
   const navigate = useNavigate()
 
   async function addRowsInDatabase() {
-    const id = await authApi.uuid()
+    const id = authApi.getToken()
     sessionStorage.setItem("userId", id)
     createUserMutation({
       variables: {
@@ -79,17 +80,16 @@ const SignupForm = () => {
 
     try {
       const { email, password } = formData;
-      const userId = await authApi.signup({ email, password });
+      const userId = await authApi.signup(email, password);
 
       setSuccess(true);
       navigate("/")
     } catch (err) {
-      if (err instanceof ApiError) {
-        setError(err.message);
-      } else {
+
+
         setError('An unexpected error occurred');
       }
-    } finally {
+     finally {
       setLoading(false);
     }
   };

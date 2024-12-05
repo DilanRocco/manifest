@@ -21,7 +21,7 @@ const FestContext = createContext<FestContextType | undefined>(undefined);
 export const FestProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { loading: festLoading, error: festError, data: festData, refetch: festRefetch } = useQuery<GetFestQuery, GetFestQueryVariables>(getFest);
   const { loading: historyLoading, error: historyError, data: historyData, refetch: historyRefetch } = useQuery<GetHistoryQuery, GetHistoryQueryVariables>(getHistory);
-const { loading: userLoading, error: userError, data: userData, refetch: userRefetch } = useQuery<GetUsersQuery, GetUsersQueryVariables>(getUser);
+  const { loading: userLoading, error: userError, data: userData, refetch: userRefetch } = useQuery<GetUsersQuery, GetUsersQueryVariables>(getUser);
 
   const refresh = () => {
     festRefetch();

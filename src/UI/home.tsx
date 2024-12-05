@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button"
 import { FaUser } from "react-icons/fa";
 import './App.css'
 import { textToSpeechApi } from '@/services/tos';
-import { authApi } from '@/services/auth';
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate} from "react-router-dom";
 import Trends from "./trends";
@@ -15,6 +14,7 @@ import { GetFestQuery, GetFestQueryVariables, GetHistoryQuery, GetHistoryQueryVa
 import { createFest, getFest, updateFestText } from "@/graphql/fest";
 import { updateHistory, getHistory } from "@/graphql/history";
 import { useDatabase } from "@/provider/databaseProvider";
+import { useAuth } from "@/provider/authProvider";
 
 
 // type Fest  {
@@ -30,7 +30,7 @@ function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [updateFestField, { data, loading, error }] = useMutation(updateFestText);
   const [updateHistoryField, { data: dataHistory, loading: loadingHistory, error: errorHistory }] = useMutation(updateHistory);
-
+  const authApi = useAuth()
   
 
 
@@ -124,7 +124,7 @@ function Home() {
 
   function signOut() {
     try {
-      authApi.signout()
+      authApi.logout()
       localStorage.setItem(AUTH_TOKEN_STR, "")
       
     } catch (err) {

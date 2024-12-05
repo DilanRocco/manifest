@@ -1,5 +1,4 @@
 import { useState, ChangeEvent } from 'react';
-import { authApi, ApiError } from '@/services/auth';
 import { Spacer, VStack } from '@chakra-ui/react';
 import { Input, Text } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
@@ -9,6 +8,7 @@ import { Image } from "@chakra-ui/react"
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import { PasswordInput } from '@/components/ui/password-input';
 import ManifestaLogo from '@/assets/manifesta_logo.svg';
+import { useAuth } from '@/provider/authProvider';
 
 export interface FormData {
   email: string;
@@ -18,6 +18,7 @@ export interface FormData {
 
 const SignInForm = () => {
   const navigate = useNavigate()
+  const authApi = useAuth()
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
@@ -33,17 +34,13 @@ const SignInForm = () => {
 
     try {
       const { email, password } = formData;
-      await authApi.login({ email, password });
-      sessionStorage.setItem("userId", await authApi.uuid())
+      
+      await authApi.login(email, password);
       setSuccess(true)
       navigate("/")
 
     } catch (err) {
-      if (err instanceof ApiError) {
-        setError(err.message);
-      } else {
         setError('An unexpected error occurred');
-      }
     } finally {
       setLoading(false);
     }
