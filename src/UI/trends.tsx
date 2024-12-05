@@ -66,13 +66,15 @@ const Trends = () => {
         if (history?.fest_time == undefined) {
           return
         }
-        const festTimes = JSON.parse(history?.fest_time)
         
+        const festTimes = JSON.parse(history?.fest_time)
+        console.log(convertHistoryToGraph(festTimes))
         if (!canvasRef.current) {
             console.log("STUCK IN THIS")
             return
         }
-
+        const dataPoints = convertHistoryToGraph(festTimes)
+        const labels = Array.from({ length: dataPoints.length }, (_, i) => `Day ${i + 1}`)
         const ctx = canvasRef.current.getContext('2d');
         if (!ctx) return;
         if (chartRef.current) {
@@ -82,16 +84,16 @@ const Trends = () => {
         chartRef.current = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7', 'Day 8','Day 9'],
+                labels: labels,
                 datasets: [
                   {
                     label: 'Dataset',
-                    data: convertHistoryToGraph(festTimes),
+                    data: dataPoints,
                     borderColor: "#ffffff",
                     backgroundColor: "#ffffff",
                     pointStyle: 'circle',
-                    pointRadius: 10,
-                    pointHoverRadius: 15
+                    pointRadius: 3,
+                    pointHoverRadius: 10
                     
                   }
                 ]

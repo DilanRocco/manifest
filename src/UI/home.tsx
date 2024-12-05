@@ -87,6 +87,7 @@ function Home() {
   }
 
   const playNoise = async () => {
+    setLoading(true)
     try {
       const response = await textToSpeechApi.tos(manText)
       const url = URL.createObjectURL(response);
@@ -96,11 +97,14 @@ function Home() {
       setError('Error trying to convert Text to Speech')
       setIsPlaying(false);
     }
+    setLoading(false)
   };
 
   function playPreview() {
+    setLoading(true)
     uploadFest()
     uploadHistory()
+    setLoading(false)
   }
   
 
