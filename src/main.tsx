@@ -18,6 +18,7 @@ import { ApolloProvider } from '@apollo/client'
 import { FestProvider } from './provider/databaseProvider'
 import BenefitsPage from './UI/benefits'
 import ReadView from './UI/ReadView'
+import SettingsPage from './UI/settings'
 
 
 
@@ -35,6 +36,16 @@ const router = createBrowserRouter(
           <ProtectedProvider>
             <FestProvider>
               <Trends />
+            </FestProvider> 
+          </ProtectedProvider>
+        } />
+
+      <Route
+        path="/settings"
+        element={
+          <ProtectedProvider>
+            <FestProvider>
+              <SettingsPage />
             </FestProvider> 
           </ProtectedProvider>
         } />

@@ -1,36 +1,49 @@
-import { useEffect, useState } from "react"
-import { authApi } from '@/services/auth'
-import { Navigate } from "react-router-dom"
-import { AUTH_TOKEN_STR } from "@/constants"
-import Loading from "@/UI/loading"
+import { useEffect, useState } from "react";
+import { authApi } from '@/services/auth';
+import { Navigate } from "react-router-dom";
+import { AUTH_TOKEN_STR } from "@/constants";
+import Loading from "@/UI/loading";
+
 type Props = {
-    children: React.ReactNode
+    children: React.ReactNode;
 }
-const ProtectedProvider = (children: Props) => {
-    const [valid, setValid] = useState<boolean>(false)
-    const [loading, setLoading] = useState<boolean>(true)
-    const fetchData = async () => {
-        setLoading(true)
-        const credientialsValid = await authApi.credentialsValid()
-        
-        setValid(credientialsValid)
-        setLoading(false)
-        if (!credientialsValid) {
-            localStorage.setItem(AUTH_TOKEN_STR, "")
-        } else {
-            sessionStorage.setItem("userId", await authApi.uuid());
-        }
-    }
+
+const ProtectedProvider = ({ children }: Props) => {
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
     useEffect(() => {
-        fetchData()
-    }, [])
+        const checkAuth = async () => {
+            const token = localStorage.getItem(AUTH_TOKEN_STR);
+            if (!token) {
+                setIsAuthenticated(false);
+                return;
+            }
 
+            try {
+                const isValid = await authApi.credentialsValid();
+                if (isValid) {
+                    const userId = await authApi.uuid();
+                    sessionStorage.setItem("userId", userId);
+                    setIsAuthenticated(true);
+                } else {
+                    throw new Error("Invalid credentials");
+                }
+            } catch (error) {
+                console.error("Auth check failed:", error);
+                localStorage.removeItem(AUTH_TOKEN_STR);
+                sessionStorage.removeItem("userId");
+                setIsAuthenticated(false);
+            }
+        };
 
-    if (loading) {
-        return (<Loading/>)
+        checkAuth();
+    }, []);
+
+    if (isAuthenticated === null) {
+        return <Loading />;
     }
-      
-    return valid ? children.children : <Navigate to='/login' />
+
+    return isAuthenticated ? <>{children}</> : <Navigate to='/login' />;
 }
 
-export default ProtectedProvider
+export default ProtectedProvider;

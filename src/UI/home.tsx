@@ -77,7 +77,6 @@ function Home() {
       });
 
       refresh()
-      console.log(val)
 
       } catch (error) {
         console.log(error)
