@@ -43,10 +43,10 @@ function Home() {
   const {fest, history, user, loading: databaseLoading, error: databaseError, refresh } = useDatabase()
 
   useEffect(() => { 
-    const fest2 = fest?.festCollection?.edges[0].node.fest_text
-    const history2 = history?.historyCollection?.edges[0].node
+    const fest2 = fest
+    const history2 = history
     if (fest != undefined){
-      setManText(JSON.parse(fest2)[0])
+      setManText(JSON.parse(fest2?.fest_text ?? "")[0])
     }
    
   }, [fest, history])
@@ -58,29 +58,32 @@ function Home() {
       return
     } 
     const now = Date.now()
-    const historyObject = history?.historyCollection?.edges[0].node
-    const festTimes = JSON.parse(historyObject?.fest_time)
-    console.log(festTimes)
-    festTimes.push(now)
-    const maxStreak = Math.max(historyObject?.max_streak, festTimes.length)
-    console.log(festTimes)
-    console.log(userId)
-    try {
-      const val = await updateHistoryField({
-        variables: {
-            userid: sessionStorage.getItem("userId"),
-            streak: JSON.stringify(festTimes.length),
-            max_streak: JSON.stringify(maxStreak),
-            fest_time: JSON.stringify(festTimes)
-        },
-    });
-    refresh()
-    console.log(val)
+    const festTimes = JSON.parse(history?.fest_time)
 
-    } catch (error) {
-      console.log(error)
-      setError('Error trying to upload Manifest text')
+    const newTimes = festTimes.concat([now])
+    const maxStreak = Math.max(history?.max_streak, newTimes.length)
+
+    if (festTimes.length > 0 && 0 == Math.floor(Math.abs(now - festTimes[festTimes.length-1]) / (1000 * 3600 * 24))){
+      // Don't update streak two times in one day
+      return
     }
+      try {
+        const val = await updateHistoryField({
+          variables: {
+              userid: sessionStorage.getItem("userId"),
+              streak: JSON.stringify(newTimes.length),
+              max_streak: JSON.stringify(maxStreak),
+              fest_time: JSON.stringify(newTimes)
+          },
+      });
+
+      refresh()
+      console.log(val)
+
+      } catch (error) {
+        console.log(error)
+        setError('Error trying to upload Manifest text')
+      }
   }
 
   const playNoise = async () => {

@@ -1,10 +1,10 @@
 import { Heading, HStack, VStack } from "@chakra-ui/react"
 import {  useQuery } from '@apollo/client';
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
 import { getUser } from "@/graphql/user";
-import { GetHistoryQuery, GetHistoryQueryVariables, GetUsersQuery, GetUsersQueryVariables }  from "@/generated/graphql"
+import { User, History }  from "@/generated/graphql"
 import '@/UI/trends.css'
-import { getHistory } from "@/graphql/history";
 import { Chart } from "chart.js";
 import {
     Chart as ChartJS,
@@ -17,6 +17,7 @@ import {
     Legend,
     LineController
 }  from 'chart.js';
+import { useDatabase } from "@/provider/databaseProvider";
 
 
 ChartJS.register(
@@ -32,21 +33,14 @@ ChartJS.register(
   
 
 const Trends = () => {
-    const userQuery = useQuery<GetUsersQuery, GetUsersQueryVariables>(getUser);
-    const historyQuery = useQuery<GetHistoryQuery, GetHistoryQueryVariables>(getHistory);
-
-
-    const user = userQuery.data?.userCollection?.edges[0].node 
-    const history = historyQuery.data?.historyCollection?.edges[0].node 
-
+    const {fest, history, user, loading: databaseLoading, error: databaseError, refresh } = useDatabase()
+   
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const chartRef = useRef<Chart | null>(null);
-    const val = [1730776527000, 1731035727000, 1731122127000, 1731294927000, 1731381327000, 1731467727000]
-    const convertHistoryToGraph = () => {
-        const times: number[] = val
+    const convertHistoryToGraph = (festTimes: number[]) => {
         var now = new Date();
         const daySinceEpoch = Math.floor(now.valueOf()/8.64e7)
-        const newTimes = times.map(time => {  
+        const newTimes = festTimes.map(time => {  
             return daySinceEpoch - Math.floor((time/8.64e7))
         })
 
@@ -66,7 +60,14 @@ const Trends = () => {
    
     
       useEffect(() => {
-         console.log(convertHistoryToGraph())
+        
+        // setHistory(history)
+        // setUser(user)
+        if (history?.fest_time == undefined) {
+          return
+        }
+        const festTimes = JSON.parse(history?.fest_time)
+        
         if (!canvasRef.current) {
             console.log("STUCK IN THIS")
             return
@@ -85,7 +86,7 @@ const Trends = () => {
                 datasets: [
                   {
                     label: 'Dataset',
-                    data: convertHistoryToGraph(),
+                    data: convertHistoryToGraph(festTimes),
                     borderColor: "#ffffff",
                     backgroundColor: "#ffffff",
                     pointStyle: 'circle',
@@ -109,7 +110,8 @@ const Trends = () => {
               chartRef.current = null;
             }
           };
-        }, []); 
+        }, [user, history]); 
+
     return <VStack>
          <Heading size="4xl" className="title">Hello {user?.first}</Heading>
          <HStack>
