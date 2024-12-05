@@ -1,4 +1,4 @@
-import { HStack, VStack, Text, Textarea, Grid, GridItem, Heading} from "@chakra-ui/react"
+import { HStack, VStack, Text, Textarea, Grid, GridItem, Heading, Link} from "@chakra-ui/react"
 import { Button } from "@/components/ui/button"
 import { FaUser } from "react-icons/fa";
 import './App.css'
@@ -42,9 +42,8 @@ function Home() {
   
   const {fest, history, user, loading: databaseLoading, error: databaseError, refresh } = useDatabase()
 
-  useEffect(() => { 
+  useEffect(() => {
     const fest2 = fest
-    const history2 = history
     if (fest != undefined){
       setManText(JSON.parse(fest2?.fest_text ?? "")[0])
     }
@@ -105,6 +104,7 @@ function Home() {
     uploadFest()
     uploadHistory()
     setLoading(false)
+    navigate("/read-view", { state: { text: manText } })
   }
   
 
@@ -159,6 +159,7 @@ function Home() {
             </HStack>
             <Text>{helloText}</Text>
             {error && <Text color='red'>{errorMessage}</Text>}
+            <Link href="/benefits"> Learn how to Manifest</Link>
             <Button colorPalette='red' variant="subtle" size='lg' onClick={signOut}>
               <FaUser /> <h2>Logout</h2>
             </Button> 

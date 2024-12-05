@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@apollo/client": "^3.11.9",
+    "@chakra-ui/form-control": "^2.2.0",
+    "@chakra-ui/layout": "^2.3.1",
     "@chakra-ui/react": "^3.0.2",
     "@google-cloud/text-to-speech": "^5.5.0",
     "@graphql-yoga/render-graphiql": "^5.10.0",

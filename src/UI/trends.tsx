@@ -45,7 +45,6 @@ const Trends = () => {
         })
 
         const max = newTimes.reduce((a, b) => Math.max(a, b), -Infinity);
-        console.log(newTimes)
         let data: number[] = []
         for (let i = max; i > 0; i--) {
             if (newTimes.indexOf(i) != -1){
@@ -68,9 +67,7 @@ const Trends = () => {
         }
         
         const festTimes = JSON.parse(history?.fest_time)
-        console.log(convertHistoryToGraph(festTimes))
         if (!canvasRef.current) {
-            console.log("STUCK IN THIS")
             return
         }
         const dataPoints = convertHistoryToGraph(festTimes)
@@ -107,7 +104,6 @@ const Trends = () => {
           })
           return () => {
             if (chartRef.current) {
-              console.log('Cleanup: destroying chart');
               chartRef.current.destroy();
               chartRef.current = null;
             }

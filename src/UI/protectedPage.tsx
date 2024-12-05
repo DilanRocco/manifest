@@ -13,7 +13,6 @@ const ProtectedProvider = (children: Props) => {
         setLoading(true)
         const credientialsValid = await authApi.credentialsValid()
         
-        console.log(credientialsValid)
         setValid(credientialsValid)
         setLoading(false)
         if (!credientialsValid) {

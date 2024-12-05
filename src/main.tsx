@@ -16,6 +16,8 @@ import {
 } from "react-router-dom";
 import { ApolloProvider } from '@apollo/client'
 import { FestProvider } from './provider/databaseProvider'
+import BenefitsPage from './UI/benefits'
+import ReadView from './UI/ReadView'
 
 
 
@@ -26,12 +28,23 @@ const router = createBrowserRouter(
       {/* <Route path="/" element={<LandingPage />} /> */}
       <Route path="/signup" element={<SignUpForm />} />
       <Route path="/login" element={<SignInForm />} />
+      <Route path="/benefits" element={<BenefitsPage />} />
       <Route
         path="/trends"
         element={
           <ProtectedProvider>
             <FestProvider>
               <Trends />
+            </FestProvider> 
+          </ProtectedProvider>
+        } />
+
+      <Route
+        path="/read-view"
+        element={
+          <ProtectedProvider>
+            <FestProvider>
+              <ReadView />
             </FestProvider> 
           </ProtectedProvider>
         } />
