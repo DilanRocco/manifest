@@ -66,5 +66,5 @@ No matter why you think manifesting works, it has a positive efffect.
 
 -Allow users to set short-term and long-term goals, track their progress, and celebrate milestones
 
-
+next thing I want to add is the ability to have multiple prompts saved. Almsot like a history of sorts 
 
