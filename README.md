@@ -23,7 +23,7 @@ In the bible it's states
 
 Or maybe it's just placebo...
 
-No matter why you think this appraoch works, it works. 
+No matter why you think manifesting works, it works. 
 
 
 ## Teckstack
