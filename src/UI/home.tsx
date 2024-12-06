@@ -4,6 +4,7 @@ import { FaGear } from "react-icons/fa6";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosAddCircleOutline } from "react-icons/io";
+import { FaSave } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import './App.css'
 import { textToSpeechApi } from '@/services/tos';
@@ -38,6 +39,7 @@ function Home() {
   
   const [currentFestPage, setCurrentFestPage] = useState(0)
   const [maxFestPage, setMaxFestPage] = useState(0)
+  const [shouldShowSave, setShouldShowSave] = useState(false)
 
   const [audioUrl, setAudioUrl] = useState('');
   const navigate = useNavigate()
@@ -126,10 +128,6 @@ function Home() {
     setLoading(false)
     navigate("/read-view", { state: { text: manText[currentFestPage] } })
   }
-
-  function test() {
-    
-  }
   
   async function uploadFest() {
 
@@ -147,7 +145,8 @@ function Home() {
   }
 
   function updateText(texts: string) {
-    console.log()
+    setShouldShowSave(true)
+    
     setCharacterLeft(max_chars - texts.length)
     if (charactersLeft <= 0) {
       return 
@@ -169,6 +168,18 @@ function Home() {
     ];
     setManText(newArr)
     setCurrentFestPage(currentFestPage+1)
+    
+    
+  }
+  function save() {
+    try {
+      uploadFest()
+      setShouldShowSave(false)
+    }
+    catch (e) {
+      setError("Error trying to save Manifest text")
+    }
+    
     
     
   }
@@ -206,6 +217,7 @@ function Home() {
     </GridItem>
     <GridItem>
     <Center float={"right"}>
+    {shouldShowSave && <IconButton background={"green"} onClick={save}> <FaSave/></IconButton>}
     <IconButton color="white" variant={"ghost"} onClick={addFest}><IoIosAddCircleOutline/> </IconButton>
     <IconButton color="white" variant={"ghost"} onClick={removeFest}><MdDelete/> </IconButton>
     </Center>
@@ -229,7 +241,7 @@ function Home() {
             <h1><b>Manifest</b></h1>
             <Textarea value={manText[currentFestPage]} placeholder='Write your manifestation here...' onChange={(e) => updateText(e.target.value)} />
             <FestArea/>
-            <Button>Save </Button>
+            
             {error && <Text color='red'>{errorMessage}</Text>}
             
             <HStack>
