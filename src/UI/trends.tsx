@@ -1,4 +1,4 @@
-import { Heading, HStack, VStack } from "@chakra-ui/react"
+import { Heading, HStack, VStack, Text } from "@chakra-ui/react"
 import {  useQuery } from '@apollo/client';
 import { useEffect, useRef, useState } from "react";
 
@@ -18,6 +18,7 @@ import {
     LineController
 }  from 'chart.js';
 import { useDatabase } from "@/provider/databaseProvider";
+import { timeStamp } from "console";
 
 
 ChartJS.register(
@@ -37,16 +38,32 @@ const Trends = () => {
    
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const chartRef = useRef<Chart | null>(null);
+    const [consistencyScore, setConsistencyScore] = useState(0)
+    const [avgHour, setAvgHour] = useState("")
+
+
+    const avgHrToManfiest = (festTimes: number[]) => {
+      const hours = festTimes.map(time => {
+        return new Date(time).getHours()
+      })
+      const sum = hours.reduce((acc, num) => acc + num, 0);
+      const hourInMiltary = Math.floor(sum / hours.length);
+      if (hourInMiltary === 0) return "12AM";
+      if (hourInMiltary === 12) return "12PM";
+      return hourInMiltary > 12 ? (hourInMiltary - 12)+"PM" : hourInMiltary+"AM";
+
+
+    }
     const convertHistoryToGraph = (festTimes: number[]) => {
         var now = new Date();
         const daySinceEpoch = Math.floor(now.valueOf()/8.64e7)
         const newTimes = festTimes.map(time => {  
             return daySinceEpoch - Math.floor((time/8.64e7))
         })
-
+        console.log(newTimes)
         const max = newTimes.reduce((a, b) => Math.max(a, b), -Infinity);
         let data: number[] = []
-        for (let i = max; i > 0; i--) {
+        for (let i = max; i > -1; i--) {
             if (newTimes.indexOf(i) != -1){
                 (i!=max) ? data.push(data[data.length-1]+1) : data.push(1)
             } else {
@@ -56,12 +73,26 @@ const Trends = () => {
         }
         return data
     }
-   
+    function getDatesFromStartToToday(startTimestamp: number): string[] {
+      const startDate = new Date(startTimestamp);
+      const today = new Date();
+      const dates: string[] = [];
+
+      today.setDate(today.getDate() + 1);
+      startDate.setDate(startDate.getDate() + 1);
+      while (startDate <= today) {
+          const month = startDate.getMonth() + 1; // Months are 0-indexed
+          const day = startDate.getDate();
+          dates.push(`${month}/${day}`);
+          startDate.setDate(startDate.getDate() + 1);
+      }
+  
+      return dates;
+  }
+  
+  
     
       useEffect(() => {
-        
-        // setHistory(history)
-        // setUser(user)
         if (history?.fest_time == undefined) {
           return
         }
@@ -71,20 +102,29 @@ const Trends = () => {
             return
         }
         const dataPoints = convertHistoryToGraph(festTimes)
-        const labels = Array.from({ length: dataPoints.length }, (_, i) => `Day ${i + 1}`)
+       
+        console.log(dataPoints)
+        if (festTimes.length == 0) {
+          return
+        }
+        const avgTimeToManifest = avgHrToManfiest(festTimes)
+        setAvgHour(avgTimeToManifest)
+        const labels = getDatesFromStartToToday(festTimes[0])
+        setConsistencyScore(Math.round(festTimes.length / labels.length * 100))
+        console.log(labels)
         const ctx = canvasRef.current.getContext('2d');
         if (!ctx) return;
         if (chartRef.current) {
             chartRef.current.destroy();
           }
           chartRef.current?.destroy()
-        chartRef.current = new Chart(ctx, {
+          chartRef.current = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: labels,
                 datasets: [
                   {
-                    label: 'Dataset',
+                    label: 'Streak Graph',
                     data: dataPoints,
                     borderColor: "#ffffff",
                     backgroundColor: "#ffffff",
@@ -110,7 +150,7 @@ const Trends = () => {
           };
         }, [user, history]); 
 
-    return <VStack>
+    return <VStack spaceY="2">
          <Heading size="4xl" className="title">Hello {user?.first}</Heading>
          <HStack>
         <div className="maincontainer">
@@ -131,6 +171,9 @@ const Trends = () => {
         </HStack>
         <div>
         <canvas ref={canvasRef}></canvas>
+        
+        <Text fontSize={'1xl'}><b>Avg Hour to Manifest: {avgHour} </b></Text>
+        <Text fontSize={'1xl'}><b>Consistency Score {consistencyScore}%</b></Text>
         </div>
         
        

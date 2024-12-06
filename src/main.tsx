@@ -21,6 +21,7 @@ import BenefitsPage from './UI/benefits'
 import ReadView from './UI/ReadView'
 import SettingsPage from './UI/settings'
 import { AuthProvider } from './provider/authProvider'
+import { HowToPage } from './UI/how-to'
 
 
 
@@ -43,6 +44,7 @@ const router = createBrowserRouter(
       <Route path="/signup" element={<SignUpForm />} />
       <Route path="/login" element={<SignInForm />} />
       <Route path="/benefits" element={<BenefitsPage />} />
+      <Route path="/how-to" element={<HowToPage />} />
       
       <Route element={<ProtectedRoute/>}>
         <Route path="/trends" element={<Trends />} />

@@ -51,25 +51,22 @@ function Home() {
   }, [fest, history])
 
   async function uploadHistory() {
-    const userId = sessionStorage.getItem("userId")
-    if (userId == undefined){
-      setError('Invalid Session Token, Try Reloading')
-      return
-    } 
     const now = Date.now()
     const festTimes = JSON.parse(history?.fest_time)
 
     const newTimes = festTimes.concat([now])
     const maxStreak = Math.max(history?.max_streak, newTimes.length)
-
-    if (festTimes.length > 0 && 0 == Math.floor(Math.abs(now - festTimes[festTimes.length-1]) / (1000 * 3600 * 24))){
+    console.log((festTimes[festTimes.length-1]) / (1000 * 3600 * 24))
+    console.log((now / (1000 * 3600 * 24)))
+    console.log(Math.floor((now / (1000 * 3600 * 24))) - Math.floor((festTimes[festTimes.length-1]) / (1000 * 3600 * 24)))
+    if (festTimes.length > 0 && 0 == Math.floor((now / (1000 * 3600 * 24))) - Math.floor((festTimes[festTimes.length-1]) / (1000 * 3600 * 24))){
       // Don't update streak two times in one day
       return
     }
       try {
         const val = await updateHistoryField({
           variables: {
-              userid: sessionStorage.getItem("userId"),
+              userid: authApi.getToken,
               streak: JSON.stringify(newTimes.length),
               max_streak: JSON.stringify(maxStreak),
               fest_time: JSON.stringify(newTimes)
@@ -86,6 +83,7 @@ function Home() {
 
   const playNoise = async () => {
     setLoading(true)
+    uploadHistory()
     try {
       const response = await textToSpeechApi.tos(manText)
       const url = URL.createObjectURL(response);
@@ -111,7 +109,7 @@ function Home() {
     try {
       const val = await updateFestField({
         variables: {
-            userid: sessionStorage.getItem("userId"),
+            userid: authApi.getToken,
             festtext: JSON.stringify([manText]),
         },
     });
@@ -121,17 +119,6 @@ function Home() {
     }
   }
 
-
-  function signOut() {
-    try {
-      authApi.logout()
-      localStorage.setItem(AUTH_TOKEN_STR, "")
-      
-    } catch (err) {
-      setError('Error signing out')
-    }
-    navigate('/login')
-  }
   function updateText(text: string) {
     setCharacterLeft(max_chars - text.length)
     setManText(text)
@@ -158,7 +145,13 @@ function Home() {
             </HStack>
             <Text>{helloText}</Text>
             {error && <Text color='red'>{errorMessage}</Text>}
-            <Link href="/benefits"> Learn how to Manifest</Link>
+            
+            <HStack>
+              <Link href="/how-to"> Learn how</Link>
+              |
+              <Link href="/benefits"> Benefits</Link>
+              
+            </HStack>
             <Link href="/settings" colorPalette='red'>
               <FaGear /> <h2>Settings</h2>
             </Link> 
