@@ -10,6 +10,7 @@ export const getHistory = gql(`
                     streak
                     max_streak
                     fest_time
+                    times_listened_today
                 }
             }
         }
@@ -30,23 +31,34 @@ mutation CreateHistory($userid: UUID, $streak: BigInt, $maxstreak: BigInt, $fest
 `)
 
 export const updateHistory = gql(`
-mutation UpdateHistoryField($userid: UUID!, $streak: BigInt, $max_streak: BigInt, $fest_time: JSON ) {
+mutation UpdateHistoryField($userid: UUID!, $streak: BigInt, $max_streak: BigInt, $fest_time: JSON, $times_listened_today: BigInt ) {
         updatehistoryCollection(
             filter: { user_id: { eq: $userid } },
-            set: { streak: $streak,  max_streak: $max_streak, fest_time: $fest_time }
+            set: { streak: $streak,  max_streak: $max_streak, fest_time: $fest_time, times_listened_today: $times_listened_today }
         ) {
             affectedCount
         }
     }
 `);
 
-
-export const subscriptionHistory = gql(`
-    subscription OnCommentAdded($postID: ID!) {
-    commentAdded(postID: $postID) {
-      id
-      content
+export const updateTimesListenedToday = gql(`
+    mutation UpdateTimesListenedToday($userid: UUID!, $times_listened_today: BigInt) {
+        updatehistoryCollection(
+            filter: { user_id: { eq: $userid } },
+            set: { times_listened_today: $times_listened_today }
+        ) {
+            affectedCount
+        }
     }
-  }
+    `);
+    
 
-    `)
+// export const subscriptionHistory = gql(`
+//     subscription OnCommentAdded($postID: ID!) {
+//     commentAdded(postID: $postID) {
+//       id
+//       content
+//     }
+//   }
+
+//     `)

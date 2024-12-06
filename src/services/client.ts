@@ -8,7 +8,6 @@ export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_KEY
 );
 
-// Create Apollo HttpLink
 const httpLink = new HttpLink({
   uri: `${import.meta.env.VITE_SUPABASE_URL}/graphql/v1`,
 });

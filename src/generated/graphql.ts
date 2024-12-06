@@ -177,24 +177,37 @@ export type IntListFilter = {
 /** The root type for creating and mutating data */
 export type Mutation = {
   __typename?: 'Mutation';
+  /** Deletes zero or more records from the `feedback` collection */
+  deleteFromfeedbackCollection: FeedbackDeleteResponse;
   /** Deletes zero or more records from the `fest` collection */
   deleteFromfestCollection: FestDeleteResponse;
   /** Deletes zero or more records from the `history` collection */
   deleteFromhistoryCollection: HistoryDeleteResponse;
   /** Deletes zero or more records from the `user` collection */
   deleteFromuserCollection: UserDeleteResponse;
+  /** Adds one or more `feedback` records to the collection */
+  insertIntofeedbackCollection?: Maybe<FeedbackInsertResponse>;
   /** Adds one or more `fest` records to the collection */
   insertIntofestCollection?: Maybe<FestInsertResponse>;
   /** Adds one or more `history` records to the collection */
   insertIntohistoryCollection?: Maybe<HistoryInsertResponse>;
   /** Adds one or more `user` records to the collection */
   insertIntouserCollection?: Maybe<UserInsertResponse>;
+  /** Updates zero or more records in the `feedback` collection */
+  updatefeedbackCollection: FeedbackUpdateResponse;
   /** Updates zero or more records in the `fest` collection */
   updatefestCollection: FestUpdateResponse;
   /** Updates zero or more records in the `history` collection */
   updatehistoryCollection: HistoryUpdateResponse;
   /** Updates zero or more records in the `user` collection */
   updateuserCollection: UserUpdateResponse;
+};
+
+
+/** The root type for creating and mutating data */
+export type MutationDeleteFromfeedbackCollectionArgs = {
+  atMost?: Scalars['Int']['input'];
+  filter?: InputMaybe<FeedbackFilter>;
 };
 
 
@@ -220,6 +233,12 @@ export type MutationDeleteFromuserCollectionArgs = {
 
 
 /** The root type for creating and mutating data */
+export type MutationInsertIntofeedbackCollectionArgs = {
+  objects: Array<FeedbackInsertInput>;
+};
+
+
+/** The root type for creating and mutating data */
 export type MutationInsertIntofestCollectionArgs = {
   objects: Array<FestInsertInput>;
 };
@@ -234,6 +253,14 @@ export type MutationInsertIntohistoryCollectionArgs = {
 /** The root type for creating and mutating data */
 export type MutationInsertIntouserCollectionArgs = {
   objects: Array<UserInsertInput>;
+};
+
+
+/** The root type for creating and mutating data */
+export type MutationUpdatefeedbackCollectionArgs = {
+  atMost?: Scalars['Int']['input'];
+  filter?: InputMaybe<FeedbackFilter>;
+  set: FeedbackUpdateInput;
 };
 
 
@@ -294,6 +321,8 @@ export type PageInfo = {
 /** The root type for querying data */
 export type Query = {
   __typename?: 'Query';
+  /** A pagable collection of type `feedback` */
+  feedbackCollection?: Maybe<FeedbackConnection>;
   /** A pagable collection of type `fest` */
   festCollection?: Maybe<FestConnection>;
   /** A pagable collection of type `history` */
@@ -302,6 +331,18 @@ export type Query = {
   node?: Maybe<Node>;
   /** A pagable collection of type `user` */
   userCollection?: Maybe<UserConnection>;
+};
+
+
+/** The root type for querying data */
+export type QueryFeedbackCollectionArgs = {
+  after?: InputMaybe<Scalars['Cursor']['input']>;
+  before?: InputMaybe<Scalars['Cursor']['input']>;
+  filter?: InputMaybe<FeedbackFilter>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<FeedbackOrderBy>>;
 };
 
 
@@ -410,6 +451,95 @@ export type UuidListFilter = {
   overlaps?: InputMaybe<Array<Scalars['UUID']['input']>>;
 };
 
+export type Feedback = Node & {
+  __typename?: 'feedback';
+  created_at: Scalars['Datetime']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  email?: Maybe<Scalars['String']['output']>;
+  first?: Maybe<Scalars['String']['output']>;
+  id: Scalars['BigInt']['output'];
+  last?: Maybe<Scalars['String']['output']>;
+  /** Globally Unique Record Identifier */
+  nodeId: Scalars['ID']['output'];
+};
+
+export type FeedbackConnection = {
+  __typename?: 'feedbackConnection';
+  edges: Array<FeedbackEdge>;
+  pageInfo: PageInfo;
+};
+
+export type FeedbackDeleteResponse = {
+  __typename?: 'feedbackDeleteResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output'];
+  /** Array of records impacted by the mutation */
+  records: Array<Feedback>;
+};
+
+export type FeedbackEdge = {
+  __typename?: 'feedbackEdge';
+  cursor: Scalars['String']['output'];
+  node: Feedback;
+};
+
+export type FeedbackFilter = {
+  /** Returns true only if all its inner filters are true, otherwise returns false */
+  and?: InputMaybe<Array<FeedbackFilter>>;
+  created_at?: InputMaybe<DatetimeFilter>;
+  description?: InputMaybe<StringFilter>;
+  email?: InputMaybe<StringFilter>;
+  first?: InputMaybe<StringFilter>;
+  id?: InputMaybe<BigIntFilter>;
+  last?: InputMaybe<StringFilter>;
+  nodeId?: InputMaybe<IdFilter>;
+  /** Negates a filter */
+  not?: InputMaybe<FeedbackFilter>;
+  /** Returns true if at least one of its inner filters is true, otherwise returns false */
+  or?: InputMaybe<Array<FeedbackFilter>>;
+};
+
+export type FeedbackInsertInput = {
+  created_at?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['String']['input']>;
+  last?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type FeedbackInsertResponse = {
+  __typename?: 'feedbackInsertResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output'];
+  /** Array of records impacted by the mutation */
+  records: Array<Feedback>;
+};
+
+export type FeedbackOrderBy = {
+  created_at?: InputMaybe<OrderByDirection>;
+  description?: InputMaybe<OrderByDirection>;
+  email?: InputMaybe<OrderByDirection>;
+  first?: InputMaybe<OrderByDirection>;
+  id?: InputMaybe<OrderByDirection>;
+  last?: InputMaybe<OrderByDirection>;
+};
+
+export type FeedbackUpdateInput = {
+  created_at?: InputMaybe<Scalars['Datetime']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  email?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['String']['input']>;
+  last?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type FeedbackUpdateResponse = {
+  __typename?: 'feedbackUpdateResponse';
+  /** Count of the records impacted by the mutation */
+  affectedCount: Scalars['Int']['output'];
+  /** Array of records impacted by the mutation */
+  records: Array<Feedback>;
+};
+
 export type Fest = Node & {
   __typename?: 'fest';
   fest_text?: Maybe<Scalars['JSON']['output']>;
@@ -486,6 +616,7 @@ export type History = Node & {
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']['output'];
   streak?: Maybe<Scalars['BigInt']['output']>;
+  times_listened_today: Scalars['Int']['output'];
   user_id: Scalars['UUID']['output'];
 };
 
@@ -519,6 +650,7 @@ export type HistoryFilter = {
   /** Returns true if at least one of its inner filters is true, otherwise returns false */
   or?: InputMaybe<Array<HistoryFilter>>;
   streak?: InputMaybe<BigIntFilter>;
+  times_listened_today?: InputMaybe<IntFilter>;
   user_id?: InputMaybe<UuidFilter>;
 };
 
@@ -526,6 +658,7 @@ export type HistoryInsertInput = {
   fest_time?: InputMaybe<Scalars['JSON']['input']>;
   max_streak?: InputMaybe<Scalars['BigInt']['input']>;
   streak?: InputMaybe<Scalars['BigInt']['input']>;
+  times_listened_today?: InputMaybe<Scalars['Int']['input']>;
   user_id?: InputMaybe<Scalars['UUID']['input']>;
 };
 
@@ -540,6 +673,7 @@ export type HistoryInsertResponse = {
 export type HistoryOrderBy = {
   max_streak?: InputMaybe<OrderByDirection>;
   streak?: InputMaybe<OrderByDirection>;
+  times_listened_today?: InputMaybe<OrderByDirection>;
   user_id?: InputMaybe<OrderByDirection>;
 };
 
@@ -547,6 +681,7 @@ export type HistoryUpdateInput = {
   fest_time?: InputMaybe<Scalars['JSON']['input']>;
   max_streak?: InputMaybe<Scalars['BigInt']['input']>;
   streak?: InputMaybe<Scalars['BigInt']['input']>;
+  times_listened_today?: InputMaybe<Scalars['Int']['input']>;
   user_id?: InputMaybe<Scalars['UUID']['input']>;
 };
 
@@ -652,10 +787,18 @@ export type CreateFestMutationVariables = Exact<{
 
 export type CreateFestMutation = { __typename?: 'Mutation', insertIntofestCollection?: { __typename?: 'festInsertResponse', records: Array<{ __typename?: 'fest', user_id: any }> } | null };
 
+export type UpdateFestTextMutationVariables = Exact<{
+  userid: Scalars['UUID']['input'];
+  festtext?: InputMaybe<Scalars['JSON']['input']>;
+}>;
+
+
+export type UpdateFestTextMutation = { __typename?: 'Mutation', updatefestCollection: { __typename?: 'festUpdateResponse', affectedCount: number } };
+
 export type GetHistoryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetHistoryQuery = { __typename?: 'Query', historyCollection?: { __typename?: 'historyConnection', edges: Array<{ __typename?: 'historyEdge', node: { __typename?: 'history', user_id: any, streak?: any | null, max_streak?: any | null, fest_time?: any | null } }> } | null };
+export type GetHistoryQuery = { __typename?: 'Query', historyCollection?: { __typename?: 'historyConnection', edges: Array<{ __typename?: 'historyEdge', node: { __typename?: 'history', user_id: any, streak?: any | null, max_streak?: any | null, fest_time?: any | null, times_listened_today: number } }> } | null };
 
 export type CreateHistoryMutationVariables = Exact<{
   userid?: InputMaybe<Scalars['UUID']['input']>;
@@ -666,6 +809,25 @@ export type CreateHistoryMutationVariables = Exact<{
 
 
 export type CreateHistoryMutation = { __typename?: 'Mutation', insertIntohistoryCollection?: { __typename?: 'historyInsertResponse', records: Array<{ __typename?: 'history', user_id: any }> } | null };
+
+export type UpdateHistoryFieldMutationVariables = Exact<{
+  userid: Scalars['UUID']['input'];
+  streak?: InputMaybe<Scalars['BigInt']['input']>;
+  max_streak?: InputMaybe<Scalars['BigInt']['input']>;
+  fest_time?: InputMaybe<Scalars['JSON']['input']>;
+  times_listened_today?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type UpdateHistoryFieldMutation = { __typename?: 'Mutation', updatehistoryCollection: { __typename?: 'historyUpdateResponse', affectedCount: number } };
+
+export type UpdateTimesListenedTodayMutationVariables = Exact<{
+  userid: Scalars['UUID']['input'];
+  times_listened_today: Scalars['Int']['input'];
+}>;
+
+
+export type UpdateTimesListenedTodayMutation = { __typename?: 'Mutation', updatehistoryCollection: { __typename?: 'historyUpdateResponse', affectedCount: number } };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 

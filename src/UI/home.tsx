@@ -11,13 +11,11 @@ import { textToSpeechApi } from '@/services/tos';
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate} from "react-router-dom";
 import Trends from "./trends";
-import { AUTH_TOKEN_STR, CHARS_BEFORE_TEXT, MAX_CHARS_PER_USER } from "@/constants";
+import { CHARS_BEFORE_TEXT, MAX_CHARS_PER_USER, MAX_TIMES_LISTENED_PER_DAY } from "@/constants";
 
 import { useMutation, useQuery } from "@apollo/client";
-import { session } from "passport";
-import { GetFestQuery, GetFestQueryVariables, GetHistoryQuery, GetHistoryQueryVariables } from "@/generated/graphql";
-import { createFest, getFest, updateFestText } from "@/graphql/fest";
-import { updateHistory, getHistory } from "@/graphql/history";
+import { createFest, updateFestText } from "@/graphql/fest";
+import { updateHistory, updateTimesListenedToday} from "@/graphql/history";
 import { useDatabase } from "@/provider/databaseProvider";
 import { useAuth } from "@/provider/authProvider";
 
@@ -35,12 +33,14 @@ function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [updateFestField, { data, loading, error }] = useMutation(updateFestText);
   const [updateHistoryField, { data: dataHistory, loading: loadingHistory, error: errorHistory }] = useMutation(updateHistory);
+  const [updateTimesListened, { data: dataTimesListened, loading: loadingTimesListened, error: errorTimesListened }] = useMutation(updateTimesListenedToday);
   const authApi = useAuth()
   
   const [currentFestPage, setCurrentFestPage] = useState(0)
   const [maxFestPage, setMaxFestPage] = useState(0)
   const [shouldShowSave, setShouldShowSave] = useState(false)
 
+  const [listensToday, setListensToday] = useState(0)
   const [audioUrl, setAudioUrl] = useState('');
   const navigate = useNavigate()
  
@@ -49,24 +49,28 @@ function Home() {
   const {fest, history, user, loading: databaseLoading, error: databaseError, refresh } = useDatabase()
 
   useEffect(() => {
+    refresh()
     if (fest != undefined){
       var fest_texts: string[] = Object.values(JSON.parse(fest?.fest_text))
-
       setMaxFestPage(fest_texts.length)
       setManText(fest_texts)
-      console.log(manText)
-      if (manText.length == 0) {
-        return 
-      }
-      setCharacterLeft(max_chars - manText[currentFestPage].length)
-      console.log(currentFestPage)
-      
     }
+    if (manText.length != 0) {
+      setCharacterLeft(max_chars - manText[currentFestPage].length)
+
+    }
+
+    if (history?.times_listened_today == undefined) {
+      return
+    }
+    console.log("HOW MANY TIMES YOU IN HERE?")
+    setListensToday(history?.times_listened_today)
+
    
   }, [fest, history])
 
   useEffect(() => {
-    console.log(manText)
+
     if (manText.length == 0) {
       return 
     }
@@ -74,38 +78,78 @@ function Home() {
     setMaxFestPage(manText.length)
   }, [currentFestPage])
 
-  async function uploadHistory() {
+  async function uploadHistory(listened: boolean) {
     const now = Date.now()
     const festTimes = JSON.parse(history?.fest_time)
 
+
+   
     const newTimes = festTimes.concat([now])
     const maxStreak = Math.max(history?.max_streak, newTimes.length)
     if (festTimes.length > 0 && 0 == Math.floor((now / (1000 * 3600 * 24))) - Math.floor((festTimes[festTimes.length-1]) / (1000 * 3600 * 24))){
-      return
-    }
+        uploadTimesListened(listened)
+        return
+    } 
       try {
         const val = await updateHistoryField({
           variables: {
               userid: authApi.getToken,
               streak: JSON.stringify(newTimes.length),
               max_streak: JSON.stringify(maxStreak),
-              fest_time: JSON.stringify(newTimes)
+              fest_time: JSON.stringify(newTimes),
+              times_listened_today: JSON.stringify(1)
           },
       });
 
-      refresh()
 
       } catch (error) {
         console.log(error)
+        
         setError('Error trying to upload Manifest text')
       }
+      setListensToday(1)
   }
 
-  const playNoise = async () => {
+  // we already know it's the same day
+  async function uploadTimesListened(listened: boolean) {
+    if (!listened) {
+      return
+    }
+    // if (history?.times_listened_today == undefined) {
+    //   return
+    //  }
+    
+    const timesListened = Math.min(MAX_TIMES_LISTENED_PER_DAY, Number(listensToday)+ (listened ? 1 : 0))
+    setListensToday(timesListened)
+
+    try {
+      const val = await updateTimesListened({
+        variables: {
+            userid: authApi.getToken,
+            times_listened_today: timesListened
+        },
+        
+    });
+    refresh()
+    } catch (e) {
+      setError("Error Uploading Data")
+    }
+
+  
+  }
+
+  const playManifest = async () => {
     setLoading(true)
     uploadFest()
-    uploadHistory()
-    await displayTextToSpeech();
+    uploadHistory(true)
+    console.log(listensToday, "THE LISTENSTODYA")
+    if (listensToday <= 5) {
+      await displayTextToSpeech();
+    } else {
+      setError("You are Limited to 5 Requests per Day")
+      console.log(errorMessage)
+    }
+    
     setLoading(false)
   };
 
@@ -121,10 +165,10 @@ function Home() {
     }
   }
 
-  function playPreview() {
+  function readManifest() {
     setLoading(true)
     uploadFest()
-    uploadHistory()
+    uploadHistory(false)
     setLoading(false)
     navigate("/read-view", { state: { text: manText[currentFestPage] } })
   }
@@ -159,8 +203,6 @@ function Home() {
 
   function addFest() {
     const fest_texts: string[] = manText
-    console.log(typeof(fest_texts))
-    console.log(...fest_texts.slice(0, currentFestPage))
     var newArr = [
       ...fest_texts.slice(0, currentFestPage+1),  
       "",                  
@@ -211,8 +253,8 @@ function Home() {
       </GridItem>
     <GridItem>
     <HStack>
-    <Button loading={isLoading} onClick={playNoise}>Listen</Button>
-    <Button loading={isLoading} onClick={playPreview}>Read</Button>
+    <Button loading={isLoading} onClick={playManifest}>Listen</Button>
+    <Button loading={isLoading} onClick={readManifest}>Read</Button>
     </HStack>
     </GridItem>
     <GridItem>
@@ -242,7 +284,7 @@ function Home() {
             <Textarea value={manText[currentFestPage]} placeholder='Write your manifestation here...' onChange={(e) => updateText(e.target.value)} />
             <FestArea/>
             
-            {error && <Text color='red'>{errorMessage}</Text>}
+            {errorMessage && <Text color='red'>{errorMessage}</Text>}
             
             <HStack>
               <Link href="/how-to"> Learn how</Link>
