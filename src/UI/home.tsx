@@ -116,10 +116,6 @@ function Home() {
     if (!listened) {
       return
     }
-    // if (history?.times_listened_today == undefined) {
-    //   return
-    //  }
-    
     const timesListened = Math.min(MAX_TIMES_LISTENED_PER_DAY, Number(listensToday)+ (listened ? 1 : 0))
     setListensToday(timesListened)
 
@@ -210,6 +206,7 @@ function Home() {
       ...fest_texts.slice(currentFestPage+1)      
     ];
     setManText(newArr)
+    setShouldShowSave(true)
     setCurrentFestPage(currentFestPage+1)
     
     
@@ -234,6 +231,7 @@ function Home() {
     var newText = manText.filter((_: string, i: number) => {
       return i != currentFestPage
     })
+    setShouldShowSave(true)
     setManText(newText)
     setMaxFestPage(maxFestPage-1)
     if (newText.length == currentFestPage) {
