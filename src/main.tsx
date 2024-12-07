@@ -58,7 +58,7 @@ const router = createBrowserRouter(
 createRoot(document.getElementById('root')!).render(
 <ApolloProvider client={client}>
 <AuthProvider>
-  <Provider>
+  <Provider theme={"dark"}>
     
     <StrictMode>
       <RouterProvider router={router} />
