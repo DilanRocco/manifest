@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 import { Spacer, VStack } from '@chakra-ui/react';
 import { Input, Text } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
@@ -9,6 +9,7 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 import { PasswordInput } from '@/components/ui/password-input';
 import ManifestaLogo from '@/assets/manifesta_logo.svg';
 import { useAuth } from '@/provider/authProvider';
+import { affirmationsAPI } from '@/services/affirmations';
 
 export interface FormData {
   email: string;
@@ -27,7 +28,23 @@ const SignInForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [success, setSuccess] = useState<boolean>(false);
+  const [affrimation, setAffirmation] = useState("")
 
+  useEffect(() => {
+    displayAffirmation()
+    
+  }, [])
+
+  async function displayAffirmation() {
+    try {
+      const affirmation = await affirmationsAPI.getRandomAffirmation();
+      setAffirmation(affirmation);
+    } catch (error) {
+      console.error('Failed to get affirmation:', error);
+    }
+  }
+  
+  
   const handleSubmit = async () => {
     setLoading(true);
     setError('');
@@ -57,6 +74,7 @@ const SignInForm = () => {
   return (
     <VStack minW="20rem" >
       <Image src={ManifestaLogo} alt="Manifesta Logo"/>
+      <Text fontStyle="italic">{affrimation}</Text>
       <Spacer />
       <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
       <Field label="Password"><PasswordInput name={"password"} value={formData.password} onChange={handleChange} placeholder="*********"/></Field>

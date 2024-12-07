@@ -106,10 +106,10 @@ const SignupForm = () => {
     <VStack minW="20rem" >
       <Image src={ManifestaLogo} alt="Manifesta Logo"/>
       <Spacer />
-      <HStack>
+      <HStack w='100%'>
         <Field label="First Name"><Input name={"first"} value={formData.first} onChange={handleChange} placeholder="John"/></Field>
         <Field label="Last Name"><Input name={"last"} value={formData.last} onChange={handleChange} placeholder="Smith"/></Field>
-        </HStack>
+      </HStack>
       <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
       <Field label="Password"><PasswordInput name={"password"} value={formData.password} onChange={handleChange} placeholder="*********"/></Field>
       <Field label="Confirm Password"><PasswordInput name={"confirmPassword"} value={formData.confirmPassword} onChange={handleChange} placeholder="*********"/></Field>
