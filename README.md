@@ -55,16 +55,12 @@ No matter why you think manifesting works, it has a positive efffect.
 
 
 # Things to do
--Trend View
--benefits of manifestoins
--tutorial on what to do
--Settings/Logout
--Goals section to list goal / check off goals / progress on goals 
--rate limit this webstite so people 
--Include prompts to guide their thoughts, such as "What are you grateful for today?" or "What is one small action you can take towards your goal?"
--Default prompts
+- clean up tourtial/benefits page
+- fix streaks 
 
--Allow users to set short-term and long-term goals, track their progress, and celebrate milestones
+- Settings/Logout
+- Goals section to list goal / check off goals / progress on goals 
+- include prompts to guide their thoughts, such as "What are you grateful for today?" or "What is one small action you can take towards your goal?" / Default prompts
+- Allow users to set short-term and long-term goals, track their progress, and celebrate milestones
 
-next thing I want to add is the ability to have multiple prompts saved. Almsot like a history of sorts 
 

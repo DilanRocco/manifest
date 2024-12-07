@@ -15,9 +15,10 @@ import { CHARS_BEFORE_TEXT, MAX_CHARS_PER_USER, MAX_TIMES_LISTENED_PER_DAY } fro
 
 import { useMutation, useQuery } from "@apollo/client";
 import { createFest, updateFestText } from "@/graphql/fest";
-import { updateHistory, updateTimesListenedToday} from "@/graphql/history";
+import { updateHistory, updateTimesListenedToday, updateStreak} from "@/graphql/history";
 import { useDatabase } from "@/provider/databaseProvider";
 import { useAuth } from "@/provider/authProvider";
+import { determineStreak } from "./streak";
 
 
 // type Fest  {
@@ -33,6 +34,7 @@ function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [updateFestField, { data, loading, error }] = useMutation(updateFestText);
   const [updateHistoryField, { data: dataHistory, loading: loadingHistory, error: errorHistory }] = useMutation(updateHistory);
+ 
   const [updateTimesListened, { data: dataTimesListened, loading: loadingTimesListened, error: errorTimesListened }] = useMutation(updateTimesListenedToday);
   const authApi = useAuth()
   
@@ -49,7 +51,7 @@ function Home() {
   const {fest, history, user, loading: databaseLoading, error: databaseError, refresh } = useDatabase()
 
   useEffect(() => {
-    refresh()
+
     if (fest != undefined){
       var fest_texts: string[] = Object.values(JSON.parse(fest?.fest_text))
       setMaxFestPage(fest_texts.length)
@@ -65,9 +67,10 @@ function Home() {
     }
     console.log("HOW MANY TIMES YOU IN HERE?")
     setListensToday(history?.times_listened_today)
-
-   
+    
   }, [fest, history])
+
+
 
   useEffect(() => {
 
@@ -77,15 +80,17 @@ function Home() {
     setCharacterLeft(max_chars - manText[currentFestPage].length)
     setMaxFestPage(manText.length)
   }, [currentFestPage])
+  
 
   async function uploadHistory(listened: boolean) {
     const now = Date.now()
-    const festTimes = JSON.parse(history?.fest_time)
+    const festTimes: number[] = JSON.parse(history?.fest_time) ?? []
+    const streak: number = history?.streak ?? 0
+    const newStreak = determineStreak(festTimes, streak) + 1
 
 
-   
     const newTimes = festTimes.concat([now])
-    const maxStreak = Math.max(history?.max_streak, newTimes.length)
+    const maxStreak = Math.max(history?.max_streak, newStreak)
     if (festTimes.length > 0 && 0 == Math.floor((now / (1000 * 3600 * 24))) - Math.floor((festTimes[festTimes.length-1]) / (1000 * 3600 * 24))){
         uploadTimesListened(listened)
         return
@@ -94,7 +99,7 @@ function Home() {
         const val = await updateHistoryField({
           variables: {
               userid: authApi.getToken,
-              streak: JSON.stringify(newTimes.length),
+              streak: newStreak,
               max_streak: JSON.stringify(maxStreak),
               fest_time: JSON.stringify(newTimes),
               times_listened_today: JSON.stringify(1)

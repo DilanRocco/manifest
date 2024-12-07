@@ -50,7 +50,18 @@ export const updateTimesListenedToday = gql(`
             affectedCount
         }
     }
-    `);
+`);
+
+export const updateStreak = gql(`
+    mutation UpdateTimesListenedToday($userid: UUID!, $streak: BigInt) {
+        updatehistoryCollection(
+            filter: { user_id: { eq: $userid } },
+            set: { streak: $streak }
+        ) {
+            affectedCount
+        }
+    }
+`);
     
 
 // export const subscriptionHistory = gql(`

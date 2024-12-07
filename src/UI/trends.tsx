@@ -1,7 +1,7 @@
 import { Heading, HStack, VStack, Text } from "@chakra-ui/react"
-import {  useQuery } from '@apollo/client';
+import {  useMutation, useQuery } from '@apollo/client';
 import { useEffect, useRef, useState } from "react";
-
+ 
 import { getUser } from "@/graphql/user";
 import { User, History }  from "@/generated/graphql"
 import '@/UI/trends.css'
@@ -19,6 +19,9 @@ import {
 }  from 'chart.js';
 import { useDatabase } from "@/provider/databaseProvider";
 import { timeStamp } from "console";
+import { updateHistory } from "@/graphql/history";
+import { useAuth } from "@/provider/authProvider";
+import { determineStreak } from "./streak";
 
 
 ChartJS.register(
@@ -35,13 +38,28 @@ ChartJS.register(
 
 const Trends = () => {
     const {fest, history, user, loading: databaseLoading, error: databaseError, refresh } = useDatabase()
-   
+    const [updateStreakField, { data: dataStreak, loading: loadingStreak, error: errorStreak }] = useMutation(updateHistory);
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const chartRef = useRef<Chart | null>(null);
     const [consistencyScore, setConsistencyScore] = useState(0)
     const [avgHour, setAvgHour] = useState("")
+    const authApi = useAuth()
 
-
+    async function updateStreak() {
+      const festTimes: number[] = JSON.parse(history?.fest_time) ?? []
+      const streak: number = history?.streak ?? 0
+      try {
+        const val = await updateStreakField({
+          variables: {
+              userid: authApi.getToken,
+              streak: determineStreak(festTimes, streak),
+          },
+      });
+      } catch (error) {
+        console.log(error)
+      }
+      refresh()
+    }
     const avgHrToManfiest = (festTimes: number[]) => {
       const hours = festTimes.map(time => {
         return new Date(time).getHours()
@@ -96,7 +114,7 @@ const Trends = () => {
         if (history?.fest_time == undefined) {
           return
         }
-        
+        updateStreak()
         const festTimes = JSON.parse(history?.fest_time)
         if (!canvasRef.current) {
             return
