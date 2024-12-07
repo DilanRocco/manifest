@@ -18,7 +18,7 @@ import { createFest, updateFestText } from "@/graphql/fest";
 import { updateHistory, updateTimesListenedToday, updateStreak} from "@/graphql/history";
 import { useDatabase } from "@/provider/databaseProvider";
 import { useAuth } from "@/provider/authProvider";
-import { determineStreak } from "./streak";
+import { determineMaxStreak, determineStreak } from "./streak";
 
 
 // type Fest  {
@@ -85,12 +85,7 @@ function Home() {
   async function uploadHistory(listened: boolean) {
     const now = Date.now()
     const festTimes: number[] = JSON.parse(history?.fest_time) ?? []
-    const streak: number = history?.streak ?? 0
-    const newStreak = determineStreak(festTimes, streak) + 1
-
-
-    const newTimes = festTimes.concat([now])
-    const maxStreak = Math.max(history?.max_streak, newStreak)
+    const newTimes = festTimes.concat([now])  
     if (festTimes.length > 0 && 0 == Math.floor((now / (1000 * 3600 * 24))) - Math.floor((festTimes[festTimes.length-1]) / (1000 * 3600 * 24))){
         uploadTimesListened(listened)
         return
@@ -99,8 +94,8 @@ function Home() {
         const val = await updateHistoryField({
           variables: {
               userid: authApi.getToken,
-              streak: newStreak,
-              max_streak: JSON.stringify(maxStreak),
+              streak: -4,
+              max_streak: -4,
               fest_time: JSON.stringify(newTimes),
               times_listened_today: JSON.stringify(1)
           },
@@ -112,6 +107,7 @@ function Home() {
         
         setError('Error trying to upload Manifest text')
       }
+      refresh()
       setListensToday(1)
   }
 

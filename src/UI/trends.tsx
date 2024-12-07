@@ -21,7 +21,7 @@ import { useDatabase } from "@/provider/databaseProvider";
 import { timeStamp } from "console";
 import { updateHistory } from "@/graphql/history";
 import { useAuth } from "@/provider/authProvider";
-import { determineStreak } from "./streak";
+import { convertHistoryToGraph, determineMaxStreak, determineStreak } from "./streak";
 
 
 ChartJS.register(
@@ -44,22 +44,9 @@ const Trends = () => {
     const [consistencyScore, setConsistencyScore] = useState(0)
     const [avgHour, setAvgHour] = useState("")
     const authApi = useAuth()
+    const [streak, setStreak] = useState(0)
+    const [maxStreak, setMaxStreak] = useState(0)
 
-    async function updateStreak() {
-      const festTimes: number[] = JSON.parse(history?.fest_time) ?? []
-      const streak: number = history?.streak ?? 0
-      try {
-        const val = await updateStreakField({
-          variables: {
-              userid: authApi.getToken,
-              streak: determineStreak(festTimes, streak),
-          },
-      });
-      } catch (error) {
-        console.log(error)
-      }
-      refresh()
-    }
     const avgHrToManfiest = (festTimes: number[]) => {
       const hours = festTimes.map(time => {
         return new Date(time).getHours()
@@ -72,25 +59,7 @@ const Trends = () => {
 
 
     }
-    const convertHistoryToGraph = (festTimes: number[]) => {
-        var now = new Date();
-        const daySinceEpoch = Math.floor(now.valueOf()/8.64e7)
-        const newTimes = festTimes.map(time => {  
-            return daySinceEpoch - Math.floor((time/8.64e7))
-        })
-        console.log(newTimes)
-        const max = newTimes.reduce((a, b) => Math.max(a, b), -Infinity);
-        let data: number[] = []
-        for (let i = max; i > -1; i--) {
-            if (newTimes.indexOf(i) != -1){
-                (i!=max) ? data.push(data[data.length-1]+1) : data.push(1)
-            } else {
-                data.push(0)
-            }
-            
-        }
-        return data
-    }
+    
     function getDatesFromStartToToday(startTimestamp: number): string[] {
       const startDate = new Date(startTimestamp);
       const today = new Date();
@@ -108,19 +77,20 @@ const Trends = () => {
       return dates;
   }
   
-  
     
       useEffect(() => {
         if (history?.fest_time == undefined) {
           return
         }
-        updateStreak()
+        
         const festTimes = JSON.parse(history?.fest_time)
         if (!canvasRef.current) {
             return
         }
+        setMaxStreak(determineMaxStreak(festTimes))
+        setStreak(determineStreak(festTimes))
+        console.log(streak, "STREWKA")
         const dataPoints = convertHistoryToGraph(festTimes)
-       
         console.log(dataPoints)
         if (festTimes.length == 0) {
           return
@@ -154,9 +124,7 @@ const Trends = () => {
                 ]
               },
             options: {
-             
               responsive: true,
-
             }
     
           })
@@ -174,7 +142,7 @@ const Trends = () => {
         <div className="maincontainer">
             <div className="container">
                 <div className="space">  </div>
-                <div className="streak">{history?.max_streak}</div>
+                <div className="streak">{maxStreak}</div>
             </div>
             <div className="text"> Max Streak </div>
         </div>
@@ -182,7 +150,7 @@ const Trends = () => {
         <div className="maincontainer">
             <div className="container">
                 <div className="space">  </div>
-                <div className="streak">{history?.streak}</div>
+                <div className="streak">{streak}</div>
             </div>
             <div className="text"> Current Streak </div>
         </div>

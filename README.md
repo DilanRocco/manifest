@@ -56,11 +56,11 @@ No matter why you think manifesting works, it has a positive efffect.
 
 # Things to do
 - clean up tourtial/benefits page
-- fix streaks 
+
 
 - Settings/Logout
 - Goals section to list goal / check off goals / progress on goals 
-- include prompts to guide their thoughts, such as "What are you grateful for today?" or "What is one small action you can take towards your goal?" / Default prompts
+- include prompts to guide their thoughts, such as "What are you grateful for today?" or "What is one small action you can take towards your goal?" / Default prompts {https://www.affirmations.dev}
 - Allow users to set short-term and long-term goals, track their progress, and celebrate milestones
 
 
