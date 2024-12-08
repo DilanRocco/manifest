@@ -10,9 +10,11 @@ interface AuthState {
   }
   
   interface AuthContextType extends AuthState {
+    currentEvent: string | null;
     login: (email: string, password: string) => Promise<void>;
     signup: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
+    changePassword: (password: string) => Promise<void>;
     refreshSession: () => Promise<void>;
     getToken: () => string
   }
@@ -30,6 +32,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       isAuthenticated: false,
     });
   
+    const [currentEvent, setCurrentEvent] = useState<string | null>(null);
+
     useEffect(() => {
     const fetchSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -42,6 +46,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     fetchSession()
       const { data: authListener } = supabase.auth.onAuthStateChange(
         async (event, session) => {
+          setCurrentEvent(event);
           setAuthState({
             session,
             user: session?.user ?? null,
@@ -89,6 +94,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       });
     };
 
+    const changePassword = async (passsword: string) => {
+      const { data, error } = await supabase.auth
+      .updateUser({ password: passsword })
+      if (error) throw error
+      setAuthState({
+        session: null,
+        user: null,
+        isAuthenticated: false,
+      });
+    }
+
     const getToken = () => {
         return authState.session?.access_token ?? ""
     }
@@ -106,7 +122,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     };
   
     return (
-      <AuthContext.Provider value={{ ...authState, login, signup, logout, refreshSession, getToken }}>
+      <AuthContext.Provider value={{ currentEvent, ...authState, login, signup, logout, changePassword, refreshSession, getToken }}>
         {children}
       </AuthContext.Provider>
     );
