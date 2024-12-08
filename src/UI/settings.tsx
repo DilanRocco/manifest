@@ -1,6 +1,5 @@
 import {
     Box,
-    Button,
     Input,
     Switch,
     VStack,
@@ -10,6 +9,8 @@ import {
     Text,
     Link,
   } from "@chakra-ui/react";
+
+import { Button } from "@/components/ui/button"
 import { Divider } from "@chakra-ui/layout"
 import { FormControl, FormLabel} from "@chakra-ui/form-control";
 import { useAuth } from "@/provider/authProvider";
@@ -22,7 +23,8 @@ import { createFeedback } from "@/graphql/feedback";
     const auth = useAuth()
     const email = auth.session?.user.email ?? ""
     const [updatePasswordText, setUpdatePasswordText] = useState("")
-    const [feedback] = useState("")
+    const [feedback, setFeedback] = useState("")
+    const [success, setSuccess] = useState<boolean | null>(null)
     const [createFeedbackField, { data, loading, error: ErrorFeedback }] = useMutation(createFeedback);
 
   async function updatePassword() {
@@ -39,11 +41,12 @@ import { createFeedback } from "@/graphql/feedback";
     try {
       await createFeedbackField({
         variables: {
-            userid: auth.getToken,
+            user_id: auth.user?.id,
             email: auth.user?.email,
             description: feedback
         },
     });
+    setSuccess(true)
     } catch (e) {
       console.log(e)
     }
@@ -65,9 +68,10 @@ import { createFeedback } from "@/graphql/feedback";
 
           <FormControl>
             <FormLabel>Your Feedback</FormLabel>
-            <Textarea value={feedback} placeholder="What do you think..." />
+            <Textarea value={feedback} onChange={(e) => setFeedback(e.target.value)} placeholder="What do you think..." />
           </FormControl>
-          <Button colorScheme="green">Submit Feedback</Button>
+          <Button loading={loading} onClick={uploadFeedback} colorScheme="green">Submit Feedback</Button>
+          {success && <Text color="green.400">Thanks for the feedback!</Text>}
           <Text color="red.400">{ErrorFeedback?.message}</Text>
     
           <Button background="red.400" onClick={auth.logout}>Logout</Button>
