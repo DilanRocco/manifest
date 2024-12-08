@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 
   async function updatePassword() {
     try {
-      auth.resetPasswordForEmail(email, "reset-password")
+      await auth.resetPasswordForEmail(email, "reset-password")
       setUpdatePasswordText("Password reset instructions were sent to your email")
     } catch (e) {
       setUpdatePasswordText("There was an error trying to reset your password")
@@ -35,7 +35,7 @@ import { useEffect, useState } from "react";
   }
 
     return (
-      <Box  minW="40vh" minH="100vh" p={8}>
+      <Box  maxW="50vh" minW="50vh" minH="100vh" p={8}>
         <VStack gap={6} align="stretch" maxW="600px" mx="auto">
           <Heading mb={6}>Settings</Heading>
   
