@@ -276,7 +276,12 @@ function Home() {
 
       return (
         <>
-        <Grid templateColumns="repeat(2, 1fr)">
+        <Grid 
+        templateColumns="repeat(2, 1fr)"
+        data-state="open"
+        _open={{
+            animation: "fade-in 300ms ease-in",
+        }}>
           <GridItem>
           <Heading>Trends</Heading>
           <Trends />
