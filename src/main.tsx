@@ -22,6 +22,7 @@ import ReadView from './UI/ReadView'
 import SettingsPage from './UI/settings'
 import { AuthProvider } from './provider/authProvider'
 import { HowToPage } from './UI/how-to'
+import { ResetPasswordPage } from './UI/resetPassword'
 
 
 
@@ -45,6 +46,7 @@ const router = createBrowserRouter(
       <Route path="/login" element={<SignInForm />} />
       <Route path="/benefits" element={<BenefitsPage />} />
       <Route path="/how-to" element={<HowToPage />} />
+      <Route path="/reset-password" element={<ResetPasswordPage />} />
       
       <Route element={<ProtectedRoute/>}>
         <Route path="/trends" element={<Trends />} />

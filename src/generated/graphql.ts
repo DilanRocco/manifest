@@ -616,7 +616,7 @@ export type History = Node & {
   /** Globally Unique Record Identifier */
   nodeId: Scalars['ID']['output'];
   streak?: Maybe<Scalars['BigInt']['output']>;
-  times_listened_today: Scalars['Int']['output'];
+  times_listened_today?: Maybe<Scalars['BigInt']['output']>;
   user_id: Scalars['UUID']['output'];
 };
 
@@ -650,7 +650,7 @@ export type HistoryFilter = {
   /** Returns true if at least one of its inner filters is true, otherwise returns false */
   or?: InputMaybe<Array<HistoryFilter>>;
   streak?: InputMaybe<BigIntFilter>;
-  times_listened_today?: InputMaybe<IntFilter>;
+  times_listened_today?: InputMaybe<BigIntFilter>;
   user_id?: InputMaybe<UuidFilter>;
 };
 
@@ -658,7 +658,7 @@ export type HistoryInsertInput = {
   fest_time?: InputMaybe<Scalars['JSON']['input']>;
   max_streak?: InputMaybe<Scalars['BigInt']['input']>;
   streak?: InputMaybe<Scalars['BigInt']['input']>;
-  times_listened_today?: InputMaybe<Scalars['Int']['input']>;
+  times_listened_today?: InputMaybe<Scalars['BigInt']['input']>;
   user_id?: InputMaybe<Scalars['UUID']['input']>;
 };
 
@@ -681,7 +681,7 @@ export type HistoryUpdateInput = {
   fest_time?: InputMaybe<Scalars['JSON']['input']>;
   max_streak?: InputMaybe<Scalars['BigInt']['input']>;
   streak?: InputMaybe<Scalars['BigInt']['input']>;
-  times_listened_today?: InputMaybe<Scalars['Int']['input']>;
+  times_listened_today?: InputMaybe<Scalars['BigInt']['input']>;
   user_id?: InputMaybe<Scalars['UUID']['input']>;
 };
 
@@ -798,7 +798,7 @@ export type UpdateFestTextMutation = { __typename?: 'Mutation', updatefestCollec
 export type GetHistoryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetHistoryQuery = { __typename?: 'Query', historyCollection?: { __typename?: 'historyConnection', edges: Array<{ __typename?: 'historyEdge', node: { __typename?: 'history', user_id: any, streak?: any | null, max_streak?: any | null, fest_time?: any | null, times_listened_today: number } }> } | null };
+export type GetHistoryQuery = { __typename?: 'Query', historyCollection?: { __typename?: 'historyConnection', edges: Array<{ __typename?: 'historyEdge', node: { __typename?: 'history', user_id: any, streak?: any | null, max_streak?: any | null, fest_time?: any | null, times_listened_today?: any | null } }> } | null };
 
 export type CreateHistoryMutationVariables = Exact<{
   userid?: InputMaybe<Scalars['UUID']['input']>;
@@ -815,7 +815,7 @@ export type UpdateHistoryFieldMutationVariables = Exact<{
   streak?: InputMaybe<Scalars['BigInt']['input']>;
   max_streak?: InputMaybe<Scalars['BigInt']['input']>;
   fest_time?: InputMaybe<Scalars['JSON']['input']>;
-  times_listened_today?: InputMaybe<Scalars['Int']['input']>;
+  times_listened_today?: InputMaybe<Scalars['BigInt']['input']>;
 }>;
 
 
@@ -823,7 +823,7 @@ export type UpdateHistoryFieldMutation = { __typename?: 'Mutation', updatehistor
 
 export type UpdateTimesListenedTodayMutationVariables = Exact<{
   userid: Scalars['UUID']['input'];
-  times_listened_today: Scalars['Int']['input'];
+  times_listened_today?: InputMaybe<Scalars['BigInt']['input']>;
 }>;
 
 

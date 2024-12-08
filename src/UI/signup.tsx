@@ -41,8 +41,7 @@ const SignupForm = () => {
   const navigate = useNavigate()
 
   async function addRowsInDatabase() {
-    const id = authApi.getToken()
-    sessionStorage.setItem("userId", id)
+    const id = authApi.user?.id
     createUserMutation({
       variables: {
         userid: id,
@@ -71,7 +70,7 @@ const SignupForm = () => {
     //e.preventDefault();
     setLoading(true);
     setError('');
-    addRowsInDatabase()
+    
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       setLoading(false);
@@ -80,8 +79,8 @@ const SignupForm = () => {
 
     try {
       const { email, password } = formData;
-      const userId = await authApi.signup(email, password);
-
+      //const userId = await authApi.signup(email, password);
+      addRowsInDatabase()
       setSuccess(true);
       navigate("/")
     } catch (err) {
@@ -90,6 +89,7 @@ const SignupForm = () => {
         setError('An unexpected error occurred');
       }
      finally {
+      
       setLoading(false);
     }
   };
@@ -113,7 +113,7 @@ const SignupForm = () => {
       <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
       <Field label="Password"><PasswordInput name={"password"} value={formData.password} onChange={handleChange} placeholder="*********"/></Field>
       <Field label="Confirm Password"><PasswordInput name={"confirmPassword"} value={formData.confirmPassword} onChange={handleChange} placeholder="*********"/></Field>
-      <Button onClick={handleSubmit}> Sign Up </Button>
+      <Button loading={loading} onClick={handleSubmit}> Sign Up </Button>
       <Link reloadDocument to="/login"> Sign In here.</Link>
       <Outlet />
       {success && (<Text color="green.400"><b>Success!</b></Text>) }

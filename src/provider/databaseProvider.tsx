@@ -28,13 +28,15 @@ export const FestProvider: React.FC<{ children: React.ReactNode }> = ({ children
     historyRefetch();
     userRefetch();
   };
-
+  const festEdge = festData?.festCollection?.edges ?? []
+  const historyEdge = historyData?.historyCollection?.edges ?? []
+  const userEdge = userData?.userCollection?.edges ?? []
   return (
     <FestContext.Provider 
       value={{ 
-        fest: festData?.festCollection?.edges[0].node as Fest,
-        history: historyData?.historyCollection?.edges[0].node as History,
-        user: userData?.userCollection?.edges[0].node as User,
+        fest: (festEdge?.length > 0) ? festEdge[0].node  as Fest : undefined,
+        history: (historyEdge?.length > 0) ? historyEdge[0].node  as History : undefined,
+        user: (userEdge?.length > 0) ? userEdge[0].node  as User : undefined,
         loading: (festLoading || historyLoading || userLoading), 
         error: festError ?? historyError ?? userError,
         refresh: refresh,

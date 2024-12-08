@@ -83,7 +83,7 @@ const Trends = () => {
         if (history?.fest_time == undefined) {
           return
         }
-        
+        refresh()
         const festTimes = JSON.parse(history?.fest_time)
         if (!canvasRef.current) {
             return
