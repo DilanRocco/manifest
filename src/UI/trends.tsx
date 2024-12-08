@@ -1,4 +1,4 @@
-import { Heading, HStack, VStack, Text } from "@chakra-ui/react"
+import { Heading, HStack, VStack, Text, Box } from "@chakra-ui/react"
 import {  useMutation, useQuery } from '@apollo/client';
 import { useEffect, useRef, useState } from "react";
  
@@ -46,6 +46,7 @@ const Trends = () => {
     const authApi = useAuth()
     const [streak, setStreak] = useState(0)
     const [maxStreak, setMaxStreak] = useState(0)
+    const [damagedStreak, setDamagedStreak] = useState(false)
 
     const avgHrToManfiest = (festTimes: number[]) => {
       const hours = festTimes.map(time => {
@@ -91,6 +92,12 @@ const Trends = () => {
         setStreak(determineStreak(festTimes))
         console.log(streak, "STREWKA")
         const dataPoints = convertHistoryToGraph(festTimes)
+        if (dataPoints.length > 1 && dataPoints[dataPoints.length-1] == 0 && dataPoints[dataPoints.length-2] != 0) {
+           setDamagedStreak(true)
+        } else {
+          setDamagedStreak(false)
+        }
+        
         console.log(dataPoints)
         if (festTimes.length == 0) {
           return
@@ -148,10 +155,10 @@ const Trends = () => {
         </div>
 
         <div className="maincontainer">
-            <div className="container">
+            <Box backgroundColor={damagedStreak ? "red.600" : "#F17300"} className="container">
                 <div className="space">  </div>
                 <div className="streak">{streak}</div>
-            </div>
+            </Box>
             <div className="text"> Current Streak </div>
         </div>
         </HStack>
