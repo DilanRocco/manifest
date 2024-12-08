@@ -85,7 +85,7 @@ function Home() {
   async function uploadHistory(listened: boolean) {
     const now = new Date()
     const timeSince = now.getTime()
-    const festTimes: number[] = JSON.parse(history?.fest_time) ?? []
+    const festTimes: number[] = JSON.parse(history?.fest_time ?? [])
     const newTimes = festTimes.concat([timeSince]) 
     const lastFest = new Date((festTimes[festTimes.length-1]))
     if (festTimes.length > 0 && now.getDate() == new Date(lastFest).getDate()) {
