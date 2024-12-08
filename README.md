@@ -38,7 +38,8 @@ No matter why you think manifesting works, it has a positive efffect.
 
 
 ## Teckstack
-- Typescript/React
+- Typescript
+- React
 - Chakra UI
 - Vite
 - Supabase (auth and database)
