@@ -15,12 +15,15 @@ import { FormControl, FormLabel} from "@chakra-ui/form-control";
 import { useAuth } from "@/provider/authProvider";
 import { supabase } from "@/services/client";
 import { useEffect, useState } from "react";
+import { useMutation } from "@apollo/client";
+import { createFeedback } from "@/graphql/feedback";
   
   const SettingsPage = () => {
     const auth = useAuth()
     const email = auth.session?.user.email ?? ""
     const [updatePasswordText, setUpdatePasswordText] = useState("")
-  
+    const [feedback] = useState("")
+    const [createFeedbackField, { data, loading, error: ErrorFeedback }] = useMutation(createFeedback);
 
   async function updatePassword() {
     try {
@@ -30,8 +33,20 @@ import { useEffect, useState } from "react";
       setUpdatePasswordText("There was an error trying to reset your password")
       console.log(e)
     }
-    
-    
+  }
+
+  async function uploadFeedback() {
+    try {
+      await createFeedbackField({
+        variables: {
+            userid: auth.getToken,
+            email: auth.user?.email,
+            description: feedback
+        },
+    });
+    } catch (e) {
+      console.log(e)
+    }
   }
 
     return (
@@ -50,10 +65,10 @@ import { useEffect, useState } from "react";
 
           <FormControl>
             <FormLabel>Your Feedback</FormLabel>
-            <Textarea placeholder="What do you think..." />
+            <Textarea value={feedback} placeholder="What do you think..." />
           </FormControl>
           <Button colorScheme="green">Submit Feedback</Button>
-  
+          <Text color="red.400">{ErrorFeedback?.message}</Text>
     
           <Button background="red.400" onClick={auth.logout}>Logout</Button>
         </VStack>
