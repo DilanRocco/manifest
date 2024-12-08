@@ -118,6 +118,8 @@ import {
             borderColor="purple.500"
             padding={2}
             paddingLeft={4}
+            transition="all .20s ease" 
+              _hover={{ transform: 'scale(1.02)'}}
             >
               I know my perspective is valued at the book club
             </Text>
@@ -129,7 +131,9 @@ import {
             borderLeft="4px solid"
             borderColor="purple.500"
             padding={2}
-            paddingLeft={4}>
+            paddingLeft={4}
+            transition="all .20s ease" 
+              _hover={{ transform: 'scale(1.02)'}}>
                I can get whatever I put my mind towards in my career
             </Text>
             <Text 
@@ -139,7 +143,9 @@ import {
             borderLeft="4px solid"
             borderColor="purple.500"
             padding={2}
-            paddingLeft={4}>
+            paddingLeft={4}
+            transition="all .20s ease" 
+              _hover={{ transform: 'scale(1.02)'}}>
               I am the light of the party in my friend group
             </Text>
           </Box>
@@ -154,7 +160,7 @@ import {
               color="whiteAlpha.900" 
               size="3xl" 
               transition="all .20s ease" 
-              _hover={{ transform: 'scale(1.1)'}}
+              _hover={{ transform: 'scale(1.02)'}}
             > Background </Heading>
           </Box>
   
@@ -203,7 +209,7 @@ import {
   
             <Box>
               <Link
-                href="#"
+                href="/"
                 display="inline-block"
                 mt={4}
                 px={6}
@@ -214,12 +220,9 @@ import {
                 fontWeight="bold"
                 transition="all .20s ease" 
                 _hover={{ 
-                  bg: "purple.700",
-                  textDecoration: "none",
-                  transform: 'scale(1.02)'
+                  transform: 'scale(1.05)',
+                  color:'white',
                 }}
-                // whileHover={{ scale: 1.05 }}
-                // whileTap={{ scale: 0.95 }}
               >
                 Start now!
               </Link>
