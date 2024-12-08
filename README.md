@@ -35,6 +35,15 @@ No matter why you think manifesting works, it has a positive efffect.
 
 
 ## Teckstack
+<p align="center">
+  <img src="/src/assets/typescript.svg" alt="TypeScript Logo" width="100" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="/src/assets/react.svg" alt="React Logo" width="100" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="/src/assets/chakuraui.svg" alt="Chakra UI Logo" width="100" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="/src/assets/vite.svg" alt="Vite Logo" width="100" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="/src/assets/supabase.svg" alt="Supabase Logo" width="100" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="/src/assets/go.svg" alt="Go Logo" width="100" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="/src/assets/googlecloud.svg" alt="Google Cloud Logo" width="100" height="100">
+</p>
 <div style="display: flex; align-items: center; gap: 20px;">
 
   <div>
