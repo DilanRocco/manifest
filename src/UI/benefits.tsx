@@ -108,6 +108,10 @@ const BenefitsPage = () => {
       display="flex" 
       flexDirection="column" 
       alignItems="center"
+      data-state="open"
+      _open={{
+        animation: "fade-in 300ms ease-in",
+      }}
     >
       <VStack gap={8} maxW="container.xl" w="full">
         <Heading 

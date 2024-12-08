@@ -149,7 +149,7 @@ function Home() {
       setError("You are Limited to 5 Requests per Day")
       console.log(errorMessage)
     }
-    
+    setShouldShowSave(false)
     setLoading(false)
   };
 
@@ -170,6 +170,7 @@ function Home() {
     uploadFest()
     uploadHistory(false)
     setLoading(false)
+    setShouldShowSave(false)
     navigate("/read-view", { state: { text: manText[currentFestPage] } })
   }
   
