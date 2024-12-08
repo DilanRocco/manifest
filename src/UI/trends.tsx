@@ -65,7 +65,7 @@ const Trends = () => {
       const startDate = new Date(startTimestamp);
       const today = new Date();
       const dates: string[] = [];
-      const offset = damagedStreak ? 0 : 1
+      const offset = damagedStreak ? -1 : 0
       console.log(offset, "OFFSET")
       today.setDate(today.getDate() + offset);
       startDate.setDate(startDate.getDate());
