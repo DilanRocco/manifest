@@ -14,6 +14,7 @@ interface AuthState {
     login: (email: string, password: string) => Promise<void>;
     signup: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
+    resetPasswordForEmail: (email: string, redirectTo: string) => Promise<void>;
     changePassword: (password: string) => Promise<void>;
     refreshSession: () => Promise<void>;
     getToken: () => string
@@ -104,6 +105,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         isAuthenticated: false,
       });
     }
+    const resetPasswordForEmail = async (email: string, redirectTo: string) => {
+      const {data, error} = await supabase.auth.resetPasswordForEmail(email, {redirectTo: redirectTo})
+      if (error) throw error
+    } 
 
     const getToken = () => {
         return authState.session?.access_token ?? ""
@@ -122,7 +127,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     };
   
     return (
-      <AuthContext.Provider value={{ currentEvent, ...authState, login, signup, logout, changePassword, refreshSession, getToken }}>
+      <AuthContext.Provider value={{ currentEvent, ...authState, login, signup, logout, resetPasswordForEmail, changePassword, refreshSession, getToken }}>
         {children}
       </AuthContext.Provider>
     );

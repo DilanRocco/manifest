@@ -24,7 +24,7 @@ import { useEffect, useState } from "react";
 
   async function updatePassword() {
     try {
-      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {redirectTo: "/reset-password"})
+      auth.resetPasswordForEmail(email, "reset-password")
       setUpdatePasswordText("Password reset instructions were sent to your email")
     } catch (e) {
       setUpdatePasswordText("There was an error trying to reset your password")
@@ -33,24 +33,7 @@ import { useEffect, useState } from "react";
     
     
   }
-  useEffect(() => {
-    supabase.auth.onAuthStateChange(async (event, session) => {
-     if (event == "PASSWORD_RECOVERY") {
-       const newPassword = prompt("What would you like your new password to be?");
-       if (newPassword == undefined) {
-        return undefined
-       }
-       const { data, error } = await supabase.auth
-         .updateUser({ password: newPassword })
 
-       if (data) alert("Password updated successfully!")
-       if (error) alert("There was an error updating your password.")
-     }
-   })
-  }, [])
-
-    
-    //const { colorMode, toggleColorMode } = useColorMode();
     return (
       <Box  minW="40vh" minH="100vh" p={8}>
         <VStack gap={6} align="stretch" maxW="600px" mx="auto">
@@ -58,7 +41,7 @@ import { useEffect, useState } from "react";
   
           <FormControl>
             <FormLabel>Email</FormLabel>
-            <Input disabled={true} type="email" placeholder="your@email.com" value={email}/>
+            <Input disabled={true} type="email" value={email}/>
           </FormControl>
           <Button colorScheme="blue" onClick={updatePassword}>Update Password</Button>
           <Text>{updatePasswordText}</Text>
@@ -67,7 +50,7 @@ import { useEffect, useState } from "react";
 
           <FormControl>
             <FormLabel>Your Feedback</FormLabel>
-            <Textarea placeholder="Tell us what you think..." />
+            <Textarea placeholder="What do you think..." />
           </FormControl>
           <Button colorScheme="green">Submit Feedback</Button>
   
