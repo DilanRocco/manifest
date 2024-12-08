@@ -1,15 +1,17 @@
 export const convertHistoryToGraph = (festTimes: number[]) => {
     const millisecondsPerDay = 8.64e7; // Number of milliseconds in one day
 
-    // Get the current date in local time
+    // Get the current date in local time, but ignore the time of day
     const now = new Date();
-    const currentLocalTime = now.getTime(); // Current time in local time (ms since epoch)
-
-    // Calculate how many days ago each timestamp occurred in local time
+    const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime(); // Start of today
+    
+    // Calculate how many days ago each timestamp occurred
     const newTimes = festTimes.map(time => {
-    const timeDate = new Date(time); // Convert timestamp to local Date
-    const diffMilliseconds = currentLocalTime - timeDate.getTime(); // Difference in ms
-    return Math.floor(diffMilliseconds / millisecondsPerDay); // Convert to days
+        const timeDate = new Date(time); // Convert timestamp to Date object
+        const timeStart = new Date(timeDate.getFullYear(), timeDate.getMonth(), timeDate.getDate()).getTime(); // Start of that day
+        
+        const diffMilliseconds = todayStart - timeStart; // Difference in ms
+        return Math.round(diffMilliseconds / millisecondsPerDay); // Convert to days
     });
 
     

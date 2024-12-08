@@ -15,7 +15,7 @@ import { CHARS_BEFORE_TEXT, MAX_CHARS_PER_USER, MAX_TIMES_LISTENED_PER_DAY } fro
 
 import { useMutation, useQuery } from "@apollo/client";
 import { createFest, updateFestText } from "@/graphql/fest";
-import { updateHistory, updateTimesListenedToday, updateStreak} from "@/graphql/history";
+import { updateHistory, updateTimesListenedToday } from "@/graphql/history";
 import { useDatabase } from "@/provider/databaseProvider";
 import { useAuth } from "@/provider/authProvider";
 import { determineMaxStreak, determineStreak } from "./streak";

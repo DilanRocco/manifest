@@ -67,7 +67,7 @@ const Trends = () => {
       const dates: string[] = [];
 
       today.setDate(today.getDate() + 1);
-      startDate.setDate(startDate.getDate() + 1);
+      startDate.setDate(startDate.getDate());
       while (startDate <= today) {
           const month = startDate.getMonth() + 1; // Months are 0-indexed
           const day = startDate.getDate();
@@ -83,7 +83,7 @@ const Trends = () => {
         if (history?.fest_time == undefined) {
           return
         }
-        refresh()
+        
         const festTimes = JSON.parse(history?.fest_time)
         if (!canvasRef.current) {
             return
