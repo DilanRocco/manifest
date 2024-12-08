@@ -61,12 +61,13 @@ const Trends = () => {
 
     }
     
-    function getDatesFromStartToToday(startTimestamp: number): string[] {
+    function getDatesFromStartToToday(startTimestamp: number, damagedStreak: boolean): string[] {
       const startDate = new Date(startTimestamp);
       const today = new Date();
       const dates: string[] = [];
-
-      today.setDate(today.getDate() + 1);
+      const offset = damagedStreak ? 0 : 1
+      console.log(offset, "OFFSET")
+      today.setDate(today.getDate() + offset);
       startDate.setDate(startDate.getDate());
       while (startDate <= today) {
           const month = startDate.getMonth() + 1; // Months are 0-indexed
@@ -92,19 +93,20 @@ const Trends = () => {
         setStreak(determineStreak(festTimes))
         console.log(streak, "STREWKA")
         const dataPoints = convertHistoryToGraph(festTimes)
+        var damage = false
         if (dataPoints.length > 1 && dataPoints[dataPoints.length-1] == 0 && dataPoints[dataPoints.length-2] != 0) {
-           setDamagedStreak(true)
+          damage = true
         } else {
-          setDamagedStreak(false)
+          damage = false
         }
-        
+        setDamagedStreak(damage)
         console.log(dataPoints)
         if (festTimes.length == 0) {
           return
         }
         const avgTimeToManifest = avgHrToManfiest(festTimes)
         setAvgHour(avgTimeToManifest)
-        const labels = getDatesFromStartToToday(festTimes[0])
+        const labels = getDatesFromStartToToday(festTimes[0], damage)
         setConsistencyScore(Math.round(festTimes.length / labels.length * 100))
         console.log(labels)
         const ctx = canvasRef.current.getContext('2d');
