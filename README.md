@@ -22,9 +22,7 @@ Start to consistently listen to these manifests. Pick a time every day to play t
 
 ## Background
 
-
-The book *Secret* by Rhonda Byrne claims when you manifest your thoughts and  creates a pull similar to gravity  
-
+Manifesting is immersed throughout our culture and is widely recognized. For example, the book *Secret* by Rhonda Byrne is all about manifesting and says that when you manifest, your thoughts traverse into reality to create a gravitational pull for those thoughts to become reality.
 
 In the bible it's states
 > Mark 11:24: “Therefore I tell you, whatever you ask in prayer, believe that you have received it, and it will be yours.”
