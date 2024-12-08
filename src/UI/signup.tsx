@@ -79,7 +79,7 @@ const SignupForm = () => {
 
     try {
       const { email, password } = formData;
-      //const userId = await authApi.signup(email, password);
+      const userId = await authApi.signup(email, password);
       addRowsInDatabase()
       setSuccess(true);
       navigate("/")
