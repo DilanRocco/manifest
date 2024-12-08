@@ -35,8 +35,8 @@ No matter why you think manifesting works, it has a positive efffect.
 
 
 ## Teckstack
-- Typescript ![alt text](/src/assets/typescript.svg) 
-- React
+- Typescript <img src="/src/assets/typescript.svg" alt="SVG Image" width="100" height="100">
+- React <img src="/src/assets/react.svg" alt="SVG Image" width="100" height="100">
 - Chakra UI
 - Vite
 - Supabase (auth and database)
