@@ -22,6 +22,7 @@ import { timeStamp } from "console";
 import { updateHistory } from "@/graphql/history";
 import { useAuth } from "@/provider/authProvider";
 import { convertHistoryToGraph, determineMaxStreak, determineStreak } from "./streak";
+import { start } from "repl";
 
 
 ChartJS.register(
@@ -69,7 +70,10 @@ const Trends = () => {
       console.log(offset, "OFFSET")
       today.setDate(today.getDate() + offset);
       startDate.setDate(startDate.getDate());
+      today.setHours(23, 59, 59, 999);
       while (startDate <= today) {
+          console.log(startDate)
+          console.log(today.setHours(23))
           const month = startDate.getMonth() + 1; // Months are 0-indexed
           const day = startDate.getDate();
           dates.push(`${month}/${day}`);
