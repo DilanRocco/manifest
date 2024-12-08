@@ -35,6 +35,44 @@ No matter why you think manifesting works, it has a positive efffect.
 
 
 ## Teckstack
+<div style="display: flex; align-items: center; gap: 20px;">
+
+  <div>
+    <img src="/src/assets/typescript.svg" alt="TypeScript Logo" width="100" height="100">
+    <p><strong>TypeScript</strong></p>
+  </div>
+
+  <div>
+    <img src="/src/assets/react.svg" alt="React Logo" width="100" height="100">
+    <p><strong>React</strong></p>
+  </div>
+
+  <div>
+    <img src="/src/assets/chakuraui.svg" alt="Chakra UI Logo" width="100" height="100">
+    <p><strong>Chakra UI</strong></p>
+  </div>
+
+  <div>
+    <img src="/src/assets/vite.svg" alt="Vite Logo" width="100" height="100">
+    <p><strong>Vite</strong></p>
+  </div>
+
+  <div>
+    <img src="/src/assets/supabase.svg" alt="Supabase Logo" width="100" height="100">
+    <p><strong>Supabase</strong></p>
+  </div>
+
+  <div>
+    <img src="/src/assets/go.svg" alt="Go Logo" width="100" height="100">
+    <p><strong>Go</strong></p>
+  </div>
+
+  <div>
+    <img src="/src/assets/googlecloud.svg" alt="Google Cloud Logo" width="100" height="100">
+    <p><strong>Google Cloud - TextToSpeech</strong></p>
+  </div>
+
+</div>
 - Typescript <img src="/src/assets/typescript.svg" alt="SVG Image" width="100" height="100">
 <img src="/src/assets/react.svg" alt="SVG Image" width="100" height="100">
 **React**
