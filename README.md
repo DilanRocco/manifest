@@ -35,7 +35,7 @@ No matter why you think manifesting works, it has a positive efffect.
 
 
 ## Teckstack
-- Typescript
+- Typescript ![alt text](/src/assets/typescript.svg) 
 - React
 - Chakra UI
 - Vite
