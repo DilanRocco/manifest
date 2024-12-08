@@ -22,13 +22,12 @@ Start to consistently listen to these manifests. Pick a time every day to play t
 
 ## Background
 
-Manifesting is immersed throughout our culture and is widely recognized. For example, the book *Secret* by Rhonda Byrne is all about manifesting and says that when you manifest, your thoughts traverse into reality to create a gravitational pull for those thoughts to become reality.
+Manifesting is immersed throughout our culture and is widely recognized. For example, the book *Secret* by Rhonda Byrne is all about manifesting and says that when you manifest, your thoughts traverse into reality to create a gravitational pull towards you.
 
 In the bible it's states
 > Mark 11:24: “Therefore I tell you, whatever you ask in prayer, believe that you have received it, and it will be yours.”
 
-
-Or maybe it's just a placebo...
+Many also believe this whole concept is placebo.
 
 
 No matter why you think manifesting works, it has a positive efffect.
