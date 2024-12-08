@@ -56,8 +56,6 @@ No matter why you think manifesting works, it has a positive efffect.
 
 
 # Things to do
-- clean up Learn How page
-- test with new users
 - Goals section to list goal / check off goals / progress on goals / Allow users to set short-term and long-term goals, track their progress, and celebrate milestones
 
 
