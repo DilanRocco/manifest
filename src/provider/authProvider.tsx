@@ -12,7 +12,7 @@ interface AuthState {
   interface AuthContextType extends AuthState {
     currentEvent: string | null;
     login: (email: string, password: string) => Promise<void>;
-    signup: (email: string, password: string) => Promise<void>;
+    signup: (email: string, password: string) => Promise<string>;
     logout: () => Promise<void>;
     resetPasswordForEmail: (email: string, redirectTo: string) => Promise<void>;
     changePassword: (password: string) => Promise<void>;
@@ -71,6 +71,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           user,
           isAuthenticated: true,
         });
+        console.log(user?.id ?? "")
+        return user?.id ?? ""
       };
   
     const login = async (email: string, password: string) => {

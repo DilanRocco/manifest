@@ -40,8 +40,8 @@ const SignupForm = () => {
   const authApi = useAuth()
   const navigate = useNavigate()
 
-  async function addRowsInDatabase() {
-    const id = authApi.user?.id
+  async function addRowsInDatabase(id: string) {
+    console.log(id)
     createUserMutation({
       variables: {
         userid: id,
@@ -79,8 +79,11 @@ const SignupForm = () => {
 
     try {
       const { email, password } = formData;
-      const userId = await authApi.signup(email, password);
-      addRowsInDatabase()
+      const userId = await authApi.signup(email, password)
+      .then((id: string) => {
+        addRowsInDatabase(id)
+      })
+      
       setSuccess(true);
       navigate("/")
     } catch (err) {

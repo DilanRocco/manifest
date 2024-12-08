@@ -39,7 +39,7 @@ function Home() {
   const authApi = useAuth()
   
   const [currentFestPage, setCurrentFestPage] = useState(0)
-  const [maxFestPage, setMaxFestPage] = useState(0)
+  const [maxFestPage, setMaxFestPage] = useState(1)
   const [shouldShowSave, setShouldShowSave] = useState(false)
 
   const [listensToday, setListensToday] = useState(0)
