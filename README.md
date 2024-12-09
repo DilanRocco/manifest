@@ -36,28 +36,39 @@ No matter why you think manifesting works, it has a positive efffect.
 
 ## Teckstack
 <p align="center">
-  <div>
-    <img src="/src/assets/typescript.svg" alt="TypeScript Logo" width="100" height="100">
-    <p><strong>TypeScript</strong></p>
-  </div>
-  <img src="/src/assets/typescript.svg" alt="TypeScript Logo" width="100" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="/src/assets/react.svg" alt="React Logo" width="100" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="/src/assets/chakuraui.svg" alt="Chakra UI Logo" width="100" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="/src/assets/vite.svg" alt="Vite Logo" width="100" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="/src/assets/supabase.svg" alt="Supabase Logo" width="100" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="/src/assets/go.svg" alt="Go Logo" width="100" height="100">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="/src/assets/googlecloud.svg" alt="Google Cloud Logo" width="100" height="100">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="/src/assets/typescript.svg" alt="TypeScript" width="100" height="100"><br>
+        <b>TypeScript</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/react.svg" alt="React" width="100" height="100"><br>
+        <b>React</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/chakraui.svg" alt="Chakra UI" width="100" height="100"><br>
+        <b>Chakra UI</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/vite.svg" alt="Vite" width="100" height="100"><br>
+        <b>Vite</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/supabase.svg" alt="Supabase" width="100" height="100"><br>
+        <b>Supabase</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/go.svg" alt="Go" width="100" height="100"><br>
+        <b>Go</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/googlecloud.svg" alt="Google Cloud" width="100" height="100"><br>
+        <b>Google Cloud</b>
+      </td>
+    </tr>
+  </table>
 </p>
-
-- Typescript <img src="/src/assets/typescript.svg" alt="SVG Image" width="100" height="100">
-<img src="/src/assets/react.svg" alt="SVG Image" width="100" height="100">
-**React**
-<img src="/src/assets/chakuraui.svg" alt="SVG Image" width="100" height="100">   
-Chakra UI
-- Vite
-- Supabase (auth and database)
-- Go (backend language)
-- Google Cloud - TextToSpeech
 
 ## Deployment
 - Vercel  frontend
