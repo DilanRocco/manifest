@@ -39,24 +39,8 @@ No matter why you think manifesting works, it has a positive efffect.
   <table>
     <tr>
       <td align="center">
-        <img src="/src/assets/typescript.svg" alt="TypeScript" width="100" height="100"><br>
-        <b>TypeScript</b>
-      </td>
-      <td align="center">
-        <img src="/src/assets/react.svg" alt="React" width="100" height="100"><br>
-        <b>React</b>
-      </td>
-      <td align="center">
         <img src="/src/assets/chakraui.svg" alt="Chakra UI" width="100" height="100"><br>
         <b>Chakra UI</b>
-      </td>
-      <td align="center">
-        <img src="/src/assets/vite.svg" alt="Vite" width="100" height="100"><br>
-        <b>Vite</b>
-      </td>
-      <td align="center">
-        <img src="/src/assets/supabase.svg" alt="Supabase" width="100" height="100"><br>
-        <b>Supabase</b>
       </td>
       <td align="center">
         <img src="/src/assets/go.svg" alt="Go" width="100" height="100"><br>
@@ -66,6 +50,23 @@ No matter why you think manifesting works, it has a positive efffect.
         <img src="/src/assets/googlecloud.svg" alt="Google Cloud" width="100" height="100"><br>
         <b>Google Cloud</b>
       </td>
+      <td align="center">
+        <img src="/src/assets/react.svg" alt="React" width="100" height="100"><br>
+        <b>React</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/supabase.svg" alt="Supabase" width="100" height="100"><br>
+        <b>Supabase</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/typescript.svg" alt="TypeScript" width="100" height="100"><br>
+        <b>TypeScript</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/vite.svg" alt="Vite" width="100" height="100"><br>
+        <b>Vite</b>
+      </td>
+
     </tr>
   </table>
 </p>
