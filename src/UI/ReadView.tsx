@@ -7,15 +7,25 @@ const ReadView = () => {
     const {fest, history, user, loading: databaseLoading, error: databaseError, refresh } = useDatabase()
     const [manifestText, setManifestText] = useState("")
     const location = useLocation()
-    const text = location.state?.text
+    const [text, setText] = useState("")
+    useEffect(() => {
+        refresh()
+    }, [refresh])
     useEffect(() => {
         if (fest == undefined) {
             return
         }
-        text ?? setManifestText(JSON.parse(fest.fest_text))
+        location.state.text
+        console.log("WE IN HERE")
+        setManifestText(JSON.parse(fest.fest_text))
     },[fest])
 
-    return (<Text textStyle="4xl">{text}</Text>)
+    return (<Text 
+        textStyle="4xl"
+        data-state="open"
+        _open={{
+            animation: "fade-in 300ms ease-in",
+        }}>{location.state.text}</Text>)
 }
 
 export default ReadView

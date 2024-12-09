@@ -72,8 +72,6 @@ const Trends = () => {
       startDate.setDate(startDate.getDate());
       today.setHours(23, 59, 59, 999);
       while (startDate <= today) {
-          console.log(startDate)
-          console.log(today.setHours(23))
           const month = startDate.getMonth() + 1; // Months are 0-indexed
           const day = startDate.getDate();
           dates.push(`${month}/${day}`);

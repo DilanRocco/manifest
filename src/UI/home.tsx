@@ -178,12 +178,14 @@ function Home() {
   async function uploadFest() {
 
     try {
+      console.log(manText)
       const val = await updateFestField({
         variables: {
             userid: authApi.getToken,
             festtext: JSON.stringify(manText),
         },
     });
+    refresh()
     } catch (error) {
       console.log(error)
       setError('Error trying to upload Manifest text')
