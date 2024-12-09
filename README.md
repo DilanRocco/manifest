@@ -87,6 +87,10 @@ No matter why you think manifesting works, it has a positive efffect.
         <b>Cloudflare</b>
       </td>
       <td align="center">
+        <img src="/src/assets/docker.svg" alt="Docker" width="100" height="100"><br>
+        <b>Docker</b>
+      </td>
+      <td align="center">
         <img src="/src/assets/awsiam.svg" alt="IAM" width="100" height="100"><br>
         <b>IAM</b>
       </td>
