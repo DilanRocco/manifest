@@ -75,7 +75,7 @@ No matter why you think manifesting works, it has a positive efffect.
   <table>
     <tr>
       <td align="center">
-        <img src="/src/assets/apigateway.svg" alt="AWS APIGateway" width="100" height="100"><br>
+        <img src="/src/assets/awsapigateway.svg" alt="AWS APIGateway" width="100" height="100"><br>
         <b>AWS APIGateway</b>
       </td>
       <td align="center">
@@ -87,7 +87,7 @@ No matter why you think manifesting works, it has a positive efffect.
         <b>Chakra UI</b>
       </td>
       <td align="center">
-        <img src="/src/assets/aws-iam.svg" alt="IAM" width="100" height="100"><br>
+        <img src="/src/assets/awsiam.svg" alt="IAM" width="100" height="100"><br>
         <b>IAM</b>
       </td>
       <td align="center">
