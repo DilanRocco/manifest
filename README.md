@@ -66,7 +66,6 @@ No matter why you think manifesting works, it has a positive efffect.
         <img src="/src/assets/vite.svg" alt="Vite" width="100" height="100"><br>
         <b>Vite</b>
       </td>
-
     </tr>
   </table>
 </p>
