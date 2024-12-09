@@ -171,6 +171,7 @@ function Home() {
     uploadHistory(false)
     setLoading(false)
     setShouldShowSave(false)
+    refresh()
     navigate("/read-view", { state: { text: manText[currentFestPage] } })
   }
   
