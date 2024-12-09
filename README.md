@@ -71,12 +71,38 @@ No matter why you think manifesting works, it has a positive efffect.
 </p>
 
 ## Deployment
-- Vercel  frontend
-- AWS APIGateway
-- AWS lambda 
-- IAM
-- Resend for SMTP server
-- Cloudflare (manifesting.work)
+<p align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="/src/assets/apigateway.svg" alt="AWS APIGateway" width="100" height="100"><br>
+        <b>AWS APIGateway</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/awslambda.svg" alt="AWS lambda" width="100" height="100"><br>
+        <b>AWS lambda</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/cloudflare.svg" alt="Cloudflare" width="100" height="100"><br>
+        <b>Chakra UI</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/aws-iam.svg" alt="IAM" width="100" height="100"><br>
+        <b>IAM</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/resend.svg" alt="Resend" width="100" height="100"><br>
+        <b>Resend</b>
+      </td>
+      <td align="center">
+        <img src="/src/assets/vercel.svg" alt="Vercel" width="100" height="100"><br>
+        <b>Vercel</b>
+      </td>
+    </tr>
+  </table>
+</p>
+
+
 
 
 # Things to do
