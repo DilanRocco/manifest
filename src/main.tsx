@@ -23,6 +23,7 @@ import SettingsPage from './UI/settings'
 import { AuthProvider } from './provider/authProvider'
 import { HowToPage } from './UI/how-to'
 import { ResetPasswordPage } from './UI/resetPassword'
+import GoalView from './UI/goal-view'
 
 
 
@@ -47,6 +48,7 @@ const router = createBrowserRouter(
       <Route path="/benefits" element={<BenefitsPage />} />
       <Route path="/how-to" element={<HowToPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
+      <Route path="/goals" element={<GoalView />} />
       
       <Route element={<ProtectedRoute/>}>
         <Route path="/trends" element={<Trends />} />
