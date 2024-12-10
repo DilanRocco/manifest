@@ -237,7 +237,7 @@ const GoalView: React.FC = () => {
                   <Box
                     ref={provided.innerRef}
                     {...provided.droppableProps}
-                    w="30%"
+                    w="20vh"
                     p={4}
                     border="1px solid"
                     borderColor="gray.200"
@@ -257,6 +257,7 @@ const GoalView: React.FC = () => {
                             {...provided.dragHandleProps}
                             mb={2}
                             p={3}
+                            color="black"
                             bg="white"
                             boxShadow="md"
                             borderRadius="md"
