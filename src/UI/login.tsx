@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, useEffect } from 'react';
-import { Spacer, VStack } from '@chakra-ui/react';
+import { Heading, Spacer, VStack } from '@chakra-ui/react';
 import { Input, Text } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
@@ -73,7 +73,7 @@ const SignInForm = () => {
 
   return (
     <VStack minW="20rem" >
-      <Image src={ManifestaLogo} alt="Manifesta Logo"/>
+      <Heading size="4xl">Manifest</Heading>
       <Text fontStyle="italic">{affrimation}</Text>
       <Spacer />
       <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
