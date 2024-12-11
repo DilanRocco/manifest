@@ -74,7 +74,11 @@ const SignInForm = () => {
 
   return (
     <VStack minW="20rem" >
+<<<<<<< HEAD
       <Heading size="6xl">{PROJECT_NAME}</Heading>
+=======
+      <Heading>Creator</Heading>
+>>>>>>> d907307 (Remove logo to improve load times)
       <Text fontStyle="italic">{affrimation}</Text>
       <Spacer />
       <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
