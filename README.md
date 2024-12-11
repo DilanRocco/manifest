@@ -11,7 +11,7 @@ Manifesting is listening or reading positive thoughts. You are the one who creat
 - 'I can get whatever I put my mind towards'
 
 
-- 'I know people like me before I even talk to them'
+- 'I know my opinion is valued in the book club meeeting every Wednesday'
 
 
 - 'I am someone who makes people's day better'
