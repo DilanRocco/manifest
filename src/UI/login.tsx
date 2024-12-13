@@ -10,6 +10,7 @@ import { PasswordInput } from '@/components/ui/password-input';
 import ManifestaLogo from '@/assets/manifesta_logo.svg';
 import { useAuth } from '@/provider/authProvider';
 import { affirmationsAPI } from '@/services/affirmations';
+import { PROJECT_NAME } from '@/constants';
 
 export interface FormData {
   email: string;
@@ -73,7 +74,7 @@ const SignInForm = () => {
 
   return (
     <VStack minW="20rem" >
-      <Heading size="4xl">Manifest</Heading>
+      <Heading size="6xl">{PROJECT_NAME}</Heading>
       <Text fontStyle="italic">{affrimation}</Text>
       <Spacer />
       <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>

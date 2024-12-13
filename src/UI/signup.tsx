@@ -107,7 +107,7 @@ const SignupForm = () => {
 
   return (
     <VStack minW="20rem" >
-      <Heading size="4xl">Manifest</Heading>
+      <Heading size="6xl">Manifest</Heading>
       <Spacer />
       <HStack w='100%'>
         <Field label="First Name"><Input name={"first"} value={formData.first} onChange={handleChange} placeholder="John"/></Field>
