@@ -1,4 +1,4 @@
-# manifesta
+# festiva
 
 > A way to *trick* your brain to go from where you are now to where you want to be.
 
