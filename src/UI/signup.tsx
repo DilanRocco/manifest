@@ -13,6 +13,7 @@ import { createFest } from '@/graphql/fest';
 import { Image } from "@chakra-ui/react"
 import ManifestaLogo from '@/assets/manifesta_logo.svg';
 import { useAuth } from '@/provider/authProvider';
+import { PROJECT_NAME } from '@/constants';
 
 export interface FormData {
   first: string;
@@ -107,7 +108,7 @@ const SignupForm = () => {
 
   return (
     <VStack minW="20rem" >
-      <Heading size="6xl">Manifest</Heading>
+      <Heading size="6xl">{PROJECT_NAME}</Heading>
       <Spacer />
       <HStack w='100%'>
         <Field label="First Name"><Input name={"first"} value={formData.first} onChange={handleChange} placeholder="John"/></Field>
