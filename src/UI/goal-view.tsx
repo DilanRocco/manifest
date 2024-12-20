@@ -42,7 +42,6 @@ interface Columns {
   longTerm: Goal[];
 }
 
-// Color palette for labels
 const LABEL_COLORS: Record<LabelKey, string> = {
   work: 'blue',
   personal: 'green',
@@ -71,15 +70,17 @@ const GoalView: React.FC = () => {
   const [editingGoal, setEditingGoal] = useState<Goal & { column: ColumnKey } | null>(null);
   const { open, onOpen, onClose } = useDisclosure();
 
-  const onDragEnd = (result: any) => {
-    if (!result.destination) return;
+  const onDragEnd = (result: DropResult) => {
+    const { source, destination } = result;
+    
+    if (!destination) return;
 
-    const sourceColumn = result.source.droppableId as ColumnKey;
-    const destColumn = result.destination.droppableId as ColumnKey;
+    const sourceColumn = source.droppableId as ColumnKey;
+    const destColumn = destination.droppableId as ColumnKey;
 
     const newColumns = { ...columns };
-    const [removed] = newColumns[sourceColumn].splice(result.source.index, 1);
-    newColumns[destColumn].splice(result.destination.index, 0, removed);
+    const [removed] = newColumns[sourceColumn].splice(source.index, 1);
+    newColumns[destColumn].splice(destination.index, 0, removed);
 
     setColumns(newColumns);
   };
@@ -218,94 +219,111 @@ const GoalView: React.FC = () => {
   );
 
   return (
-      <Box p={8}>
-        <Heading mb={8} textAlign="center">
-          Track your goals
-        </Heading>
-        <Button colorScheme="green" mb={4} onClick={onOpen}>
-          Add New Goal
-        </Button>
+    <Box p={8}>
+      <Heading mb={8} textAlign="center">
+        Track your goals
+      </Heading>
+      <Button colorScheme="green" mb={4} onClick={onOpen}>
+        Add New Goal
+      </Button>
 
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Flex justifyContent="space-between">
-            {(Object.entries(columns) as Array<[ColumnKey, Goal[]]>).map(([columnKey, columnGoals]) => (
-              
-              <Droppable key={columnKey} droppableId={columnKey}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Flex justifyContent="space-between">
+          {(Object.entries(columns) as [ColumnKey, Goal[]][]).map(([columnId, goals]) => (
+            <Droppable key={columnId} droppableId={columnId}>
+              {(provided, snapshot) => (
+                <Box
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  w="300px"
+                  minH="400px"
+                  p={4}
+                  border="1px solid"
+                  borderColor={snapshot.isDraggingOver ? "blue.200" : "gray.200"}
+                  borderRadius="md"
+                  bg={snapshot.isDraggingOver ? "gray.50" : "white"}
+                  transition="background-color 0.2s ease, border-color 0.2s ease"
+                  position="relative"
+                >
+                  <Heading size="md" mb={4} textTransform="capitalize">
+                    {columnId.replace(/([A-Z])/g, ' $1')}
+                  </Heading>
 
-                {(provided) => (
-                  
-                  <Box
-                    ref={provided.innerRef}
-                    {...provided.droppableProps}
-                    w="20vh"
-                    p={4}
-                    border="1px solid"
-                    borderColor="gray.200"
-                    borderRadius="md"
-                  >
-                    {columnKey}
-                    <Heading size="md" mb={4} textTransform="capitalize">
-                      {columnKey.replace(/([A-Z])/g, ' $1')}
-                    </Heading>
-                  
-                    {columnGoals.map((goal, index) => (
-                      <Draggable key={goal.id} draggableId={goal.id} index={index}>
-                        {(provided) => (
-                          <Box
-                            ref={provided.innerRef}
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            mb={2}
-                            p={3}
-                            color="black"
-                            bg="white"
-                            boxShadow="md"
-                            borderRadius="md"
-                          >
-                            <Flex justifyContent="space-between" alignItems="center">
-                              <VStack align="start" gap={2} w="full">
-                                <Box>{goal.text}</Box>
-                                <Flex wrap="wrap" gap={2}>
-                                  {goal.labels.map((label) => (
-                                    <Tag key={label} size="sm" colorScheme={LABEL_COLORS[label]}>
-                                      {label}
-                                    </Tag>
-                                  ))}
-                                </Flex>
-                              </VStack>
-                              <Flex direction="column">
-                                <Button
-                                  size="xs"
-                                  colorScheme="blue"
-                                  mb={1}
-                                  onClick={() => editGoal(goal, columnKey)}
-                                >
-                                  Edit
-                                </Button>
-                                <Button
-                                  size="xs"
-                                  colorScheme="red"
-                                  onClick={() => deleteGoal(columnKey, goal.id)}
-                                >
-                                  Delete
-                                </Button>
+                  {goals.map((goal, index) => (
+                    <Draggable key={goal.id} draggableId={goal.id} index={index}>
+                      {(provided, snapshot) => (
+                        <Box
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          mb={2}
+                          p={3}
+                          bg={snapshot.isDragging ? "blue.50" : "white"}
+                          boxShadow={snapshot.isDragging ? "lg" : "md"}
+                          borderRadius="md"
+                          border="1px solid"
+                          borderColor={snapshot.isDragging ? "blue.200" : "transparent"}
+                          transform={`${provided.draggableProps.style?.transform}`}
+                          transition={snapshot.isDragging 
+                            ? undefined 
+                            : "box-shadow 0.2s ease, border-color 0.2s ease"}
+                          _hover={{
+                            boxShadow: "lg",
+                            borderColor: "blue.100"
+                          }}
+                          userSelect="none"
+                          position={snapshot.isDragging ? "relative" : "relative"}
+                          zIndex={snapshot.isDragging ? 999 : 1}
+                        >
+                          <Flex justifyContent="space-between" alignItems="center">
+                            <VStack align="start" gap={2} flex={1}>
+                              <Box>{goal.text}</Box>
+                              <Flex wrap="wrap" gap={2}>
+                                {goal.labels.map((label) => (
+                                  <Tag 
+                                    key={label} 
+                                    colorScheme={LABEL_COLORS[label]} 
+                                    size="sm"
+                                    userSelect="none"
+                                  >
+                                    {label}
+                                  </Tag>
+                                ))}
                               </Flex>
+                            </VStack>
+                            <Flex direction="column">
+                              <Button
+                                size="xs"
+                                colorScheme="blue"
+                                mb={1}
+                                onClick={() => editGoal(goal, columnId)}
+                              >
+                                Edit
+                              </Button>
+                              <Button
+                                size="xs"
+                                colorScheme="red"
+                                onClick={() => deleteGoal(columnId, goal.id)}
+                              >
+                                Delete
+                              </Button>
                             </Flex>
-                          </Box>
-                        )}
-                      </Draggable>
-                    ))}
-                    {provided.placeholder}
-                  </Box>
-                )}
-              </Droppable>
-            ))}
-          </Flex>
-        </DragDropContext>
-
-        {renderGoalModal()}
-      </Box>
+                          </Flex>
+                        </Box>
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </Box>
+              )}
+            </Droppable>
+          ))}
+        </Flex>
+      </DragDropContext>
+      {renderGoalModal()}
+    </Box>
   );
 };
+
 
 export default GoalView;
