@@ -1,10 +1,12 @@
 import { useQuery, useMutation } from '@apollo/client';
 import { Goal, Columns, ColumnKey } from '../types/goals';
 import { GET_GOALS, CREATE_GOAL, UPDATE_GOAL, DELETE_GOAL } from '../graphql/goals';
+import { useAuth } from '@/provider/authProvider';
 
-export const useGoals = (userId: string) => {
+export const useGoals = () => {
+  const authId = useAuth().user?.id
   const { data, loading, error, refetch } = useQuery(GET_GOALS, {
-    variables: { userid: userId },
+    variables: { userid: authId },
     fetchPolicy: 'cache-and-network'
   });
 
@@ -25,13 +27,15 @@ export const useGoals = (userId: string) => {
   };
 
   const createGoal = async (text: string, tags: string[], color: String, type: ColumnKey) => {
+    console.log(authId)
+    console.log(tags)
     try {
       await createGoalMutation({
         variables: {
-          userid: userId,
+          userid: authId,
           text:   text,
           type:   type,
-          tags:   tags,
+          tags:   JSON.stringify(tags),
           color:  color,
         }
       });
@@ -47,7 +51,7 @@ export const useGoals = (userId: string) => {
       await updateGoalMutation({
         variables: {
           id: goalId,
-          userid: userId,
+          userid: authId,
           ...updates
         }
       });
@@ -63,7 +67,7 @@ export const useGoals = (userId: string) => {
       await deleteGoalMutation({
         variables: {
           id: goalId,
-          userid: userId
+          userid: authId
         }
       });
       refetch();
@@ -72,8 +76,30 @@ export const useGoals = (userId: string) => {
       throw error;
     }
   };
-  const goals = data?.goalsCollection?.edges?.map((edge: { node: any; }) => edge.node) ?? [];
-  const columns = organizeGoalsByColumn(goals);
+
+  var goals = data?.goalsCollection?.edges?.map((edge: { node: any; }) => edge.node) ?? [];
+  var newGoals = goals;
+  
+  if (goals.length > 0) {
+    newGoals = goals.map((g: Goal) => {
+      try {
+        return {
+          ...g,
+          tags: typeof g.tags === 'string' ? JSON.parse(g.tags) : g.tags
+        };
+      } catch (error) {
+        console.error(`Error parsing tags for goal:`, error);
+        return {
+          ...g,
+          tags: []
+        };
+      }
+    });
+  }
+  
+  
+  
+  const columns = organizeGoalsByColumn(newGoals);
 
   return {
     columns,

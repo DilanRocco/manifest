@@ -48,13 +48,14 @@ const router = createBrowserRouter(
       <Route path="/benefits" element={<BenefitsPage />} />
       <Route path="/how-to" element={<HowToPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
-      <Route path="/goals" element={<GoalView />} />
+     
       
       <Route element={<ProtectedRoute/>}>
+        <Route path="" element={<Home />} />
+        <Route path="/read-view" element={<ReadView />} />
+        <Route path="/goals" element={<GoalView />} />
         <Route path="/trends" element={<Trends />} />
         <Route path="/settings" element={<SettingsPage />} />
-        <Route path="/read-view" element={<ReadView />} />
-        <Route path="" element={<Home />} />
       </Route>
     </Route>
   )

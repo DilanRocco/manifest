@@ -30,8 +30,8 @@ import { useGoals } from '@/hooks/useGoals';
 import { LABEL_COLORS } from '@/constants/goals';
 import { ColumnKey, Goal, LabelKey, NewGoal } from '@/types/goals';
 
-export const GoalView: React.FC<{ userId: string }> = ({ userId }) => {
-  const { columns, loading, createGoal, updateGoal, deleteGoal } = useGoals(userId);
+export const GoalView: React.FC = () => {
+  const { columns, loading, createGoal, updateGoal, deleteGoal } = useGoals();
   const [newGoal, setNewGoal] = useState<NewGoal>({
     text: '',
     labels: [],
@@ -54,7 +54,8 @@ export const GoalView: React.FC<{ userId: string }> = ({ userId }) => {
 
   const handleAddGoal = async () => {
     if (!newGoal.text) return;
-    await createGoal(newGoal.text, newGoal.labels, newGoal.column);
+    console.log(newGoal)
+    await createGoal(newGoal.text, newGoal.labels, "#FFFFFF", newGoal.column);
     setNewGoal({ text: '', labels: [], column: 'shortTerm' });
     onClose();
   };

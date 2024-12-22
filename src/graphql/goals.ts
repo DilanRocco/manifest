@@ -22,7 +22,7 @@ export const CREATE_GOAL = gql(`
     $userid: UUID!,
     $text: String!,
     $type: String!,
-    $tags: String!,
+    $tags: JSONB!,
     $color: String!
   ) {
     insertIntogoalsCollection(
@@ -47,7 +47,7 @@ mutation UpdateGoal(
     $userid: UUID!,
     $text: String!,
     $type: String!,
-    $tags: String!,
+    $tags: JSONB!,
     $color: String!
   ) {
     updategoalsCollection(
