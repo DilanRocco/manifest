@@ -239,7 +239,8 @@ export const GoalView: React.FC = () => {
                                 size="xs"
                                 colorScheme="blue"
                                 mb={1}
-                                onClick={() => console.log("not implemented yet")}
+                                onClick={() => {setEditingGoal({ ...goal, column: columnId })
+                                        onOpen()}}
                               >
                                 Edit
                               </Button>
