@@ -7,8 +7,9 @@ export const GET_GOALS = gql(`
         node {
           id
           text
-          labels
-          column_type
+          type
+          tags
+          color
           created_at
         }
       }
@@ -20,15 +21,17 @@ export const CREATE_GOAL = gql(`
   mutation CreateGoal(
     $userid: UUID!,
     $text: String!,
-    $labels: JSON!,
-    $column_type: String!
+    $type: String!,
+    $tags: String!,
+    $color: String!
   ) {
     insertIntogoalsCollection(
       objects: [{
         user_id: $userid,
         text: $text,
-        labels: $labels,
-        column_type: $column_type
+        type: $type,
+        tags: $tags,
+        color: $color
       }]
     ) {
       records {
@@ -42,9 +45,10 @@ export const UPDATE_GOAL = gql(`
   mutation UpdateGoal(
     $id: String!,
     $userid: UUID!,
-    $text: String,
-    $labels: JSON,
-    $column_type: String
+    $text: String!,
+    $type: String!,
+    $tags: String!,
+    $color: String!
   ) {
     updategoalsCollection(
       filter: { 
@@ -52,9 +56,10 @@ export const UPDATE_GOAL = gql(`
         user_id: { eq: $userid }
       },
       set: {
-        text: $text,
-        labels: $labels,
-        column_type: $column_type
+         $text:  $text!,
+         $type:  $type!,
+         $tags:  $tags!,
+         $color: $color!
       }
     ) {
       affectedCount
