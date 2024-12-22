@@ -26,125 +26,58 @@ import {
 } from '@chakra-ui/modal'
 
 import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea/dnd';
+import { useGoals } from '@/hooks/useGoals';
+import { LABEL_COLORS } from '@/constants/goals';
+import { ColumnKey, Goal, LabelKey, NewGoal } from '@/types/goals';
 
-type ColumnKey = 'shortTerm' | 'mediumTerm' | 'longTerm';
-type LabelKey = 'work' | 'personal' | 'health' | 'finance' | 'education';
-
-interface Goal {
-  id: string;
-  text: string;
-  labels: LabelKey[];
-}
-
-interface Columns {
-  shortTerm: Goal[];
-  mediumTerm: Goal[];
-  longTerm: Goal[];
-}
-
-const LABEL_COLORS: Record<LabelKey, string> = {
-  work: 'blue',
-  personal: 'green',
-  health: 'red',
-  finance: 'purple',
-  education: 'orange',
-};
-
-const GoalView: React.FC = () => {
-  const [columns, setColumns] = useState<Columns>({
-    shortTerm: [],
-    mediumTerm: [],
-    longTerm: [],
-  });
-
-  const [newGoal, setNewGoal] = useState<{
-    text: string;
-    labels: LabelKey[];
-    column: ColumnKey;
-  }>({
+export const GoalView: React.FC<{ userId: string }> = ({ userId }) => {
+  const { columns, loading, createGoal, updateGoal, deleteGoal } = useGoals(userId);
+  const [newGoal, setNewGoal] = useState<NewGoal>({
     text: '',
     labels: [],
     column: 'shortTerm',
   });
-
   const [editingGoal, setEditingGoal] = useState<Goal & { column: ColumnKey } | null>(null);
   const { open, onOpen, onClose } = useDisclosure();
 
-  const onDragEnd = (result: DropResult) => {
-    const { source, destination } = result;
-    
+  const onDragEnd = async (result: DropResult) => {
+    const { source, destination, draggableId } = result;
     if (!destination) return;
 
     const sourceColumn = source.droppableId as ColumnKey;
     const destColumn = destination.droppableId as ColumnKey;
 
-    const newColumns = { ...columns };
-    const [removed] = newColumns[sourceColumn].splice(source.index, 1);
-    newColumns[destColumn].splice(destination.index, 0, removed);
-
-    setColumns(newColumns);
+    if (sourceColumn !== destColumn) {
+      await updateGoal(draggableId, { type: destColumn });
+    }
   };
 
-  const addGoal = () => {
+  const handleAddGoal = async () => {
     if (!newGoal.text) return;
-
-    const goalToAdd: Goal = {
-      id: `goal-${Date.now()}`,
-      text: newGoal.text,
-      labels: newGoal.labels,
-    };
-
-    setColumns((prev) => ({
-      ...prev,
-      [newGoal.column]: [...prev[newGoal.column], goalToAdd],
-    }));
-
+    await createGoal(newGoal.text, newGoal.labels, newGoal.column);
     setNewGoal({ text: '', labels: [], column: 'shortTerm' });
     onClose();
   };
 
-  const deleteGoal = (columnKey: ColumnKey, goalId: string) => {
-    setColumns((prev) => ({
-      ...prev,
-      [columnKey]: prev[columnKey].filter((goal) => goal.id !== goalId),
-    }));
-  };
-
-  const editGoal = (goal: Goal, columnKey: ColumnKey) => {
-    setEditingGoal({ ...goal, column: columnKey });
-    onOpen();
-  };
-
-  const updateGoal = () => {
+  const handleUpdateGoal = async () => {
     if (!editingGoal) return;
-
-    setColumns((prev) => {
-      const newColumns = { ...prev };
-      const columnGoals = newColumns[editingGoal.column];
-      const index = columnGoals.findIndex((g) => g.id === editingGoal.id);
-
-      if (index !== -1) {
-        columnGoals[index] = {
-          id: editingGoal.id,
-          text: editingGoal.text,
-          labels: editingGoal.labels,
-        };
-      }
-
-      return newColumns;
+    await updateGoal(editingGoal.id, {
+      text: editingGoal.text,
+      tags: editingGoal.tags,
+      type: editingGoal.column
     });
-
     onClose();
     setEditingGoal(null);
   };
 
+ 
   const toggleLabel = (label: LabelKey) => {
     if (editingGoal) {
       setEditingGoal((prev) => {
         if (!prev) return null;
-        const newLabels = prev.labels.includes(label)
-          ? prev.labels.filter((l) => l !== label)
-          : [...prev.labels, label];
+        const newLabels = prev.tags.includes(label)
+          ? prev.tags.filter((l) => l !== label)
+          : [...prev.tags, label];
         return { ...prev, labels: newLabels };
       });
     } else {
@@ -196,7 +129,7 @@ const GoalView: React.FC = () => {
                 cursor="pointer"
                 onClick={() => toggleLabel(label)}
                 variant={
-                  (editingGoal ? editingGoal.labels : newGoal.labels).includes(label)
+                  (editingGoal ? editingGoal.tags : newGoal.labels).includes(label)
                     ? 'solid'
                     : 'outline'
                 }
@@ -207,7 +140,7 @@ const GoalView: React.FC = () => {
           </Flex>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={editingGoal ? updateGoal : addGoal}>
+          <Button colorScheme="blue" mr={3} onClick={editingGoal ? handleUpdateGoal : handleAddGoal}>
             {editingGoal ? 'Update' : 'Add'}
           </Button>
           <Button variant="ghost" onClick={onClose}>
@@ -288,7 +221,7 @@ const GoalView: React.FC = () => {
                             <VStack align="start" gap={2} flex={1}>
                               <Box color={'black'}>{goal.text}</Box>
                               <Flex wrap="wrap" gap={2}>
-                                {goal.labels.map((label) => (
+                                {goal.tags.map((label) => (
                                   <Tag 
                                     key={label} 
                                     colorScheme={LABEL_COLORS[label]} 
@@ -305,14 +238,14 @@ const GoalView: React.FC = () => {
                                 size="xs"
                                 colorScheme="blue"
                                 mb={1}
-                                onClick={() => editGoal(goal, columnId)}
+                                onClick={() => console.log("not implemented yet")}
                               >
                                 Edit
                               </Button>
                               <Button
                                 size="xs"
                                 colorScheme="red"
-                                onClick={() => deleteGoal(columnId, goal.id)}
+                                onClick={() => deleteGoal(goal.id)}
                               >
                                 Delete
                               </Button>

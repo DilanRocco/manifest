@@ -71,4 +71,15 @@ export const useGoals = (userId: string) => {
       throw error;
     }
   };
-}
+  const goals = data?.goalsCollection?.edges?.map((edge: { node: any; }) => edge.node) ?? [];
+  const columns = organizeGoalsByColumn(goals);
+
+  return {
+    columns,
+    loading,
+    error,
+    createGoal,
+    updateGoal,
+    deleteGoal
+  };
+};

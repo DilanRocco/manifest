@@ -4,9 +4,10 @@ export type LabelKey = 'work' | 'personal' | 'health' | 'finance' | 'education';
 export interface Goal {
   id: string;
   text: string;
-  labels: LabelKey[];
-  user_id: string;  // Added for Supabase
-  column_type: ColumnKey;  // Added for Supabase
+  tags: LabelKey[];
+  user_id: string; 
+  type: ColumnKey;
+  color: String 
   created_at?: string;
 }
 
