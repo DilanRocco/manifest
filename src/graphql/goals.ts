@@ -1,89 +1,76 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
-export const getGoalsForUser = gql(`
-    query getGoals {
-        historyCollection{
-            edges {
-                node {
-                    user_id
-                    type
-                    text
-                    tags
-                    color
-                }
-            }
+export const GET_GOALS = gql(`
+  query GetGoals($userid: UUID!) {
+    goalsCollection(filter: { user_id: { eq: $userid } }) {
+      edges {
+        node {
+          id
+          text
+          labels
+          column_type
+          created_at
         }
+      }
     }
-`)
+  }
+`);
 
-export const createGoals = gql(`
-    mutation CreateGoals($userid: UUID, $text: String, $type: String, $tags: String, $color: String) {
-        insertIntohistoryCollection(objects: 
-         [{user_id: $userid,
-           text: $text, 
-           type: $type, 
-           tags: $tags, 
-           color: $color}]) {
-        records {
-          user_id
-        }
+export const CREATE_GOAL = gql(`
+  mutation CreateGoal(
+    $userid: UUID!,
+    $text: String!,
+    $labels: JSON!,
+    $column_type: String!
+  ) {
+    insertIntogoalsCollection(
+      objects: [{
+        user_id: $userid,
+        text: $text,
+        labels: $labels,
+        column_type: $column_type
+      }]
+    ) {
+      records {
+        id
+      }
     }
-    }
-`)
+  }
+`);
 
-export const updateGoalText = gql(`
-    mutation UpdateGoalText($userid: UUID!, $id: String!, $text: String!) {
-      updategoalsCollection(
-        filter: { 
-          user_id: { eq: $userid },
-          id: { eq: $id }
-        },
-        set: { text: $text }
-      ) {
-        affectedCount
+export const UPDATE_GOAL = gql(`
+  mutation UpdateGoal(
+    $id: String!,
+    $userid: UUID!,
+    $text: String,
+    $labels: JSON,
+    $column_type: String
+  ) {
+    updategoalsCollection(
+      filter: { 
+        id: { eq: $id },
+        user_id: { eq: $userid }
+      },
+      set: {
+        text: $text,
+        labels: $labels,
+        column_type: $column_type
       }
+    ) {
+      affectedCount
     }
-  `);
-  
-  export const updateGoalType = gql(`
-    mutation UpdateGoalType($userid: UUID!, $id: String!, $type: String!) {
-      updategoalsCollection(
-        filter: { 
-          user_id: { eq: $userid },
-          id: { eq: $id }
-        },
-        set: { type: $type }
-      ) {
-        affectedCount
+  }
+`);
+
+export const DELETE_GOAL = gql(`
+  mutation DeleteGoal($id: String!, $userid: UUID!) {
+    deleteFromgoalsCollection(
+      filter: { 
+        id: { eq: $id },
+        user_id: { eq: $userid }
       }
+    ) {
+      affectedCount
     }
-  `);
-  
-  export const updateGoalTags = gql(`
-    mutation UpdateGoalTags($userid: UUID!, $id: String!, $tags: String!) {
-      updategoalsCollection(
-        filter: { 
-          user_id: { eq: $userid },
-          id: { eq: $id }
-        },
-        set: { tags: $tags }
-      ) {
-        affectedCount
-      }
-    }
-  `);
-  
-  export const updateGoalColor = gql(`
-    mutation UpdateGoalColor($userid: UUID!, $id: String!, $color: String!) {
-      updategoalsCollection(
-        filter: { 
-          user_id: { eq: $userid },
-          id: { eq: $id }
-        },
-        set: { color: $color }
-      ) {
-        affectedCount
-      }
-    }
-  `);
-  
+  }
+`);

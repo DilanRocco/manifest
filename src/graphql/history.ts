@@ -52,24 +52,3 @@ export const updateTimesListenedToday = gql(`
     }
 `);
 
-// export const updateStreak = gql(`
-//     mutation UpdateTimesListenedToday($userid: UUID!, $streak: BigInt) {
-//         updatehistoryCollection(
-//             filter: { user_id: { eq: $userid } },
-//             set: { streak: $streak }
-//         ) {
-//             affectedCount
-//         }
-//     }
-// `);
-    
-
-// export const subscriptionHistory = gql(`
-//     subscription OnCommentAdded($postID: ID!) {
-//     commentAdded(postID: $postID) {
-//       id
-//       content
-//     }
-//   }
-
-//     `)

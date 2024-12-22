@@ -230,6 +230,17 @@ const GoalView: React.FC = () => {
       <DragDropContext onDragEnd={onDragEnd}>
         <Flex justifyContent="space-between">
           {(Object.entries(columns) as [ColumnKey, Goal[]][]).map(([columnId, goals]) => (
+            <Box>
+            <Heading 
+              borderRadius={10}
+              background={'purple.400'}
+              padding={4}
+              size="md"  
+              textTransform="capitalize" 
+              color={'black'}>
+              
+              {columnId.replace(/([A-Z])/g, ' $1')}
+              </Heading>
             <Droppable key={columnId} droppableId={columnId}>
               {(provided, snapshot) => (
                 <Box
@@ -245,9 +256,7 @@ const GoalView: React.FC = () => {
                   transition="background-color 0.2s ease, border-color 0.2s ease"
                   position="relative"
                 >
-                  <Heading size="md" mb={4} textTransform="capitalize">
-                    {columnId.replace(/([A-Z])/g, ' $1')}
-                  </Heading>
+
 
                   {goals.map((goal, index) => (
                     <Draggable key={goal.id} draggableId={goal.id} index={index}>
@@ -277,7 +286,7 @@ const GoalView: React.FC = () => {
                         >
                           <Flex justifyContent="space-between" alignItems="center">
                             <VStack align="start" gap={2} flex={1}>
-                              <Box>{goal.text}</Box>
+                              <Box color={'black'}>{goal.text}</Box>
                               <Flex wrap="wrap" gap={2}>
                                 {goal.labels.map((label) => (
                                   <Tag 
@@ -317,6 +326,7 @@ const GoalView: React.FC = () => {
                 </Box>
               )}
             </Droppable>
+            </Box>
           ))}
         </Flex>
       </DragDropContext>
