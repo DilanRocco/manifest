@@ -14,7 +14,7 @@ export const useGoals = (userId: string) => {
 
   const organizeGoalsByColumn = (goals: Goal[]): Columns => {
     return goals.reduce((acc: Columns, goal) => {
-      const column = goal.column_type;
+      const column = goal.type;
       acc[column].push(goal);
       return acc;
     }, {
@@ -24,14 +24,15 @@ export const useGoals = (userId: string) => {
     });
   };
 
-  const createGoal = async (text: string, labels: string[], column: ColumnKey) => {
+  const createGoal = async (text: string, tags: string[], color: String, type: ColumnKey) => {
     try {
       await createGoalMutation({
         variables: {
           userid: userId,
-          text,
-          labels,
-          column_type: column
+          text:   text,
+          type:   type,
+          tags:   tags,
+          color:  color,
         }
       });
       refetch();

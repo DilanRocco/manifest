@@ -42,8 +42,8 @@ export const CREATE_GOAL = gql(`
 `);
 
 export const UPDATE_GOAL = gql(`
-  mutation UpdateGoal(
-    $id: String!,
+mutation UpdateGoal(
+    $id: UUID!,
     $userid: UUID!,
     $text: String!,
     $type: String!,
@@ -56,10 +56,10 @@ export const UPDATE_GOAL = gql(`
         user_id: { eq: $userid }
       },
       set: {
-         $text:  $text!,
-         $type:  $type!,
-         $tags:  $tags!,
-         $color: $color!
+         text:  $text,
+         type:  $type,
+         tags:  $tags,
+         color: $color
       }
     ) {
       affectedCount
