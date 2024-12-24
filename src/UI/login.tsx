@@ -74,18 +74,7 @@ const SignInForm = () => {
 
   return (
     <VStack minW="20rem" >
-<<<<<<< HEAD
-<<<<<<< HEAD
       <Heading size="6xl">{PROJECT_NAME}</Heading>
-=======
-      <Heading>Creator</Heading>
->>>>>>> d907307 (Remove logo to improve load times)
-=======
-      <Heading>Creator</Heading>
-=======
-      <Heading size="4xl">Manifest</Heading>
->>>>>>> c4c8541 (text)
->>>>>>> 4293912 (text)
       <Text fontStyle="italic">{affrimation}</Text>
       <Spacer />
       <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
