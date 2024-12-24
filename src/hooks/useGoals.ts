@@ -26,6 +26,8 @@ export const useGoals = () => {
     });
   };
 
+
+
   const createGoal = async (text: string, tags: string[], color: String, type: ColumnKey) => {
     console.log(authId)
     console.log(tags)
@@ -78,10 +80,9 @@ export const useGoals = () => {
   };
 
   var goals = data?.goalsCollection?.edges?.map((edge: { node: any; }) => edge.node) ?? [];
-  var newGoals = goals;
   
   if (goals.length > 0) {
-    newGoals = goals.map((g: Goal) => {
+    goals = goals.map((g: Goal) => {
       try {
         return {
           ...g,
@@ -99,9 +100,10 @@ export const useGoals = () => {
   
   
   
-  const columns = organizeGoalsByColumn(newGoals);
-
+  const columns = organizeGoalsByColumn(goals);
+  console.log(goals)
   return {
+    goals,
     columns,
     loading,
     error,

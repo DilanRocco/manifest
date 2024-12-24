@@ -12,18 +12,17 @@ import { useEffect, useState } from 'react';
 import { Outlet, useNavigate} from "react-router-dom";
 import Trends from "./trends";
 import { CHARS_BEFORE_TEXT, MAX_CHARS_PER_USER, MAX_TIMES_LISTENED_PER_DAY } from "@/constants";
-
+import { Divider } from '@chakra-ui/layout'
 import { useMutation, useQuery } from "@apollo/client";
 import {  updateFestText } from "@/graphql/fest";
 import { updateHistory, updateTimesListenedToday } from "@/graphql/history";
 import { useDatabase } from "@/provider/databaseProvider";
 import { useAuth } from "@/provider/authProvider";
 import { determineMaxStreak, determineStreak } from "./streak";
+import { useGoals } from "@/hooks/useGoals";
+import { Goal } from "@/types/goals";
+import HorizontalLine from "./Custom/horizontalLine";
 
-
-// type Fest  {
-
-// }
 function Home() {
   const max_chars = MAX_CHARS_PER_USER
   
@@ -49,7 +48,7 @@ function Home() {
 
   
   const {fest, history, user, loading: databaseLoading, error: databaseError, refresh } = useDatabase()
-
+  const { goals, columns, loading: goalsLoading, createGoal, updateGoal, deleteGoal } = useGoals();
   useEffect(() => {
 
     if (fest != undefined){
@@ -81,6 +80,11 @@ function Home() {
     setMaxFestPage(manText.length)
   }, [currentFestPage])
   
+  function formatColumnKey(columnKey: string) {
+    return columnKey
+      .replace(/([A-Z])/g, ' $1') 
+      .replace(/^./, str => str.toUpperCase());
+  }
 
   async function uploadHistory(listened: boolean) {
     const now = new Date()
@@ -303,10 +307,41 @@ function Home() {
               <Link href="/benefits"> Benefits</Link>
               
             </HStack>
+
+            <HorizontalLine />
+           
+            <Heading>Goals You Have:</Heading>
+
+            <Box>
+    {goals.slice(0, 3).map((goal: Goal) => (
+    <Box
+      as="button"
+      key={goal.id} 
+      p="8px" 
+      mb="2" 
+      borderRadius="md" 
+      backgroundColor={"gray.900"} 
+      onClick={() => {
+        navigate(`/goals`)
+      }}
+      boxShadow="sm"
+      cursor="pointer"
+      _hover={{ 
+        opacity: 0.9
+  }}
+    >
+      <Text fontWeight="bold">{goal.text}</Text>
+      <Text fontSize="sm" color="gray.600">
+        Type: {formatColumnKey(goal.type)}
+      </Text>
+    </Box>
+  ))}
+</Box>
+
             <Link href="/settings" colorPalette='red'>
               <FaGear /> <h2>Settings</h2>
             </Link> 
-
+            
           </VStack>
           </GridItem>
           </Grid>

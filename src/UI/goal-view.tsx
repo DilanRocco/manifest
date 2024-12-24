@@ -31,7 +31,7 @@ import { LABEL_COLORS } from '@/constants/goals';
 import { ColumnKey, Goal, LabelKey, NewGoal } from '@/types/goals';
 
 export const GoalView: React.FC = () => {
-  const { columns, loading, createGoal, updateGoal, deleteGoal } = useGoals();
+  const { goals, columns, loading, createGoal, updateGoal, deleteGoal } = useGoals();
   const [newGoal, setNewGoal] = useState<NewGoal>({
     text: '',
     labels: [],
