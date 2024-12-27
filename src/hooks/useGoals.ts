@@ -29,8 +29,6 @@ export const useGoals = () => {
 
 
   const createGoal = async (text: string, tags: string[], color: String, type: ColumnKey) => {
-    console.log(authId)
-    console.log(tags)
     try {
       await createGoalMutation({
         variables: {

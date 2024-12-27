@@ -10,6 +10,7 @@ import {
   useDisclosure,
   IconButton,
   Icon,
+  createListCollection,
 
 
 } from '@chakra-ui/react';
@@ -35,6 +36,8 @@ import { DragDropContext, Droppable, Draggable, DropResult } from '@hello-pangea
 import { useGoals } from '@/hooks/useGoals';
 import { LABEL_COLORS } from '@/constants/goals';
 import { ColumnKey, Goal, LabelKey, NewGoal } from '@/types/goals';
+import { useColorModeValue } from '@/components/ui/color-mode';
+import { SelectContent, SelectItem, SelectLabel, SelectRoot, SelectTrigger, SelectValueText } from '@/components/ui/select';
 
 export const GoalView: React.FC = () => {
   const { goals, columns, loading, createGoal, updateGoal, deleteGoal } = useGoals();
@@ -61,6 +64,10 @@ export const GoalView: React.FC = () => {
   const handleAddGoal = async () => {
     if (!newGoal.text) return;
     console.log(newGoal)
+    console.log("new goal")
+    console.log(newGoal.text)
+    console.log(newGoal.labels)
+    console.log(newGoal.column)
     await createGoal(newGoal.text, newGoal.labels, "#FFFFFF", newGoal.column);
     setNewGoal({ text: '', labels: [], column: 'shortTerm' });
     onClose();
@@ -96,67 +103,101 @@ export const GoalView: React.FC = () => {
       });
     }
   };
+  const terms = createListCollection({
+    items: [
+      { label: "Short Term", value: "shortTerm" },
+      { label: "Middle Term", value: "mediumTerm" },
+      { label: "Long Term", value: "longTerm" },
+    ],
+  })
 
-  const renderGoalModal = () => (
-    <Modal isOpen={open} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>{editingGoal ? 'Edit Goal' : 'Add New Goal'}</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody>
-          <Input
-            placeholder="Enter goal"
-            mb={4}
-            value={editingGoal ? editingGoal.text : newGoal.text}
-            onChange={(e) =>
-              editingGoal
-                ? setEditingGoal((prev) => (prev ? { ...prev, text: e.target.value } : null))
-                : setNewGoal((prev) => ({ ...prev, text: e.target.value }))
-            }
-          />
-          <Select
-            mb={4}
-            value={editingGoal ? editingGoal.column : newGoal.column}
-            onChange={(e) => {
-              const selectedColumn = e.target.value as ColumnKey;
-              editingGoal
-                ? setEditingGoal((prev) => (prev ? { ...prev, column: selectedColumn } : null))
-                : setNewGoal((prev) => ({ ...prev, column: selectedColumn }));
-            }}
-          >
-            <option value="shortTerm">Short Term</option>
-            <option value="mediumTerm">Medium Term</option>
-            <option value="longTerm">Long Term</option>
-          </Select>
-          <Flex wrap="wrap" gap={2} mb={4}>
-            {(Object.keys(LABEL_COLORS) as LabelKey[]).map((label) => (
-              <Tag
-                key={label}
-                colorScheme={LABEL_COLORS[label]}
-                cursor="pointer"
-                onClick={() => toggleLabel(label)}
-                variant={
-                  (editingGoal ? editingGoal.tags : newGoal.labels).includes(label)
-                    ? 'solid'
-                    : 'outline'
-                }
-              >
-                {label}
-              </Tag>
-            ))}
-          </Flex>
-        </ModalBody>
-        <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={editingGoal ? handleUpdateGoal : handleAddGoal}>
-            {editingGoal ? 'Update' : 'Add'}
-          </Button>
-          <Button variant="ghost" onClick={onClose}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
-  );
+  const renderGoalModal = () => {
+    const bg = useColorModeValue('white', 'gray.800');
+    const borderColor = useColorModeValue('gray.200', 'gray.700');
+  
+    return (
+      <Modal isOpen={open} onClose={onClose} isCentered size="sm">
+        <ModalOverlay backdropFilter="blur(3px)" />
+        <ModalContent 
+        bg={bg} 
+        mx="auto" 
+        w="60%" 
+        padding={'20px'}
+        maxW="600px"
+        minW="300px"
+        borderColor={borderColor} 
+        shadow="xl"
+        borderRadius={"5px"}
+      >
+          <ModalHeader color='bloack' fontSize="lg">{editingGoal ? 'Edit Goal' : 'Add New Goal'}</ModalHeader>
+          <ModalCloseButton size="sm" />
+          
+          <ModalBody pb={6}>
+            <Input
+              size="md"
+              placeholder="Enter goal"
+              mb={4}
+              color={'black'}
+              value={editingGoal ? editingGoal.text : newGoal.text}
+              onChange={(e) =>
+                editingGoal
+                  ? setEditingGoal((prev) => (prev ? { ...prev, text: e.target.value } : null))
+                  : setNewGoal((prev) => ({ ...prev, text: e.target.value }))
+              }
+            />
+  
+            <SelectRoot
+              size="md"
+              collection={terms}
+              mb={4}
+              color={'gray'}
+              onValueChange={(e) => {
+                const selectedColumn = e.value[0] as ColumnKey;
+                editingGoal
+                  ? setEditingGoal((prev) => (prev ? { ...prev, column: selectedColumn } : null))
+                  : setNewGoal((prev) => ({ ...prev, column: selectedColumn }));
+              }}
+            >
+              <SelectTrigger>
+              <SelectValueText placeholder={editingGoal ? editingGoal.column : newGoal.column}/>
+            </SelectTrigger>
+            <SelectContent>
+              {terms.items.map((term) => (
+                <SelectItem color='black' item={term} key={term.value}>
+                  {term.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+            </SelectRoot>
+  
+            <Flex wrap="wrap" gap={2}>
+              {(Object.keys(LABEL_COLORS) as LabelKey[]).map((label) => (
+                <Tag
+                  key={label}
+                  size="sm"
+                  colorScheme={LABEL_COLORS[label]}
+                  cursor="pointer"
+                  onClick={() => toggleLabel(label)}
+                  variant={(editingGoal ? editingGoal.tags : newGoal.labels).includes(label) ? 'solid' : 'outline'}
+                >
+                  {label}
+                </Tag>
+              ))}
+            </Flex>
+          </ModalBody>
+  
+          <ModalFooter borderTop="1px" borderColor={borderColor} pt={4}>
+            <Button size="sm" variant="ghost" mr={3} onClick={onClose}>
+              Cancel
+            </Button>
+            <Button size="sm" colorScheme="blue" onClick={editingGoal ? handleUpdateGoal : handleAddGoal}>
+              {editingGoal ? 'Update' : 'Add'}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    );
+  };
 
   return (
     <Box p={8}>
