@@ -105,12 +105,3 @@ No matter why you think manifesting works, it has a positive efffect.
     </tr>
   </table>
 </p>
-
-
-
-
-# Things to do
-- think about encryption
-- celebrate milestones
-
-
