@@ -1,20 +1,26 @@
-import{ useState } from 'react';
-import { 
-  ChakraProvider, 
-  Box, 
-  VStack, 
-  Heading, 
-  Input, 
-  Button, 
-  Flex, 
+import { useState } from 'react';
+import {
+  ChakraProvider,
+  Box,
+  VStack,
+  Heading,
+  Input,
+  Button,
+  Flex,
   useDisclosure,
-  
+  IconButton,
+  Icon,
+
 
 } from '@chakra-ui/react';
+import { MdDelete } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
 import { Select } from '@chakra-ui/select'
-import { Tag,
-          TagLabel,
-          TagCloseButton } from "@chakra-ui/tag"
+import {
+  Tag,
+  TagLabel,
+  TagCloseButton
+} from "@chakra-ui/tag"
 import {
   Modal,
   ModalOverlay,
@@ -71,7 +77,7 @@ export const GoalView: React.FC = () => {
     setEditingGoal(null);
   };
 
- 
+
   const toggleLabel = (label: LabelKey) => {
     if (editingGoal) {
       setEditingGoal((prev) => {
@@ -165,102 +171,106 @@ export const GoalView: React.FC = () => {
         <Flex justifyContent="space-between">
           {(Object.entries(columns) as [ColumnKey, Goal[]][]).map(([columnId, goals]) => (
             <Box>
-            <Heading 
-              borderRadius={10}
-              background={'purple.400'}
-              padding={4}
-              size="md"  
-              textTransform="capitalize" 
-              color={'black'}>
-              
-              {columnId.replace(/([A-Z])/g, ' $1')}
+              <Heading
+                borderRadius={10}
+                background={'purple.400'}
+                padding={4}
+                size="md"
+                textTransform="capitalize"
+                color={'black'}>
+
+                {columnId.replace(/([A-Z])/g, ' $1')}
               </Heading>
-            <Droppable key={columnId} droppableId={columnId}>
-              {(provided, snapshot) => (
-                <Box
-                  ref={provided.innerRef}
-                  {...provided.droppableProps}
-                  w="300px"
-                  minH="400px"
-                  p={4}
-                  border="1px solid"
-                  borderColor={snapshot.isDraggingOver ? "blue.200" : "gray.200"}
-                  borderRadius="md"
-                  bg={snapshot.isDraggingOver ? "gray.50" : "white"}
-                  transition="background-color 0.2s ease, border-color 0.2s ease"
-                  position="relative"
-                >
+              <Droppable key={columnId} droppableId={columnId}>
+                {(provided, snapshot) => (
+                  <Box
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                    w="300px"
+                    minH="400px"
+                    p={4}
+                    border="1px solid"
+                    borderColor={snapshot.isDraggingOver ? "blue.200" : "gray.200"}
+                    borderRadius="md"
+                    bg={snapshot.isDraggingOver ? "gray.50" : "white"}
+                    transition="background-color 0.2s ease, border-color 0.2s ease"
+                    position="relative"
+                  >
 
 
-                  {goals.map((goal, index) => (
-                    <Draggable key={goal.id} draggableId={goal.id} index={index}>
-                      {(provided, snapshot) => (
-                        <Box
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          mb={2}
-                          p={3}
-                          bg={snapshot.isDragging ? "blue.50" : "white"}
-                          boxShadow={snapshot.isDragging ? "lg" : "md"}
-                          borderRadius="md"
-                          border="1px solid"
-                          borderColor={snapshot.isDragging ? "blue.200" : "transparent"}
-                          transform={`${provided.draggableProps.style?.transform}`}
-                          transition={snapshot.isDragging 
-                            ? undefined 
-                            : "box-shadow 0.2s ease, border-color 0.2s ease"}
-                          _hover={{
-                            boxShadow: "lg",
-                            borderColor: "blue.100"
-                          }}
-                          userSelect="none"
-                          position={snapshot.isDragging ? "relative" : "relative"}
-                          zIndex={snapshot.isDragging ? 999 : 1}
-                        >
-                          <Flex justifyContent="space-between" alignItems="center">
-                            <VStack align="start" gap={2} flex={1}>
-                              <Box color={'black'}>{goal.text}</Box>
-                              <Flex wrap="wrap" gap={2}>
-                                {goal.tags.map((label) => (
-                                  <Tag 
-                                    key={label} 
-                                    colorScheme={LABEL_COLORS[label]} 
-                                    size="sm"
-                                    userSelect="none"
-                                  >
-                                    {label}
-                                  </Tag>
-                                ))}
+                    {goals.map((goal, index) => (
+                      <Draggable key={goal.id} draggableId={goal.id} index={index}>
+                        {(provided, snapshot) => (
+                          <Box
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            mb={2}
+                            p={3}
+                            bg={snapshot.isDragging ? "blue.50" : "white"}
+                            boxShadow={snapshot.isDragging ? "lg" : "md"}
+                            borderRadius="md"
+                            border="1px solid"
+                            borderColor={snapshot.isDragging ? "blue.200" : "transparent"}
+                            transform={`${provided.draggableProps.style?.transform}`}
+                            transition={snapshot.isDragging
+                              ? undefined
+                              : "box-shadow 0.2s ease, border-color 0.2s ease"}
+                            _hover={{
+                              boxShadow: "lg",
+                              borderColor: "blue.100"
+                            }}
+                            userSelect="none"
+                            position={snapshot.isDragging ? "relative" : "relative"}
+                            zIndex={snapshot.isDragging ? 999 : 1}
+                          >
+                            <Flex justifyContent="space-between" alignItems="center">
+                              <VStack align="start" gap={2} flex={1}>
+                                <Box color={'black'}>{goal.text}</Box>
+                                <Flex wrap="wrap" gap={2}>
+                                  {goal.tags.map((label) => (
+                                    <Tag
+                                      key={label}
+                                      colorScheme={LABEL_COLORS[label]}
+                                      size="sm"
+                                      userSelect="none"
+                                    >
+                                      {label}
+                                    </Tag>
+                                  ))}
+                                </Flex>
+                              </VStack>
+                              <Flex direction="column">
+                                <IconButton
+                                  size="xs"
+                                  variant={"ghost"}
+                                  colorScheme="blue"
+                                  mb={1}
+                                  onClick={() => {
+                                    setEditingGoal({ ...goal, column: columnId })
+                                    onOpen()
+                                  }}
+                                >
+                                  <MdEdit color='gray'/>
+                                </IconButton>
+                                <IconButton
+                                  size="xs"
+                                  variant={"ghost"}
+                                  colorScheme="red"
+                                  onClick={() => deleteGoal(goal.id)}
+                                >
+                                  <MdDelete color='gray' />
+                                </IconButton>
                               </Flex>
-                            </VStack>
-                            <Flex direction="column">
-                              <Button
-                                size="xs"
-                                colorScheme="blue"
-                                mb={1}
-                                onClick={() => {setEditingGoal({ ...goal, column: columnId })
-                                        onOpen()}}
-                              >
-                                Edit
-                              </Button>
-                              <Button
-                                size="xs"
-                                colorScheme="red"
-                                onClick={() => deleteGoal(goal.id)}
-                              >
-                                Delete
-                              </Button>
                             </Flex>
-                          </Flex>
-                        </Box>
-                      )}
-                    </Draggable>
-                  ))}
-                  {provided.placeholder}
-                </Box>
-              )}
-            </Droppable>
+                          </Box>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </Box>
+                )}
+              </Droppable>
             </Box>
           ))}
         </Flex>
