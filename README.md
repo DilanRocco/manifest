@@ -110,7 +110,6 @@ No matter why you think manifesting works, it has a positive efffect.
 
 
 # Things to do
-- fabicon
 - think about encryption
 - celebrate milestones
 
