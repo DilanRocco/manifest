@@ -27,7 +27,6 @@ dist-ssr
 google-cloud-api-key.json
 
 # ME:
-designs/
 scripts/codegen.ts
 .aws-sam
 

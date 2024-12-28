@@ -8,3 +8,5 @@ export const LABEL_COLORS: Record<LabelKey, string> = {
     education: 'orange',
   };
   
+
+  
