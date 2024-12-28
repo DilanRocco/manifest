@@ -1,5 +1,0 @@
-# Things to do
-- think about encryption
-- add trends for goals
-- OAuth with Google
-- move database off supabase?
