@@ -206,27 +206,6 @@ import {
             _hover={{ transform: 'scale(1.02)'}}>
               Wherever this phenomenon comes from, it's been proven to work.
             </Text>
-  
-            <Box>
-              <Link
-                href="/"
-                display="inline-block"
-                mt={4}
-                px={6}
-                py={3}
-                bg="purple.600"
-                color="white"
-                borderRadius="full"
-                fontWeight="bold"
-                transition="all .20s ease" 
-                _hover={{ 
-                  transform: 'scale(1.05)',
-                  color:'white',
-                }}
-              >
-                Start now!
-              </Link>
-            </Box>
           </Box>
         </VStack>
       </Box>

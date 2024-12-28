@@ -1,4 +1,4 @@
-export type ColumnKey = 'shortTerm' | 'mediumTerm' | 'longTerm';
+export type ColumnKey = 'shortTerm' | 'longTerm';
 export type LabelKey = 'work' | 'personal' | 'health' | 'finance' | 'education';
 
 export interface Goal {
@@ -13,7 +13,6 @@ export interface Goal {
 
 export interface Columns {
   shortTerm: Goal[];
-  mediumTerm: Goal[];
   longTerm: Goal[];
 }
 

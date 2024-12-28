@@ -55,8 +55,6 @@ import { createFeedback } from "@/graphql/feedback";
     return (
       <Box  maxW="50vh" minW="50vh" minH="100vh" p={8}>
         <VStack gap={6} align="stretch" maxW="600px" mx="auto">
-          <Heading mb={6}>Settings</Heading>
-  
           <FormControl>
             <FormLabel>Email</FormLabel>
             <Input disabled={true} type="email" value={email}/>

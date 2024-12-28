@@ -47,16 +47,11 @@ const router = createBrowserRouter(
      
       <Route path="/signup" element={<SignUpForm />} />
       <Route path="/login" element={<SignInForm />} />
-      <Route path="/benefits" element={<BenefitsPage />} />
-      <Route path="/how-to" element={<HowToPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
      
       
       <Route element={<ProtectedRoute/>}>
-        <Route path="/scroll" element={<VerticalScrollNav />} /> 
-        <Route path="" element={<Home />} />
-        <Route path="/read-view" element={<ReadView />} />
-        <Route path="/goals" element={<GoalView />} />
+        <Route path="" element={<VerticalScrollNav />} /> 
         <Route path="/trends" element={<Trends />} />
         {/* <Route path="/settings" element={<SettingsPage />} /> */}
       </Route>

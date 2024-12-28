@@ -1,11 +1,11 @@
-import { Modal, ModalContent, ModalHeader, ModalOverlay } from "@chakra-ui/modal";
-import { useDisclosure } from "@chakra-ui/react";
-import { ReactNode } from "react";
+import React from 'react';
+import { HStack, useDisclosure, Box } from '@chakra-ui/react';
+import { Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/modal';
 
 interface DefaultModalProps {
   modalName: string;
-  children: ReactNode;
-  trigger: ReactNode; // The button or element that opens the modal
+  children: React.ReactNode;
+  trigger: React.ReactNode; 
 }
 
 const DefaultModal: React.FC<DefaultModalProps> = ({ modalName, children, trigger }) => {
@@ -20,15 +20,33 @@ const DefaultModal: React.FC<DefaultModalProps> = ({ modalName, children, trigge
         <ModalContent
           bg="black"
           mx="auto"
-          w="60%"
           p="20px"
-          maxW="600px"
+          maxW="90%"
           minW="300px"
           shadow="xl"
           borderRadius="5px"
         >
-          <ModalHeader>{modalName}</ModalHeader>
-          {children}
+          <HStack justify="space-between" align="center" w="100%">
+            <ModalHeader fontWeight="bold" fontSize="x-large">
+              {modalName}
+            </ModalHeader>
+            <ModalCloseButton cursor="pointer" size="sm" />
+          </HStack>
+          <Box
+            maxHeight="90vh" 
+            overflowY="auto"
+            css={{
+              '&::-webkit-scrollbar': {
+                width: '8px',
+              },
+              '&::-webkit-scrollbar-thumb': {
+                background: 'gray',
+                borderRadius: '4px',
+              },
+            }}
+          >
+            {children}
+          </Box>
         </ModalContent>
       </Modal>
     </>

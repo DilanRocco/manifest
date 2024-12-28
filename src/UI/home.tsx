@@ -25,6 +25,10 @@ import HorizontalLine from "./Custom/horizontalLine";
 import { formatColumnKey } from "@/utils/formatColumn";
 import SettingsPage from "./settings";
 import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/modal";
+import DefaultModal from "./Custom/Modal";
+import ReadView from "./ReadView";
+import { HowToPage } from "./how-to";
+import BenefitsPage from "./benefits";
 
 function Home() {
   const max_chars = MAX_CHARS_PER_USER
@@ -173,7 +177,6 @@ function Home() {
     setLoading(false)
     setShouldShowSave(false)
     refresh()
-    navigate("/read-view", { state: { text: manText[currentFestPage] } })
   }
   
   async function uploadFest() {
@@ -261,7 +264,15 @@ function Home() {
     <GridItem>
     <HStack>
     <Button loading={isLoading} onClick={playManifest}>Listen</Button>
-    <Button loading={isLoading} onClick={readManifest}>Read</Button>
+    <DefaultModal
+        modalName="Settings"
+        trigger={
+        <Button loading={isLoading} onClick={readManifest}>Read</Button>
+        }
+      >
+        <ReadView text={manText[currentFestPage]}/>
+      </DefaultModal>
+    
     </HStack>
     </GridItem>
     <GridItem>
@@ -288,9 +299,24 @@ function Home() {
             {errorMessage && <Text color='red'>{errorMessage}</Text>}
             
             <HStack>
-              <Link href="/how-to"> Learn how</Link>
+            <DefaultModal
+        modalName="Learn How"
+        trigger={
+        <Button loading={isLoading}>Learn How</Button>
+        }
+      >
+        <HowToPage />
+      </DefaultModal>
+
               |
-              <Link href="/benefits"> Benefits</Link>
+              <DefaultModal
+        modalName="Benefits"
+        trigger={
+        <Button loading={isLoading}>Benefits</Button>
+        }
+      >
+        <BenefitsPage />
+      </DefaultModal>
               
             </HStack>
 
@@ -323,26 +349,17 @@ function Home() {
     </Box>
   ))}
 </Box>
-            <Modal isOpen={open} onClose={onClose} isCentered size="sm">
-            <ModalOverlay backdropFilter="blur(3px)" />
-        <ModalContent 
-        bg={'black'} 
-        mx="auto" 
-        w="60%" 
-        padding={'20px'}
-        maxW="600px"
-        minW="300px"
-        shadow="xl"
-        borderRadius={"5px"}
+<DefaultModal
+        modalName="Settings"
+        trigger={
+          <Button color='white' variant={'ghost'}>
+            <FaGear /> <h2>Settings</h2>
+          </Button>
+        }
       >
-                
-                
-                <SettingsPage></SettingsPage></ModalContent>
-              
-              </Modal>
-              <Button onClick={onOpen}><FaGear /> <h2>Settings</h2></Button>
-
-            
+        <SettingsPage/>
+      </DefaultModal>
+          
           </VStack>
           <Outlet/>
         </>

@@ -107,7 +107,6 @@ export const GoalView: React.FC = () => {
   const terms = createListCollection({
     items: [
       { label: "Short Term", value: "shortTerm" },
-      { label: "Middle Term", value: "mediumTerm" },
       { label: "Long Term", value: "longTerm" },
     ],
   })

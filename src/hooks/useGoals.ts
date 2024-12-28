@@ -21,7 +21,6 @@ export const useGoals = () => {
       return acc;
     }, {
       shortTerm: [],
-      mediumTerm: [],
       longTerm: []
     });
   };
