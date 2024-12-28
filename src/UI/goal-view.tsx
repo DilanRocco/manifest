@@ -221,7 +221,7 @@ export const GoalView: React.FC = () => {
                 textTransform="capitalize"
                 color={'black'}>
 
-                {(formatColumnKey(columnId), ' $1')}
+                {formatColumnKey(columnId)}
               </Heading>
               <Droppable key={columnId} droppableId={columnId}>
                 {(provided, snapshot) => (

@@ -10,12 +10,13 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
+
 html, body :root {
   background-color: #242424;
   min-height: 100vh;
   margin:0;
+  padding: 0;
 }
 
 a {
@@ -29,7 +30,6 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;

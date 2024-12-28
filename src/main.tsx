@@ -24,6 +24,7 @@ import { AuthProvider } from './provider/authProvider'
 import { HowToPage } from './UI/how-to'
 import { ResetPasswordPage } from './UI/resetPassword'
 import GoalView from './UI/goal-view'
+import VerticalScrollNav from './UI/VerticalScroll'
 
 
 
@@ -43,6 +44,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => (
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
+     
       <Route path="/signup" element={<SignUpForm />} />
       <Route path="/login" element={<SignInForm />} />
       <Route path="/benefits" element={<BenefitsPage />} />
@@ -51,11 +53,12 @@ const router = createBrowserRouter(
      
       
       <Route element={<ProtectedRoute/>}>
+        <Route path="/scroll" element={<VerticalScrollNav />} /> 
         <Route path="" element={<Home />} />
         <Route path="/read-view" element={<ReadView />} />
         <Route path="/goals" element={<GoalView />} />
         <Route path="/trends" element={<Trends />} />
-        <Route path="/settings" element={<SettingsPage />} />
+        {/* <Route path="/settings" element={<SettingsPage />} /> */}
       </Route>
     </Route>
   )

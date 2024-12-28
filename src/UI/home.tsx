@@ -1,4 +1,4 @@
-import { HStack, VStack, Text, Textarea, Grid, GridItem, Heading, Link, Spacer, IconButton, Icon, Box, Center} from "@chakra-ui/react"
+import { HStack, VStack, Text, Textarea, Grid, GridItem, Heading, Link, Spacer, IconButton, Icon, Box, Center, useDisclosure} from "@chakra-ui/react"
 import { Button } from "@/components/ui/button"
 import { FaGear } from "react-icons/fa6";
 import { IoIosArrowBack } from "react-icons/io";
@@ -23,6 +23,8 @@ import { useGoals } from "@/hooks/useGoals";
 import { Goal } from "@/types/goals";
 import HorizontalLine from "./Custom/horizontalLine";
 import { formatColumnKey } from "@/utils/formatColumn";
+import SettingsPage from "./settings";
+import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/modal";
 
 function Home() {
   const max_chars = MAX_CHARS_PER_USER
@@ -45,7 +47,6 @@ function Home() {
   const [listensToday, setListensToday] = useState(0)
   const [audioUrl, setAudioUrl] = useState('');
   const navigate = useNavigate()
- 
 
   
   const {fest, history, user, loading: databaseLoading, error: databaseError, refresh } = useDatabase()
@@ -279,17 +280,6 @@ function Home() {
 
       return (
         <>
-        <Grid 
-        templateColumns="repeat(2, 1fr)"
-        data-state="open"
-        _open={{
-            animation: "fade-in 300ms ease-in",
-        }}>
-          <GridItem>
-          <Heading>Trends</Heading>
-          <Trends />
-          </GridItem>
-          <GridItem>
           <VStack gap="4" width={400}>
             <h1><b>Manifest</b></h1>
             <Textarea value={manText[currentFestPage]} placeholder='Write your manifestation here...' onChange={(e) => updateText(e.target.value)} />
@@ -333,14 +323,27 @@ function Home() {
     </Box>
   ))}
 </Box>
+            <Modal isOpen={open} onClose={onClose} isCentered size="sm">
+            <ModalOverlay backdropFilter="blur(3px)" />
+        <ModalContent 
+        bg={'black'} 
+        mx="auto" 
+        w="60%" 
+        padding={'20px'}
+        maxW="600px"
+        minW="300px"
+        shadow="xl"
+        borderRadius={"5px"}
+      >
+                
+                
+                <SettingsPage></SettingsPage></ModalContent>
+              
+              </Modal>
+              <Button onClick={onOpen}><FaGear /> <h2>Settings</h2></Button>
 
-            <Link href="/settings" colorPalette='red'>
-              <FaGear /> <h2>Settings</h2>
-            </Link> 
             
           </VStack>
-          </GridItem>
-          </Grid>
           <Outlet/>
         </>
       )
