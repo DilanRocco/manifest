@@ -22,6 +22,7 @@ import { determineMaxStreak, determineStreak } from "./streak";
 import { useGoals } from "@/hooks/useGoals";
 import { Goal } from "@/types/goals";
 import HorizontalLine from "./Custom/horizontalLine";
+import { formatColumnKey } from "@/utils/formatColumn";
 
 function Home() {
   const max_chars = MAX_CHARS_PER_USER
@@ -80,11 +81,6 @@ function Home() {
     setMaxFestPage(manText.length)
   }, [currentFestPage])
   
-  function formatColumnKey(columnKey: string) {
-    return columnKey
-      .replace(/([A-Z])/g, ' $1') 
-      .replace(/^./, str => str.toUpperCase());
-  }
 
   async function uploadHistory(listened: boolean) {
     const now = new Date()

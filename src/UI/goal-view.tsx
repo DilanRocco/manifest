@@ -38,6 +38,7 @@ import { LABEL_COLORS } from '@/constants/goals';
 import { ColumnKey, Goal, LabelKey, NewGoal } from '@/types/goals';
 import { useColorModeValue } from '@/components/ui/color-mode';
 import { SelectContent, SelectItem, SelectLabel, SelectRoot, SelectTrigger, SelectValueText } from '@/components/ui/select';
+import { formatColumnKey } from '@/utils/formatColumn';
 
 export const GoalView: React.FC = () => {
   const { goals, columns, loading, createGoal, updateGoal, deleteGoal } = useGoals();
@@ -129,7 +130,7 @@ export const GoalView: React.FC = () => {
         shadow="xl"
         borderRadius={"5px"}
       >
-          <ModalHeader color='bloack' fontSize="lg">{editingGoal ? 'Edit Goal' : 'Add New Goal'}</ModalHeader>
+          <ModalHeader color='black' fontSize="lg">{editingGoal ? 'Edit Goal' : 'Add New Goal'}</ModalHeader>
           <ModalCloseButton size="sm" />
           
           <ModalBody pb={6}>
@@ -159,7 +160,7 @@ export const GoalView: React.FC = () => {
               }}
             >
               <SelectTrigger>
-              <SelectValueText placeholder={editingGoal ? editingGoal.column : newGoal.column}/>
+              <SelectValueText placeholder={formatColumnKey(editingGoal ? editingGoal.column : newGoal.column)}/>
             </SelectTrigger>
             <SelectContent>
               {terms.items.map((term) => (
@@ -220,7 +221,7 @@ export const GoalView: React.FC = () => {
                 textTransform="capitalize"
                 color={'black'}>
 
-                {columnId.replace(/([A-Z])/g, ' $1')}
+                {(formatColumnKey(columnId), ' $1')}
               </Heading>
               <Droppable key={columnId} droppableId={columnId}>
                 {(provided, snapshot) => (
