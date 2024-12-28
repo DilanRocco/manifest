@@ -29,4 +29,4 @@ google-cloud-api-key.json
 # ME:
 scripts/codegen.ts
 .aws-sam
-
+/design
