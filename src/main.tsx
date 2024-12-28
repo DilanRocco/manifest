@@ -17,14 +17,9 @@ import {
 } from "react-router-dom";
 import { ApolloProvider } from '@apollo/client'
 import { FestProvider } from './provider/databaseProvider'
-import BenefitsPage from './UI/benefits'
-import ReadView from './UI/ReadView'
-import SettingsPage from './UI/settings'
 import { AuthProvider } from './provider/authProvider'
-import { HowToPage } from './UI/how-to'
 import { ResetPasswordPage } from './UI/resetPassword'
-import GoalView from './UI/goal-view'
-import VerticalScrollNav from './UI/VerticalScroll'
+import  VerticalScrollNav  from '@/UI/verticalScrollPage'
 
 
 

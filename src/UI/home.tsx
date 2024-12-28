@@ -10,7 +10,6 @@ import './App.css'
 import { textToSpeechApi } from '@/services/tos';
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate} from "react-router-dom";
-import Trends from "./trends";
 import { CHARS_BEFORE_TEXT, MAX_CHARS_PER_USER, MAX_TIMES_LISTENED_PER_DAY } from "@/constants";
 import { Divider } from '@chakra-ui/layout'
 import { useMutation, useQuery } from "@apollo/client";
@@ -25,7 +24,7 @@ import HorizontalLine from "./Custom/horizontalLine";
 import { formatColumnKey } from "@/utils/formatColumn";
 import SettingsPage from "./settings";
 import { Modal, ModalContent, ModalOverlay } from "@chakra-ui/modal";
-import DefaultModal from "./Custom/Modal";
+import DefaultModal from "@/UI/Custom/defaultModal";
 import ReadView from "./ReadView";
 import { HowToPage } from "./how-to";
 import BenefitsPage from "./benefits";
