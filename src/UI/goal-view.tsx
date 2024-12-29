@@ -201,7 +201,7 @@ export const GoalView: React.FC = () => {
 
   return (
     <Box p={8}>
-      <Heading mb={8} textAlign="center">
+      <Heading mb={8} fontSize={'2xl'} textAlign="center">
         Track your goals
       </Heading>
       <Button colorScheme="green" mb={4} onClick={onOpen}>

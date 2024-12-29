@@ -3,12 +3,11 @@ import { HStack, useDisclosure, Box } from '@chakra-ui/react';
 import { Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/modal';
 
 interface DefaultModalProps {
-  modalName: string;
   children: React.ReactNode;
   trigger: React.ReactNode; 
 }
 
-const DefaultModal: React.FC<DefaultModalProps> = ({ modalName, children, trigger }) => {
+const DefaultModal: React.FC<DefaultModalProps> = ({children, trigger }) => {
   const { open, onOpen, onClose } = useDisclosure();
 
   return (
@@ -27,9 +26,6 @@ const DefaultModal: React.FC<DefaultModalProps> = ({ modalName, children, trigge
           borderRadius="5px"
         >
           <HStack justify="space-between" align="center" w="100%">
-            <ModalHeader fontWeight="bold" fontSize="x-large">
-              {modalName}
-            </ModalHeader>
             <ModalCloseButton cursor="pointer" size="sm" />
           </HStack>
           <Box

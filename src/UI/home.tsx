@@ -264,7 +264,6 @@ function Home() {
     <HStack>
     <Button loading={isLoading} onClick={playManifest}>Listen</Button>
     <DefaultModal
-        modalName="Settings"
         trigger={
         <Button loading={isLoading} onClick={readManifest}>Read</Button>
         }
@@ -292,16 +291,15 @@ function Home() {
         <>
           <VStack gap="4" width={400}>
             <h1><b>Manifest</b></h1>
-            <Textarea value={manText[currentFestPage]} placeholder='Write your manifestation here...' onChange={(e) => updateText(e.target.value)} />
+            <Textarea minHeight='100px' value={manText[currentFestPage]} placeholder='Write your manifestation here...' onChange={(e) => updateText(e.target.value)} />
             <FestArea/>
             
             {errorMessage && <Text color='red'>{errorMessage}</Text>}
             
             <HStack>
             <DefaultModal
-        modalName="Learn How"
         trigger={
-        <Button loading={isLoading}>Learn How</Button>
+        <Button _hover={{ bg: "gray.600" }} color='blue.300' variant={'ghost'} loading={isLoading}>Learn How</Button>
         }
       >
         <HowToPage />
@@ -309,9 +307,8 @@ function Home() {
 
               |
               <DefaultModal
-        modalName="Benefits"
         trigger={
-        <Button loading={isLoading}>Benefits</Button>
+        <Button _hover={{ bg: "gray.600" }} color='blue.300' variant={'ghost'} loading={isLoading}>Benefits</Button>
         }
       >
         <BenefitsPage />
@@ -321,35 +318,32 @@ function Home() {
 
             <HorizontalLine />
            
-            <Heading>Goals You Have:</Heading>
+            <Heading>Upcoming Goals</Heading>
 
             <Box>
     {goals.slice(0, 3).map((goal: Goal) => (
     <Box
       as="button"
       key={goal.id} 
-      p="8px" 
-      mb="2" 
+      p="10px" 
+      mb="2"
       borderRadius="md" 
-      backgroundColor={"gray.900"} 
-      onClick={() => {
-        navigate(`/goals`)
-      }}
+      backgroundColor={"blue.600"} 
       boxShadow="sm"
+      opacity={'revert'}
       cursor="pointer"
       _hover={{ 
         opacity: 0.9
   }}
     >
       <Text fontWeight="bold">{goal.text}</Text>
-      <Text fontSize="sm" color="gray.600">
+      <Text fontSize="sm" color="gray.300">
         Type: {formatColumnKey(goal.type)}
       </Text>
     </Box>
   ))}
 </Box>
 <DefaultModal
-        modalName="Settings"
         trigger={
           <Button color='white' variant={'ghost'}>
             <FaGear /> <h2>Settings</h2>
