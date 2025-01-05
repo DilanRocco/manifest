@@ -9,6 +9,7 @@ export interface Goal {
   type: ColumnKey;
   color: String 
   created_at?: string;
+  order: number
 }
 
 export interface Columns {

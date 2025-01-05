@@ -41,7 +41,9 @@ import { SelectContent, SelectItem, SelectLabel, SelectRoot, SelectTrigger, Sele
 import { formatColumnKey } from '@/utils/formatColumn';
 
 export const GoalView: React.FC = () => {
-  const { goals, columns, loading, createGoal, updateGoal, deleteGoal } = useGoals();
+
+  const { goals, columns, loading, createGoal, updateGoal, deleteGoal, updateGoalOrder } = useGoals();
+  const [localColumns, setLocalColumns] = useState<{[key in ColumnKey]: Goal[]}>(columns);
   const [newGoal, setNewGoal] = useState<NewGoal>({
     text: '',
     labels: [],
@@ -53,15 +55,29 @@ export const GoalView: React.FC = () => {
   const onDragEnd = async (result: DropResult) => {
     const { source, destination, draggableId } = result;
     if (!destination) return;
-
+  
     const sourceColumn = source.droppableId as ColumnKey;
     const destColumn = destination.droppableId as ColumnKey;
-
+  
+    setLocalColumns(prevColumns => {
+      const newColumns = {...prevColumns};
+      const sourceGoals = Array.from(newColumns[sourceColumn]);
+      const destGoals = sourceColumn === destColumn ? sourceGoals : Array.from(newColumns[destColumn]);
+  
+      const [movedGoal] = sourceGoals.splice(source.index, 1);
+      destGoals.splice(destination.index, 0, movedGoal);
+  
+      newColumns[sourceColumn] = sourceGoals;
+      newColumns[destColumn] = destGoals;
+  
+      return newColumns;
+    });
+  
     if (sourceColumn !== destColumn) {
       await updateGoal(draggableId, { type: destColumn });
     }
   };
-
+  
   const handleAddGoal = async () => {
     if (!newGoal.text) return;
     console.log(newGoal)
@@ -210,7 +226,7 @@ export const GoalView: React.FC = () => {
 
       <DragDropContext onDragEnd={onDragEnd}>
         <Flex justifyContent="space-between">
-          {(Object.entries(columns) as [ColumnKey, Goal[]][]).map(([columnId, goals]) => (
+          {(Object.entries(localColumns) as [ColumnKey, Goal[]][]).map(([columnId, goals]) => (
             <Box>
               <Heading
                 borderRadius={10}

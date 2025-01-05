@@ -1,17 +1,55 @@
 import { useQuery, useMutation } from '@apollo/client';
-import { Goal, Columns, ColumnKey } from '../types/goals';
-import { GET_GOALS, CREATE_GOAL, UPDATE_GOAL, DELETE_GOAL } from '../graphql/goals';
+import { Goal, Columns, ColumnKey, LabelKey } from '../types/goals';
+import { GET_GOALS, CREATE_GOAL, UPDATE_GOAL, DELETE_GOAL, UPDATE_GOAL_ORDER } from '../graphql/goals';
 import { useAuth } from '@/provider/authProvider';
 
+interface GoalsQueryResult {
+  goalsCollection: {
+    edges: Array<{
+      node: Goal;
+    }>;
+  };
+}
+
+interface UpdateGoalMutationResult {
+  updategoalsCollection: {
+    __typename: string;
+    affectedCount: number;
+  };
+}
+
+
 export const useGoals = () => {
-  const authId = useAuth().user?.id
-  const { data, loading, error, refetch } = useQuery(GET_GOALS, {
+  const authId = useAuth().user?.id;
+  const { data, loading, error, refetch } = useQuery<GoalsQueryResult>(GET_GOALS, {
     variables: { userid: authId },
     fetchPolicy: 'cache-and-network'
   });
 
   const [createGoalMutation] = useMutation(CREATE_GOAL);
-  const [updateGoalMutation] = useMutation(UPDATE_GOAL);
+  const [updateGoalOrderMutation] = useMutation(CREATE_GOAL);
+  const [updateGoalMutation] = useMutation<UpdateGoalMutationResult>(UPDATE_GOAL, {
+    update(cache, { data: mutationData }) {
+      if (!mutationData?.updategoalsCollection) {
+        console.error('Unexpected mutation result structure:', mutationData);
+        return;
+      }
+  
+      const { affectedCount } = mutationData.updategoalsCollection;
+  
+      if (affectedCount === 0) {
+        console.warn('No goals were updated');
+        return;
+      }
+  
+      // Since we don't have the updated goal data in the mutation result,
+      // we need to refetch the goals to ensure the cache is up-to-date
+      cache.evict({ fieldName: 'goalsCollection' });
+      cache.gc();
+    }
+  });
+  
+  
   const [deleteGoalMutation] = useMutation(DELETE_GOAL);
 
   const organizeGoalsByColumn = (goals: Goal[]): Columns => {
@@ -25,17 +63,15 @@ export const useGoals = () => {
     });
   };
 
-
-
   const createGoal = async (text: string, tags: string[], color: String, type: ColumnKey) => {
     try {
       await createGoalMutation({
         variables: {
           userid: authId,
-          text:   text,
-          type:   type,
-          tags:   JSON.stringify(tags),
-          color:  color,
+          text: text,
+          type: type,
+          tags: JSON.stringify(tags),
+          color: color,
         }
       });
       refetch();
@@ -45,21 +81,36 @@ export const useGoals = () => {
     }
   };
 
-  const updateGoal = async (goalId: string, updates: Partial<Goal>) => {
+  const updateGoal = async (goalId: string, updates: Partial<Goal>, newIndex?: number) => {
+  try {
+    await updateGoalMutation({
+      variables: {
+        id: goalId,
+        userid: authId,
+        ...updates,
+        order: newIndex !== undefined ? newIndex : undefined
+      }
+    });
+  } catch (error) {
+    console.error('Error updating goal:', error);
+    throw error;
+  }
+};
+
+  const updateGoalOrder = async (columnId: ColumnKey, goalIds: string[]) => {
     try {
-      await updateGoalMutation({
+      await updateGoalOrderMutation({
         variables: {
-          id: goalId,
-          userid: authId,
-          ...updates
+          columnId,
+          goalIds
         }
       });
-      refetch();
     } catch (error) {
-      console.error('Error updating goal:', error);
+      console.error('Error updating goal order:', error);
       throw error;
     }
   };
+  
 
   const deleteGoal = async (goalId: string) => {
     try {
@@ -76,8 +127,7 @@ export const useGoals = () => {
     }
   };
 
-  var goals = data?.goalsCollection?.edges?.map((edge: { node: any; }) => edge.node) ?? [];
-  
+  let goals = data?.goalsCollection?.edges?.map((edge) => edge.node) ?? [];
   if (goals.length > 0) {
     goals = goals.map((g: Goal) => {
       try {
@@ -94,11 +144,9 @@ export const useGoals = () => {
       }
     });
   }
-  
-  
-  
+
   const columns = organizeGoalsByColumn(goals);
-  console.log(goals)
+
   return {
     goals,
     columns,
@@ -106,6 +154,8 @@ export const useGoals = () => {
     error,
     createGoal,
     updateGoal,
-    deleteGoal
+    deleteGoal,
+    updateGoalOrder
   };
 };
+

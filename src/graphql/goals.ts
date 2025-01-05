@@ -79,3 +79,11 @@ export const DELETE_GOAL = gql(`
     }
   }
 `);
+
+export const UPDATE_GOAL_ORDER = gql`
+  mutation UpdateGoalOrder($columnId: String!, $goalIds: [String!]!) {
+    updateGoalOrder(columnId: $columnId, goalIds: $goalIds) {
+      success
+    }
+  }
+`;
