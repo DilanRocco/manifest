@@ -94,7 +94,6 @@ export const GoalView: React.FC = () => {
     if (!editingGoal) return;
     await updateGoal(editingGoal.id, {
       text: editingGoal.text,
-      tags: editingGoal.tags,
       type: editingGoal.column
     });
     onClose();
@@ -104,13 +103,6 @@ export const GoalView: React.FC = () => {
 
   const toggleLabel = (label: LabelKey) => {
     if (editingGoal) {
-      setEditingGoal((prev) => {
-        if (!prev) return null;
-        const newLabels = prev.tags.includes(label)
-          ? prev.tags.filter((l) => l !== label)
-          : [...prev.tags, label];
-        return { ...prev, labels: newLabels };
-      });
     } else {
       setNewGoal((prev) => {
         const newLabels = prev.labels.includes(label)
@@ -201,7 +193,7 @@ export const GoalView: React.FC = () => {
                   colorScheme={LABEL_COLORS[label]}
                   cursor="pointer"
                   onClick={() => toggleLabel(label)}
-                  variant={(editingGoal ? editingGoal.tags : newGoal.labels).includes(label) ? 'solid' : 'outline'}
+                  variant={(editingGoal ? editingGoal.type : newGoal.labels).includes(label) ? 'solid' : 'outline'}
                 >
                   {label}
                 </Tag>
@@ -292,16 +284,6 @@ export const GoalView: React.FC = () => {
                               <VStack align="start" gap={2} flex={1}>
                                 <Box color={'black'}>{goal.text}</Box>
                                 <Flex wrap="wrap" gap={2}>
-                                  {goal.tags.map((label) => (
-                                    <Tag
-                                      key={label}
-                                      colorScheme={LABEL_COLORS[label]}
-                                      size="sm"
-                                      userSelect="none"
-                                    >
-                                      {label}
-                                    </Tag>
-                                  ))}
                                 </Flex>
                               </VStack>
                               <Flex direction="column">

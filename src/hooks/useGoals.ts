@@ -82,13 +82,15 @@ export const useGoals = () => {
   };
 
   const updateGoal = async (goalId: string, updates: Partial<Goal>, newIndex?: number) => {
+  console.log(goalId)
+  console.log(updates)
+  console.log(newIndex)
   try {
     await updateGoalMutation({
       variables: {
         id: goalId,
         userid: authId,
-        ...updates,
-        order: newIndex !== undefined ? newIndex : undefined
+        ...updates
       }
     });
   } catch (error) {
@@ -133,7 +135,6 @@ export const useGoals = () => {
       try {
         return {
           ...g,
-          tags: typeof g.tags === 'string' ? JSON.parse(g.tags) : g.tags
         };
       } catch (error) {
         console.error(`Error parsing tags for goal:`, error);
