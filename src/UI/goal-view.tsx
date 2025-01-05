@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ChakraProvider,
   Box,
@@ -126,6 +126,13 @@ export const GoalView: React.FC = () => {
       { label: "Long Term", value: "longTerm" },
     ],
   })
+
+  useEffect(() => {
+    console.log(localColumns)
+    if (localColumns.shortTerm.length == 0 && localColumns.longTerm.length == 0) {
+      setLocalColumns(columns)
+    }
+  }, [goals])
 
   const renderGoalModal = () => {
     const bg = useColorModeValue('white', 'gray.800');

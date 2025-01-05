@@ -17,7 +17,7 @@ const DefaultModal: React.FC<DefaultModalProps> = ({children, trigger }) => {
       <Modal isOpen={open} onClose={onClose} isCentered size="sm">
         <ModalOverlay backdropFilter="blur(3px)" />
         <ModalContent
-          bg="black"
+
           mx="auto"
           p="20px"
           maxW="90%"

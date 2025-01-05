@@ -53,7 +53,7 @@ import { createFeedback } from "@/graphql/feedback";
   }
 
     return (
-      <Box  maxW="50vh" minW="50vh" minH="100vh" p={8}>
+      <Box  maxW="50vh" minW="50vh" minH="90vh" p={8} margin={'auto'} bg='gray.900'>
         <VStack gap={6} align="stretch" maxW="600px" mx="auto">
           <FormControl>
             <FormLabel>Email</FormLabel>
