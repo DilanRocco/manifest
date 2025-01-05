@@ -282,7 +282,16 @@ function Home() {
     </GridItem>
     </Grid>
    
-    {audioUrl && <audio src={audioUrl} controls />}
+    {audioUrl && (
+    <audio 
+      src={audioUrl} 
+      controls 
+      style={{ 
+        padding: '10px',
+        width: '100%', 
+      }}
+    />
+  )}
     </VStack>)
     
   }
@@ -307,6 +316,7 @@ function Home() {
 
               |
               <DefaultModal
+
         trigger={
         <Button _hover={{ bg: "gray.600" }} color='blue.300' variant={'ghost'} loading={isLoading}>Benefits</Button>
         }

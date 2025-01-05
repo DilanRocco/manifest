@@ -1,5 +1,5 @@
 import { useState, ChangeEvent, useEffect } from 'react';
-import { Heading, Spacer, VStack } from '@chakra-ui/react';
+import { Box, Heading, Spacer, VStack } from '@chakra-ui/react';
 import { Input, Text } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
@@ -73,18 +73,46 @@ const SignInForm = () => {
   };
 
   return (
-    <VStack minW="20rem" >
-      <Heading size="6xl">{PROJECT_NAME}</Heading>
-      <Text fontStyle="italic">{affrimation}</Text>
-      <Spacer />
-      <Field label="Email" ><Input name={"email"} value={formData.email} onChange={handleChange} placeholder="john@smith.com"/></Field>
-      <Field label="Password"><PasswordInput name={"password"} value={formData.password} onChange={handleChange} placeholder="*********"/></Field>
-      <Button disabled={loading} onClick={handleSubmit}> Sign In</Button>
-      {success && (<Text color='green.400'><b>Success!</b></Text>) }
-      {error && (<Text color="red.300">{error}</Text>) }
-      <Link reloadDocument to="/signup"> Never logged in? Sign up here.</Link>
-      <Outlet />
-    </VStack>
+<Box 
+  display="flex" 
+  justifyContent="center" 
+  alignItems="center" 
+  minH="100vh" 
+
+>
+  <VStack 
+    minW="20rem" 
+    maxWidth="60%" 
+    margin="auto" 
+    height="100%"
+    gap={4} // Add spacing between items
+  >
+    <Heading size="6xl">{PROJECT_NAME}</Heading>
+    <Text fontStyle="italic">{affrimation}</Text>
+    <Spacer />
+    <Field label="Email">
+      <Input 
+        name="email" 
+        value={formData.email} 
+        onChange={handleChange} 
+        placeholder="john@smith.com" 
+      />
+    </Field>
+    <Field label="Password">
+      <PasswordInput 
+        name="password" 
+        value={formData.password} 
+        onChange={handleChange} 
+        placeholder="*********" 
+      />
+    </Field>
+    <Button disabled={loading} onClick={handleSubmit}>Sign In</Button>
+    {success && <Text color="green.400"><b>Success!</b></Text>}
+    {error && <Text color="red.300">{error}</Text>}
+    <Link reloadDocument to="/signup">Never logged in? Sign up here.</Link>
+    <Outlet />
+  </VStack>
+</Box>
   );
 };
 export default SignInForm;

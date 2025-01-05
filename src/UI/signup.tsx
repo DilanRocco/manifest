@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from 'react';
-import { Heading, HStack, Spacer, VStack } from '@chakra-ui/react';
+import { Box, Heading, HStack, Spacer, VStack } from '@chakra-ui/react';
 import { Input, Text } from "@chakra-ui/react"
 import { Field } from "@/components/ui/field"
 import { Button } from "@/components/ui/button"
@@ -107,7 +107,19 @@ const SignupForm = () => {
   };
 
   return (
-    <VStack minW="20rem" >
+    <Box 
+      display="flex" 
+      justifyContent="center" 
+      alignItems="center" 
+      minH="100vh" 
+    >
+      <VStack 
+        minW="20rem" 
+        maxWidth="60%" 
+        margin="auto" 
+        height="100%"
+        gap={4} // Add spacing between items
+      >
       <Heading size="6xl">{PROJECT_NAME}</Heading>
       <Spacer />
       <HStack w='100%'>
@@ -124,6 +136,7 @@ const SignupForm = () => {
       {error && (<Text color="red.300">{error}</Text>) }
       <Outlet />
     </VStack>
+    </Box>
   );
 };
 export default SignupForm;
