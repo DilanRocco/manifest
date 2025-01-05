@@ -25,8 +25,9 @@ const DefaultModal: React.FC<DefaultModalProps> = ({children, trigger }) => {
           shadow="xl"
           borderRadius="5px"
         >
-          <HStack justify="space-between" align="center" w="100%">
-            <ModalCloseButton cursor="pointer" size="sm" />
+          <HStack justify="space-between" align="center" w="100%" paddingBottom={'10px'}>
+            <Box></Box>
+            <ModalCloseButton cursor="pointer" size="sm" float="right"/>
           </HStack>
           <Box
             maxHeight="90vh" 

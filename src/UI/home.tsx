@@ -171,28 +171,27 @@ function Home() {
 
   function readManifest() {
     setLoading(true)
-    uploadFest()
     uploadHistory(false)
     setLoading(false)
-    setShouldShowSave(false)
+
     refresh()
   }
   
   async function uploadFest() {
 
     try {
-      console.log(manText)
-      const val = await updateFestField({
+      updateFestField({
         variables: {
             userid: authApi.getToken,
             festtext: JSON.stringify(manText),
         },
     });
-    refresh()
+ 
     } catch (error) {
       console.log(error)
       setError('Error trying to upload Manifest text')
     }
+    refresh()
   }
 
   function updateText(texts: string) {
@@ -265,11 +264,12 @@ function Home() {
     <Button loading={isLoading} onClick={playManifest}>Listen</Button>
     <DefaultModal
         trigger={
-        <Button loading={isLoading} onClick={readManifest}>Read</Button>
+        <Button loading={isLoading}> Read</Button>
         }
       >
-        <ReadView text={manText[currentFestPage]}/>
+        <ReadView text={manText[currentFestPage]} onMount={(readManifest)}/>
       </DefaultModal>
+
     
     </HStack>
     </GridItem>

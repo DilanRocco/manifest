@@ -78,7 +78,6 @@ const SignInForm = () => {
   justifyContent="center" 
   alignItems="center" 
   minH="100vh" 
-
 >
   <VStack 
     minW="20rem" 
